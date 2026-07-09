@@ -83,6 +83,28 @@ Cuando el músico lo pida (y solo entonces):
 5. Tras confirmar: agregar a `tunes.ts` (una línea por tema, `source` = archivo de la
    captura), actualizar `procesados.json`, commit atómico.
 
+## Aplicar respaldo desde la tablet
+
+La carpeta `sync/` (raíz del repo) recibe los `.json` que el músico exporta desde
+Ajustes → «Exportar respaldo». No entra al build ni al precache (está fuera de `src/`
+y `public/`); los `.json` sí se versionan (historial de respaldos).
+
+Cuando el usuario diga «Aplica el respaldo de sync/ al repertorio y súbelo»:
+
+1. Busca el `.json` más reciente en `sync/`.
+2. Muestra un resumen ANTES de tocar nada: cuántos temas nuevos, cuántos editados,
+   cuántos borrados, con los títulos. Espera confirmación.
+3. Fusiona sobre `src/data/tunes.ts` respetando el modelo `Tune` y los criterios de
+   curaduría de este archivo. El respaldo es un JSON `{ overrides, sets }` (esquema en
+   `src/lib/backup.ts`): `add` → alta nueva conservando su id; `edit` → parche sobre la
+   línea del tema (`null` = borrar campo opcional); `remove` → eliminar la línea.
+4. Verifica que el proyecto compile (`npm run build`).
+5. Commit con mensaje «Respaldo tablet: N altas, M ediciones, K bajas» y push a
+   `origin main`.
+6. Confirma al usuario que el deploy tarda 1–2 minutos.
+
+Nunca sobrescribas temas sin mostrar antes qué cambia.
+
 ## Curaduría
 
 Criterios para decidir qué entra al repertorio desde las capturas:

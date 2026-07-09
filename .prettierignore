@@ -3,6 +3,8 @@ src/data/tunes.ts
 # Material fuente / referencia histórica — no tocar
 seed/
 screenshots/
+# Respaldos de la tablet (datos, no fuente) — no reformatear
+sync/*.json
 # Build y deps
 dist/
 dev-dist/
