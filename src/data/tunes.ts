@@ -1,5 +1,5 @@
 /**
- * CAPA BASE DEL REPERTORIO — 635 temas.
+ * CAPA BASE DEL REPERTORIO — 636 temas.
  * Bootstrap: scripts/migrate-seed.mjs desde seed/repertorio.html (363 temas).
  * Este archivo es la fuente de verdad y YA DIVERGE del seed: las altas curadas
  * posteriores (p. ej. la ampliación Beatles) viven aquí. NO re-ejecutar `migrate`:
@@ -674,4 +674,6 @@ export const TUNES: Tune[] = [
   { id: "luminescence", title: "Luminescence", composer: "Sam Rivers", theme: "moderno", style: "postbop", feel: "up", bpm: 200, key: "F", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "BPM, tonalidad y forma por confirmar." },
   { id: "ellipsis-rivers", title: "Ellipsis", composer: "Sam Rivers", theme: "moderno", style: "postbop", feel: "swing", bpm: 160, key: "Dm", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "En la biblioteca aparece como \"Ellipsis (Rivers)\" — hay otra Ellipsis de Helias. BPM, tonalidad y forma por confirmar." },
   { id: "point-of-return", title: "Point Of Return", composer: "por confirmar", theme: "moderno", style: "postbop", feel: "swing", bpm: 160, key: "Cm", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "Podría ser \"Point Of Many Returns\" de Sam Rivers (Contours, 1965). Autoría y datos por confirmar contra el chart." },
+  // ---- ALTA Mujer Divina ----
+  { id: "mujer-divina", title: "Mujer Divina", altTitle: "Petite", composer: "Héctor Rivera", theme: "bolero", style: "latinjazz", feel: "latin", bpm: 104, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Joe Cuba Sextet, 1966. Existe versión instrumental original de 1961 titulada \"Petite\" — buscar ambos títulos. BPM, tonalidad y forma por confirmar contra el chart." },
 ];
