@@ -18,7 +18,21 @@ La app te muestra las dos juntas y marca "local" lo tuyo.
 ## El reloj 45:00
 Verde hasta 43:30. Ámbar hasta 45:00. Rojo si te pasas.
 Suma 45 segundos de transición entre temas.
-Siete temas ≈ 44:45. Ocho no caben.
+En un set de jazz caben ~7 temas; en uno de baile, ~9 o 10 (cada tema es
+más corto). El reloj te dice cuánto falta y a qué tema sumarle o quitarle
+una vuelta de solo.
+
+## Cómo se calcula la duración
+Cada tema dura según su FORMA y su TEMPO: una vuelta = compases × pulsos ÷
+tempo, y el total suma intro, cabezas, solos y coda. Por eso el mismo tema
+dura distinto rápido que lento y no hay que anotar minutos a mano.
+
+Las "vueltas de solo" son cuántas veces se improvisa sobre la forma antes
+de volver a la cabeza. En jazz la app reparte solos para que cada tema
+ronde los 5–6 minutos; con − y + le sumas o le quitas vueltas a un tema.
+
+El perfil manda: en baile (ballroom) cada tema es 1 sola vuelta (~4:00),
+así que un set de 45:00 lleva 9 o 10 temas, no 7.
 
 ## La barra de tiempo
 Cada bloque es un tema, a escala de su duración.

@@ -30,8 +30,14 @@ import {
   X,
 } from 'lucide-react';
 import { DANCE_LABELS, FEEL_LABELS, TARGET_SEC } from '../types';
-import type { SetKind } from '../types';
-import { resolveEntries, setStatus, totalSec, type ResolvedEntry } from '../lib/setMath';
+import type { SetProfile } from '../types';
+import {
+  buildClockHint,
+  resolveEntries,
+  totalSec,
+  tunesPerSet,
+  type ResolvedEntry,
+} from '../lib/setMath';
 import { validateBallroom } from '../lib/ballroom';
 import { buildSetText } from '../lib/setText';
 import { copyText, shareText } from '../lib/download';
@@ -42,6 +48,12 @@ import { useTuneMap } from '../store/selectors';
 import { useUiStore } from '../store/uiStore';
 import s from './SetEditorView.module.css';
 
+const PROFILES: { id: SetProfile; label: string; dance?: boolean }[] = [
+  { id: 'jazz', label: 'Jazz' },
+  { id: 'cocktail', label: 'Cóctel' },
+  { id: 'ballroom', label: 'Baile', dance: true },
+];
+
 export function SetEditorView({ setId }: { setId: string }) {
   const set = useSetsStore((st) => st.sets.find((x) => x.id === setId));
   const updateSet = useSetsStore((st) => st.updateSet);
@@ -49,7 +61,8 @@ export function SetEditorView({ setId }: { setId: string }) {
   const deleteSet = useSetsStore((st) => st.deleteSet);
   const removeEntry = useSetsStore((st) => st.removeEntry);
   const moveEntry = useSetsStore((st) => st.moveEntry);
-  const setEntryDuration = useSetsStore((st) => st.setEntryDuration);
+  const setEntrySolo = useSetsStore((st) => st.setEntrySolo);
+  const setEntryHeadsOut = useSetsStore((st) => st.setEntryHeadsOut);
 
   const openSet = useUiStore((st) => st.openSet);
   const openStage = useUiStore((st) => st.openStage);
@@ -63,8 +76,6 @@ export function SetEditorView({ setId }: { setId: string }) {
     () => (set ? resolveEntries(set, tuneMap) : []),
     [set, tuneMap],
   );
-  const total = totalSec(resolved);
-  const status = setStatus(total);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -77,6 +88,12 @@ export function SetEditorView({ setId }: { setId: string }) {
   }, [set, openSet]);
   if (!set) return null;
 
+  const profile = set.profile;
+  const ballroom = profile === 'ballroom';
+  const total = totalSec(resolved);
+  const hint = buildClockHint(resolved, profile);
+  const status = hint.status;
+
   const ids = set.entries.map((e) => e.tuneId);
 
   const onDragEnd = (ev: DragEndEvent) => {
@@ -87,16 +104,9 @@ export function SetEditorView({ setId }: { setId: string }) {
     if (from >= 0 && to >= 0) moveEntry(set.id, from, to);
   };
 
-  const statusText =
-    status === 'over'
-      ? `Te pasas ${fmtSec(total - TARGET_SEC)} — quita un tema o recorta solos`
-      : status === 'near'
-        ? `Al límite · margen ${fmtSec(TARGET_SEC - total)}`
-        : `Margen ${fmtSec(TARGET_SEC - total)}`;
-
-  const issues = set.kind === 'ballroom' ? validateBallroom(resolved) : [];
+  const issues = ballroom ? validateBallroom(resolved) : [];
   const dupIndexes = new Set<number>();
-  if (set.kind === 'ballroom') {
+  if (ballroom) {
     for (let i = 1; i < resolved.length; i++) {
       const d = resolved[i].tune?.dance;
       if (d && d === resolved[i - 1].tune?.dance) {
@@ -141,16 +151,16 @@ export function SetEditorView({ setId }: { setId: string }) {
           onChange={(e) => updateSet(set.id, { name: e.target.value })}
           aria-label="Nombre del set"
         />
-        <div className={s.kind} role="radiogroup" aria-label="Tipo de set">
-          {(['libre', 'ballroom'] as SetKind[]).map((k) => (
+        <div className={s.kind} role="radiogroup" aria-label="Perfil del set">
+          {PROFILES.map((p) => (
             <button
-              key={k}
-              className={`chip ${k === 'ballroom' ? 'dance' : ''} ${set.kind === k ? 'on' : ''}`}
+              key={p.id}
+              className={`chip ${p.dance ? 'dance' : ''} ${profile === p.id ? 'on' : ''}`}
               role="radio"
-              aria-checked={set.kind === k}
-              onClick={() => updateSet(set.id, { kind: k })}
+              aria-checked={profile === p.id}
+              onClick={() => updateSet(set.id, { profile: p.id })}
             >
-              {k === 'libre' ? 'Libre' : 'Baile'}
+              {p.label}
             </button>
           ))}
         </div>
@@ -161,7 +171,7 @@ export function SetEditorView({ setId }: { setId: string }) {
           {fmtSec(total)}
           <small>/ {fmtSec(TARGET_SEC)}</small>
         </div>
-        <span className={`${s.statusTxt} ${s[status]}`}>{statusText}</span>
+        <span className={`${s.statusTxt} ${s[status]}`}>{hint.text}</span>
         <span className="lbl" style={{ marginLeft: 'auto' }}>
           {set.entries.length} tema{set.entries.length === 1 ? '' : 's'} · transiciones 45 s
         </span>
@@ -171,8 +181,9 @@ export function SetEditorView({ setId }: { setId: string }) {
 
       {set.entries.length === 0 ? (
         <div className={s.emptySet}>
-          Set vacío. Toca <b>Añadir temas</b> para armar los 45:00 — 7 temas ≈ 44:45 con
-          transiciones.
+          Set vacío. Toca <b>Añadir temas</b> para armar los 45:00 — perfil{' '}
+          {PROFILES.find((p) => p.id === profile)?.label.toLowerCase()}: ~{tunesPerSet(profile)}{' '}
+          temas.
         </div>
       ) : (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
@@ -183,13 +194,10 @@ export function SetEditorView({ setId }: { setId: string }) {
                   key={r.entry.tuneId}
                   r={r}
                   index={i}
-                  ballroom={set.kind === 'ballroom'}
+                  ballroom={ballroom}
                   warnDup={dupIndexes.has(i)}
-                  onStep={(delta) => {
-                    const cur = r.entry.durationMin ?? r.tune?.durationMin ?? 5.75;
-                    const next = Math.min(20, Math.max(1, Math.round((cur + delta) * 2) / 2));
-                    setEntryDuration(set.id, i, next);
-                  }}
+                  onSolo={(delta) => setEntrySolo(set.id, i, r.repeats.soloChoruses + delta)}
+                  onHeadsOut={(v) => setEntryHeadsOut(set.id, i, v)}
                   onRemove={() => removeEntry(set.id, i)}
                 />
               ))}
@@ -198,7 +206,7 @@ export function SetEditorView({ setId }: { setId: string }) {
         </DndContext>
       )}
 
-      {set.kind === 'ballroom' && set.entries.length > 0 && (
+      {ballroom && set.entries.length > 0 && (
         <div className={s.validator}>
           {issues.length === 0 ? (
             <div className="note good">Rotación de ritmos OK</div>
@@ -257,21 +265,24 @@ function SortableEntryRow({
   index,
   ballroom,
   warnDup,
-  onStep,
+  onSolo,
+  onHeadsOut,
   onRemove,
 }: {
   r: ResolvedEntry;
   index: number;
   ballroom: boolean;
   warnDup: boolean;
-  onStep: (delta: number) => void;
+  onSolo: (delta: number) => void;
+  onHeadsOut: (value: number | undefined) => void;
   onRemove: () => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: r.entry.tuneId,
   });
   const t = r.tune;
-  const edited = r.entry.durationMin !== undefined;
+  const edited = r.entry.soloChoruses !== undefined || r.entry.headsOut !== undefined;
+  const halfOut = r.repeats.headsOut === 0.5;
 
   return (
     <li
@@ -302,18 +313,52 @@ function SortableEntryRow({
                 <span className="tag">sin baile</span>
               ))}
             {t.memorized && <span style={{ color: 'var(--mint)' }}>♦</span>}
+            <span className={s.vuelta}>vuelta {fmtSec(r.chorusSec)}</span>
+          </div>
+        )}
+        {t && !ballroom && (
+          <div className={s.repeatCtrls}>
+            <span className={s.ctrlLbl}>Solos</span>
+            <button
+              className={s.miniBtn}
+              onClick={() => onSolo(-1)}
+              disabled={r.repeats.soloChoruses <= 0}
+              aria-label="Una vuelta de solo menos"
+            >
+              <Minus size={16} />
+            </button>
+            <span className={s.soloN}>{r.repeats.soloChoruses}</span>
+            <button
+              className={s.miniBtn}
+              onClick={() => onSolo(1)}
+              disabled={r.repeats.soloChoruses >= 12}
+              aria-label="Una vuelta de solo más"
+            >
+              <Plus size={16} />
+            </button>
+            <span className={s.ctrlLbl}>Salida</span>
+            <div className={s.seg} role="group" aria-label="Cabeza de salida">
+              <button
+                className={`${s.segBtn} ${!halfOut ? s.segOn : ''}`}
+                onClick={() => onHeadsOut(undefined)}
+                aria-pressed={!halfOut}
+              >
+                Entera
+              </button>
+              <button
+                className={`${s.segBtn} ${halfOut ? s.segOn : ''}`}
+                onClick={() => onHeadsOut(0.5)}
+                aria-pressed={halfOut}
+              >
+                Media
+              </button>
+            </div>
           </div>
         )}
       </div>
-      <button className="icon-btn" onClick={() => onStep(-0.5)} aria-label="Restar 30 segundos">
-        <Minus size={18} />
-      </button>
-      <span className={`${s.dur} ${edited ? s.durEdited : ''}`} title="Duración de este tema">
+      <span className={`${s.dur} ${edited ? s.durEdited : ''}`} title="Duración calculada">
         {fmtSec(r.durationSec)}
       </span>
-      <button className="icon-btn" onClick={() => onStep(0.5)} aria-label="Sumar 30 segundos">
-        <Plus size={18} />
-      </button>
       <button className="icon-btn" onClick={onRemove} aria-label={`Quitar ${t?.title ?? 'tema'}`}>
         <X size={19} />
       </button>

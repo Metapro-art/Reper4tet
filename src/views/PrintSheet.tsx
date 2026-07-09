@@ -41,8 +41,12 @@ export function PrintSheet({ setId }: { setId: string }) {
       <h1>{set.name}</h1>
       <div className={s.meta}>
         {new Date().toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' })} ·{' '}
-        {set.kind === 'ballroom' ? 'Set de baile (ballroom)' : 'Set libre'} · {resolved.length}{' '}
-        temas · {fmtSec(total)} / {fmtSec(TARGET_SEC)}
+        {set.profile === 'ballroom'
+          ? 'Set de baile (ballroom)'
+          : set.profile === 'cocktail'
+            ? 'Set cóctel'
+            : 'Set de jazz'}{' '}
+        · {resolved.length} temas · {fmtSec(total)} / {fmtSec(TARGET_SEC)}
       </div>
       <table className={s.table}>
         <thead>
@@ -53,7 +57,7 @@ export function PrintSheet({ setId }: { setId: string }) {
             <th>Ton.</th>
             <th>BPM</th>
             <th>Feel</th>
-            {set.kind === 'ballroom' && <th>Baile</th>}
+            {set.profile === 'ballroom' && <th>Baile</th>}
             <th>Dur.</th>
           </tr>
         </thead>
@@ -69,7 +73,7 @@ export function PrintSheet({ setId }: { setId: string }) {
               <td className={s.num}>{r.tune?.key ?? ''}</td>
               <td className={s.num}>{r.tune?.bpm ?? ''}</td>
               <td>{r.tune ? FEEL_LABELS[r.tune.feel] : ''}</td>
-              {set.kind === 'ballroom' && (
+              {set.profile === 'ballroom' && (
                 <td>{r.tune?.dance ? DANCE_LABELS[r.tune.dance] : '—'}</td>
               )}
               <td className={s.num}>{fmtSec(r.durationSec)}</td>

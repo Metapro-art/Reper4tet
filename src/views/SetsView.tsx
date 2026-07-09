@@ -1,6 +1,6 @@
 import { Copy, ClipboardCopy, Play, Plus, Printer, Trash2 } from 'lucide-react';
 import { TARGET_SEC } from '../types';
-import type { SetList } from '../types';
+import type { SetList, SetProfile } from '../types';
 import { resolveEntries, setStatus, totalSec } from '../lib/setMath';
 import { fmtSec } from '../lib/time';
 import { buildSetText } from '../lib/setText';
@@ -11,10 +11,12 @@ import { useTuneMap } from '../store/selectors';
 import { useUiStore } from '../store/uiStore';
 import s from './SetsView.module.css';
 
-function defaultName(kind: 'libre' | 'ballroom'): string {
+function defaultName(profile: SetProfile): string {
   const d = new Date();
   const stamp = `${d.getDate()}/${d.getMonth() + 1}`;
-  return kind === 'ballroom' ? `Baile ${stamp}` : `Libre ${stamp}`;
+  if (profile === 'ballroom') return `Baile ${stamp}`;
+  if (profile === 'cocktail') return `Cóctel ${stamp}`;
+  return `Jazz ${stamp}`;
 }
 
 export function SetsView() {
@@ -29,8 +31,8 @@ export function SetsView() {
   const toast = useUiStore((st) => st.toast);
   const tuneMap = useTuneMap();
 
-  const create = (kind: 'libre' | 'ballroom') => {
-    const id = createSet(defaultName(kind), kind);
+  const create = (profile: SetProfile) => {
+    const id = createSet(defaultName(profile), profile);
     openSet(id);
   };
 
@@ -52,12 +54,15 @@ export function SetsView() {
       <div className="page-head">
         <h1>Sets</h1>
         <span className="sub">4 al día · 45:00 exactos</span>
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <button className="btn" onClick={() => create('ballroom')}>
-            <Plus size={17} /> Set de baile
+            <Plus size={17} /> Baile
           </button>
-          <button className="btn primary" onClick={() => create('libre')}>
-            <Plus size={17} /> Set libre
+          <button className="btn" onClick={() => create('cocktail')}>
+            <Plus size={17} /> Cóctel
+          </button>
+          <button className="btn primary" onClick={() => create('jazz')}>
+            <Plus size={17} /> Jazz
           </button>
         </div>
       </div>
@@ -85,7 +90,8 @@ export function SetsView() {
             >
               <div className={s.cardHead}>
                 <span className={s.cardName}>{set.name}</span>
-                {set.kind === 'ballroom' && <span className="tag dance">Baile</span>}
+                {set.profile === 'ballroom' && <span className="tag dance">Baile</span>}
+                {set.profile === 'cocktail' && <span className="tag">Cóctel</span>}
                 <span className={`${s.clock} ${s[status]}`}>
                   {fmtSec(total)}
                   <span style={{ color: 'var(--muted)', fontSize: 12 }}>

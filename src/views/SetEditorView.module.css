@@ -115,6 +115,82 @@
 .durEdited {
   color: var(--amber);
 }
+.vuelta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--brass);
+  white-space: nowrap;
+}
+.repeatCtrls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.ctrlLbl {
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  color: var(--muted);
+}
+.ctrlLbl:not(:first-child) {
+  margin-left: 8px;
+}
+.miniBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.miniBtn:hover:not(:disabled) {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+.miniBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.soloN {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  min-width: 18px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.seg {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.segBtn {
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 12px;
+  background: var(--surface);
+  color: var(--muted);
+  border: none;
+  padding: 0 10px;
+  min-height: 34px;
+  cursor: pointer;
+}
+.segBtn + .segBtn {
+  border-left: 1px solid var(--line);
+}
+.segOn {
+  background: var(--amber);
+  color: var(--ink);
+}
 .warnDup {
   outline: 1px solid var(--red);
   outline-offset: -1px;

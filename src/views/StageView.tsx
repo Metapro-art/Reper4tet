@@ -79,7 +79,7 @@ export function StageView({ setId }: { setId: string }) {
             <span>{t.bpm} bpm</span>
             <span className={s.feel}>
               {FEEL_LABELS[t.feel]}
-              {set.kind === 'ballroom' && t.dance ? ` · ${DANCE_LABELS[t.dance]}` : ''}
+              {set.profile === 'ballroom' && t.dance ? ` · ${DANCE_LABELS[t.dance]}` : ''}
             </span>
             <span>{fmtSec(cur.durationSec)}</span>
             {t.memorized && <span className={s.mem}>♦</span>}
@@ -95,7 +95,7 @@ export function StageView({ setId }: { setId: string }) {
             {next.tune && (
               <div className={s.nextData}>
                 {next.tune.key} · {next.tune.bpm} bpm · {FEEL_LABELS[next.tune.feel]}
-                {set.kind === 'ballroom' && next.tune.dance
+                {set.profile === 'ballroom' && next.tune.dance
                   ? ` · ${DANCE_LABELS[next.tune.dance]}`
                   : ''}
               </div>

@@ -1,16 +1,9 @@
 import { useMemo, useState } from 'react';
 import { RotateCcw, Trash2 } from 'lucide-react';
 import type { Dance, Feel, Theme, Tune } from '../types';
-import {
-  DANCES,
-  DANCE_LABELS,
-  DEFAULT_DURATION_MIN,
-  FEELS,
-  FEEL_LABELS,
-  THEMES,
-  THEME_LABELS,
-} from '../types';
+import { DANCES, DANCE_LABELS, FEELS, FEEL_LABELS, THEMES, THEME_LABELS } from '../types';
 import { BASE_BY_ID } from '../lib/merge';
+import { fmtSec } from '../lib/time';
 import { useTuneMap } from '../store/selectors';
 import { useLibraryStore } from '../store/libraryStore';
 import { useUiStore } from '../store/uiStore';
@@ -52,7 +45,10 @@ interface FormState {
   bpm: string;
   key: string;
   dance: Dance | '';
-  durationMin: number;
+  bars: string;
+  beatsPerBar: 3 | 4;
+  introBars: string;
+  codaBars: string;
   memorized: boolean;
   missing: boolean;
   source: string;
@@ -69,7 +65,10 @@ function fromTune(t: Tune): FormState {
     bpm: String(t.bpm),
     key: t.key,
     dance: t.dance ?? '',
-    durationMin: t.durationMin,
+    bars: String(t.bars),
+    beatsPerBar: t.beatsPerBar,
+    introBars: t.introBars !== undefined ? String(t.introBars) : '',
+    codaBars: t.codaBars !== undefined ? String(t.codaBars) : '',
     memorized: t.memorized,
     missing: t.missing,
     source: t.source ?? '',
@@ -86,7 +85,10 @@ const EMPTY: FormState = {
   bpm: '120',
   key: 'C',
   dance: '',
-  durationMin: DEFAULT_DURATION_MIN.swing,
+  bars: '32',
+  beatsPerBar: 4,
+  introBars: '',
+  codaBars: '',
   memorized: false,
   missing: false,
   source: '',
@@ -116,14 +118,17 @@ export function TuneFormModal({ tuneId }: { tuneId: string }) {
   const set = <K extends keyof FormState>(k: K, v: FormState[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
 
+  const bpmN = Number(form.bpm) || 0;
+  const barsN = Number(form.bars) || 0;
+  const vuelta = bpmN > 0 && barsN > 0 ? fmtSec((barsN * form.beatsPerBar * 60) / bpmN) : '—';
+
   const changeFeel = (feel: Feel) =>
-    setForm((f) => ({
-      ...f,
-      feel,
-      // si la duración seguía en el valor por defecto del feel anterior, seguir al nuevo
-      durationMin:
-        f.durationMin === DEFAULT_DURATION_MIN[f.feel] ? DEFAULT_DURATION_MIN[feel] : f.durationMin,
-    }));
+    setForm((f) => {
+      const oldDefault = f.feel === 'vals' ? 3 : 4;
+      const newDefault: 3 | 4 = feel === 'vals' ? 3 : 4;
+      // si los pulsos seguían en el valor por defecto del feel anterior, seguir al nuevo
+      return { ...f, feel, beatsPerBar: f.beatsPerBar === oldDefault ? newDefault : f.beatsPerBar };
+    });
 
   const save = () => {
     const title = form.title.trim();
@@ -136,7 +141,14 @@ export function TuneFormModal({ tuneId }: { tuneId: string }) {
       toast('BPM fuera de rango (30–330)', 'warn');
       return;
     }
-    const durationMin = Math.min(20, Math.max(1, Math.round(form.durationMin * 4) / 4));
+    const bars = Math.max(4, Math.min(128, Math.round(Number(form.bars) || 32)));
+    const beatsPerBar: 3 | 4 = form.beatsPerBar === 3 ? 3 : 4;
+    const introBars =
+      form.introBars.trim() === ''
+        ? undefined
+        : Math.max(0, Math.round(Number(form.introBars) || 0));
+    const codaBars =
+      form.codaBars.trim() === '' ? undefined : Math.max(0, Math.round(Number(form.codaBars) || 0));
     const alt = [...form.altStyles].filter((f) => f !== form.feel);
     const data: Omit<Tune, 'id'> = {
       title,
@@ -146,7 +158,10 @@ export function TuneFormModal({ tuneId }: { tuneId: string }) {
       bpm,
       key: form.key.trim() || 'C',
       dance: form.dance === '' ? undefined : form.dance,
-      durationMin,
+      bars,
+      beatsPerBar,
+      introBars,
+      codaBars,
       memorized: form.memorized,
       missing: form.missing,
       source: form.source.trim() || undefined,
@@ -316,23 +331,69 @@ export function TuneFormModal({ tuneId }: { tuneId: string }) {
             </select>
           </div>
           <div className={s.field}>
-            <label className="lbl" htmlFor="tf-dur">
-              Duración (min)
+            <label className="lbl" htmlFor="tf-bars">
+              Compases (forma)
             </label>
             <input
-              id="tf-dur"
+              id="tf-bars"
               type="number"
-              inputMode="decimal"
-              step={0.25}
-              min={1}
-              max={20}
+              inputMode="numeric"
+              step={4}
+              min={4}
+              max={128}
               className="input mono"
-              value={form.durationMin}
-              onChange={(e) => set('durationMin', Number(e.target.value))}
+              value={form.bars}
+              onChange={(e) => set('bars', e.target.value)}
             />
             <span className="lbl" style={{ textTransform: 'none', letterSpacing: 0 }}>
-              Por defecto {FEEL_LABELS[form.feel]}: {DEFAULT_DURATION_MIN[form.feel]} min
+              12 blues · 32 AABA · 64 Cherokee · una vuelta ≈ {vuelta}
             </span>
+          </div>
+          <div className={s.field}>
+            <label className="lbl" htmlFor="tf-beats">
+              Pulsos por compás
+            </label>
+            <select
+              id="tf-beats"
+              className="select"
+              value={form.beatsPerBar}
+              onChange={(e) => set('beatsPerBar', Number(e.target.value) === 3 ? 3 : 4)}
+            >
+              <option value={4}>4/4</option>
+              <option value={3}>3/4 (vals · jazz waltz)</option>
+            </select>
+          </div>
+          <div className={s.field}>
+            <label className="lbl" htmlFor="tf-intro">
+              Intro (comp.)
+            </label>
+            <input
+              id="tf-intro"
+              type="number"
+              inputMode="numeric"
+              min={0}
+              max={64}
+              className="input mono"
+              placeholder="4"
+              value={form.introBars}
+              onChange={(e) => set('introBars', e.target.value)}
+            />
+          </div>
+          <div className={s.field}>
+            <label className="lbl" htmlFor="tf-coda">
+              Coda (comp.)
+            </label>
+            <input
+              id="tf-coda"
+              type="number"
+              inputMode="numeric"
+              min={0}
+              max={64}
+              className="input mono"
+              placeholder={form.feel === 'balada' ? '8' : '4'}
+              value={form.codaBars}
+              onChange={(e) => set('codaBars', e.target.value)}
+            />
           </div>
           <div className={`${s.field} ${s.full}`}>
             <span className="lbl">Estilos alternativos</span>

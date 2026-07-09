@@ -15,7 +15,7 @@ export function buildSetText(set: SetList, resolved: ResolvedEntry[]): string {
       return;
     }
     const t = r.tune;
-    const dance = set.kind === 'ballroom' && t.dance ? ` · ${DANCE_LABELS[t.dance]}` : '';
+    const dance = set.profile === 'ballroom' && t.dance ? ` · ${DANCE_LABELS[t.dance]}` : '';
     lines.push(
       `${i + 1}. ${t.title} — ${t.key} · ${t.bpm} bpm · ${FEEL_LABELS[t.feel]}${dance} (${fmtSec(r.durationSec)})`,
     );

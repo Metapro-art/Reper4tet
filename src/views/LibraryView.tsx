@@ -3,8 +3,8 @@ import { ArrowDown, ArrowUp, Check, Pencil, Plus, X } from 'lucide-react';
 import type { Dance, Feel, Theme, Tune } from '../types';
 import { DANCE_LABELS, FEEL_LABELS, THEME_LABELS, THEMES, FEELS, DANCES } from '../types';
 import { createSearcher } from '../lib/search';
-import { fmtMin, fmtSec } from '../lib/time';
-import { totalSec, resolveEntries, setStatus } from '../lib/setMath';
+import { fmtSec } from '../lib/time';
+import { chorusSec, totalSec, resolveEntries, setStatus } from '../lib/setMath';
 import { BASE_BY_ID } from '../lib/merge';
 import { useMergedTunes, useTuneMap } from '../store/selectors';
 import { useLibraryStore } from '../store/libraryStore';
@@ -12,7 +12,7 @@ import { useSetsStore } from '../store/setsStore';
 import { useUiStore } from '../store/uiStore';
 import s from './LibraryView.module.css';
 
-type SortKey = 'title' | 'composer' | 'theme' | 'feel' | 'bpm' | 'key' | 'dance' | 'durationMin';
+type SortKey = 'title' | 'composer' | 'theme' | 'feel' | 'bpm' | 'key' | 'dance' | 'chorus';
 
 const SORT_LABELS: [SortKey, string][] = [
   ['title', 'Tema'],
@@ -21,15 +21,15 @@ const SORT_LABELS: [SortKey, string][] = [
   ['bpm', 'BPM'],
   ['key', 'Ton.'],
   ['dance', 'Baile'],
-  ['durationMin', '⏱'],
+  ['chorus', 'Vuelta'],
 ];
 
 function sortValue(t: Tune, key: SortKey): string | number {
   switch (key) {
     case 'bpm':
       return t.bpm;
-    case 'durationMin':
-      return t.durationMin;
+    case 'chorus':
+      return chorusSec(t);
     case 'theme':
       return THEME_LABELS[t.theme];
     case 'feel':
@@ -396,7 +396,9 @@ const TuneRow = memo(function TuneRow({
       <td className={s.num}>{t.bpm}</td>
       <td className={s.num}>{t.key}</td>
       <td>{t.dance && <span className="tag dance">{DANCE_LABELS[t.dance]}</span>}</td>
-      <td className={s.num}>{fmtMin(t.durationMin)}</td>
+      <td className={s.num} title="Duración de una vuelta (forma × tempo)">
+        {fmtSec(chorusSec(t))}
+      </td>
       <td>
         <button className="icon-btn" onClick={() => onEdit(t.id)} aria-label={`Editar ${t.title}`}>
           <Pencil size={17} />

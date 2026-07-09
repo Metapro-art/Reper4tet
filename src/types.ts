@@ -96,18 +96,16 @@ export const DANCE_LABELS: Record<Dance, string> = {
   merengue: 'Merengue',
 };
 
-/** Duración por defecto (minutos) según feel — tabla DUR del seed. */
-export const DEFAULT_DURATION_MIN: Record<Feel, number> = {
-  balada: 6.0,
-  bossa: 5.5,
-  samba: 5.25,
-  latin: 5.5,
-  funk: 6.5,
-  vals: 5.5,
-  blues: 6.0,
-  swing: 5.75,
-  up: 5.0,
-};
+/* ---------- Motor de duración (por forma y tempo) ---------- */
+
+/** Compases de intro por defecto. */
+export const DEFAULT_INTRO_BARS = 4;
+/** Compases de coda por defecto. */
+export const DEFAULT_CODA_BARS = 4;
+/** Las baladas cierran con una coda más larga. */
+export const BALLAD_CODA_BARS = 8;
+/** Segundos a los que apunta el reparto de solos en el perfil jazz. */
+export const JAZZ_TARGET_SEC = 330;
 
 export interface Tune {
   id: string;
@@ -118,7 +116,14 @@ export interface Tune {
   bpm: number;
   key: string;
   dance?: Dance;
-  durationMin: number;
+  /** Compases de la forma: 12 blues, 32 AABA/ABAC, 16, 64 Cherokee… */
+  bars: number;
+  /** 3 solo en vals y jazz waltz; 4 por defecto. */
+  beatsPerBar: 3 | 4;
+  /** Compases de intro (por defecto DEFAULT_INTRO_BARS). */
+  introBars?: number;
+  /** Compases de coda (por defecto 4; 8 en baladas). */
+  codaBars?: number;
   memorized: boolean;
   /** true = todavía no tengo el chart */
   missing: boolean;
@@ -135,18 +140,26 @@ export const GREEN_MAX_SEC = TARGET_SEC - 90;
 /** Transición fija entre temas. */
 export const TRANSITION_SEC = 45;
 
-export type SetKind = 'libre' | 'ballroom';
+/**
+ * Perfil del set: gobierna cuántas vueltas se tocan por tema.
+ * - jazz: se reparten solos (gtr/pno/bajo) apuntando a ~330 s por tema.
+ * - ballroom: música para bailar, 1 vuelta fija por tema (~4:00).
+ * - cocktail: 1 vuelta; cabeza de salida media en baladas.
+ */
+export type SetProfile = 'jazz' | 'ballroom' | 'cocktail';
 
 export interface SetEntry {
   tuneId: string;
-  /** Override de duración en minutos (pasos de 0.5). Si falta, se usa la del tema. */
-  durationMin?: number;
+  /** Vueltas de este tema en ESTE set. Si faltan, se toman del perfil. */
+  headsIn?: number;
+  soloChoruses?: number;
+  headsOut?: number;
 }
 
 export interface SetList {
   id: string;
   name: string;
-  kind: SetKind;
+  profile: SetProfile;
   entries: SetEntry[];
   createdAt: string;
   updatedAt: string;
