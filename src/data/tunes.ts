@@ -1,5 +1,5 @@
 /**
- * CAPA BASE DEL REPERTORIO — 382 temas.
+ * CAPA BASE DEL REPERTORIO — 410 temas.
  * Bootstrap: scripts/migrate-seed.mjs desde seed/repertorio.html (363 temas).
  * Este archivo es la fuente de verdad y YA DIVERGE del seed: las altas curadas
  * posteriores (p. ej. la ampliación Beatles) viven aquí. NO re-ejecutar `migrate`:
@@ -409,4 +409,35 @@ export const TUNES: Tune[] = [
   { id: "fried-bananas", title: "Fried Bananas", composer: "Gordon", theme: "blues", feel: "up", bpm: 200, key: "F", durationMin: 5, memorized: false, missing: false },
   { id: "petite-fleur", title: "Petite Fleur", composer: "Bechet", theme: "blues", feel: "balada", bpm: 80, key: "Bb", durationMin: 6, memorized: false, missing: false },
   { id: "sack-o-woe", title: "Sack O' Woe", composer: "C. Adderley", theme: "blues", feel: "blues", bpm: 140, key: "Bb", durationMin: 6, memorized: false, missing: false },
+  // ---- ALTAS DESDE PLAYLIST ----
+  // bloque 1: datos confirmados
+  { id: "oleo", title: "Oleo", composer: "Rollins", theme: "bird", feel: "up", bpm: 220, key: "Bb", durationMin: 5, memorized: false, missing: true, notes: "Rhythm changes." },
+  { id: "nardis", title: "Nardis", composer: "Davis", theme: "miles", feel: "swing", bpm: 150, key: "Em", durationMin: 5.75, memorized: false, missing: true },
+  { id: "harlem-nocturne", title: "Harlem Nocturne", composer: "Earle Hagen", theme: "songbook", feel: "blues", bpm: 96, key: "Cm", dance: "slowfox", durationMin: 6, memorized: false, missing: true },
+  { id: "it-could-happen-to-you", title: "It Could Happen To You", composer: "Van Heusen", theme: "songbook", feel: "swing", bpm: 130, key: "Eb", durationMin: 5.75, memorized: false, missing: true },
+  { id: "come-rain-or-come-shine", title: "Come Rain Or Come Shine", composer: "Arlen", theme: "songbook", feel: "swing", bpm: 120, key: "F", dance: "foxtrot", durationMin: 5.75, memorized: false, missing: true },
+  { id: "you-dont-know-what-love-is", title: "You Don't Know What Love Is", composer: "Raye/DePaul", theme: "songbook", feel: "balada", bpm: 60, key: "Fm", durationMin: 6, memorized: false, missing: false, source: "The Real Book - 6th Edition" },
+  { id: "all-or-nothing-at-all", title: "All Or Nothing At All", composer: "Altman", theme: "songbook", feel: "latin", bpm: 150, key: "Dm", durationMin: 5.5, memorized: false, missing: false, source: "The New Real Book Vol.1 / Real Book All New Vol.3" },
+  { id: "stars-fell-on-alabama", title: "Stars Fell On Alabama", composer: "Perkins", theme: "songbook", feel: "balada", bpm: 80, key: "F", dance: "slowfox", durationMin: 6, memorized: false, missing: true },
+  { id: "since-i-fell-for-you", title: "Since I Fell For You", composer: "Buddy Johnson", theme: "blues", feel: "blues", bpm: 70, key: "Bb", durationMin: 6, memorized: false, missing: true },
+  { id: "too-young-to-go-steady", title: "Too Young To Go Steady", composer: "McHugh", theme: "songbook", feel: "balada", bpm: 66, key: "C", durationMin: 6, memorized: false, missing: true },
+  { id: "i-know-that-you-know", title: "I Know That You Know", composer: "Youmans", theme: "songbook", feel: "up", bpm: 240, key: "Eb", dance: "quickstep", durationMin: 5, memorized: false, missing: true },
+  { id: "sandu", title: "Sandu", composer: "Clifford Brown", theme: "hardbop", feel: "blues", bpm: 140, key: "Eb", durationMin: 6, memorized: false, missing: true },
+  { id: "work-song", title: "Work Song", composer: "Nat Adderley", theme: "souljazz", feel: "blues", bpm: 130, key: "Fm", durationMin: 6, memorized: false, missing: true },
+  { id: "groove-yard", title: "Groove Yard", composer: "Carl Perkins", theme: "hardbop", feel: "swing", bpm: 130, key: "F", durationMin: 5.75, memorized: false, missing: true },
+  { id: "ahmads-blues", title: "Ahmad's Blues", composer: "Ahmad Jamal", theme: "blues", feel: "blues", bpm: 120, key: "C", durationMin: 6, memorized: false, missing: true },
+  { id: "bessies-blues", title: "Bessie's Blues", composer: "Coltrane", theme: "coltrane", feel: "blues", bpm: 180, key: "Eb", durationMin: 6, memorized: false, missing: true },
+  { id: "relaxin-at-camarillo", title: "Relaxin' At Camarillo", composer: "Parker", theme: "bird", feel: "blues", bpm: 180, key: "C", durationMin: 6, memorized: false, missing: true },
+  { id: "black-nile", title: "Black Nile", composer: "Shorter", theme: "shorter", feel: "up", bpm: 230, key: "Bb", durationMin: 5, memorized: false, missing: true },
+  { id: "fee-fi-fo-fum", title: "Fee-Fi-Fo-Fum", composer: "Shorter", theme: "shorter", feel: "swing", bpm: 200, key: "Bb", durationMin: 5.75, memorized: false, missing: true },
+  { id: "armageddon", title: "Armageddon", composer: "Shorter", theme: "shorter", feel: "up", bpm: 230, key: "F", durationMin: 5, memorized: false, missing: true },
+  { id: "502-blues", title: "502 Blues (Drinkin' And Drivin')", composer: "Jimmy Rowles", theme: "shorter", feel: "vals", bpm: 150, key: "Dm", durationMin: 5.5, memorized: false, missing: true, notes: "Jazz waltz, no vals de salón." },
+  { id: "lotus-blossom", title: "Lotus Blossom", composer: "Kenny Dorham", theme: "hardbop", feel: "latin", bpm: 150, key: "Cm", durationMin: 5.5, memorized: false, missing: true, notes: "Aka Asiatic Raes." },
+  { id: "search-for-peace", title: "Search For Peace", composer: "McCoy Tyner", theme: "moderno", feel: "balada", bpm: 60, key: "F", durationMin: 6, memorized: false, missing: true },
+  { id: "contemplation", title: "Contemplation", composer: "McCoy Tyner", theme: "moderno", feel: "balada", bpm: 80, key: "Bb", durationMin: 6, memorized: false, missing: true },
+  // bloque 2: BPM y tonalidad ESTIMADOS — verificar al conseguir el chart
+  { id: "abstrutions", title: "Abstrutions", composer: "Max Roach", theme: "hardbop", feel: "swing", bpm: 180, key: "F", durationMin: 5.75, memorized: false, missing: true, notes: "Datos por confirmar." },
+  { id: "normans-blues", title: "Norman's Blues", composer: "Sonny Stitt", theme: "blues", feel: "blues", bpm: 150, key: "F", durationMin: 6, memorized: false, missing: true, notes: "Datos por confirmar." },
+  { id: "down-home-blues", title: "Down Home Blues", composer: "Sonny Stitt", theme: "blues", feel: "blues", bpm: 120, key: "Bb", durationMin: 6, memorized: false, missing: true, notes: "Datos por confirmar." },
+  { id: "patterns", title: "Patterns", composer: "Ahmad Jamal", theme: "moderno", feel: "swing", bpm: 140, key: "C", durationMin: 5.75, memorized: false, missing: true, notes: "Datos por confirmar." },
 ];
