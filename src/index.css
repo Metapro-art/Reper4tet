@@ -1,0 +1,485 @@
+/* ====== Tokens (paleta heredada del prototipo del seed) ====== */
+:root {
+  --ink: #0b1020;
+  --surface: #141b2d;
+  --surface2: #1b2438;
+  --line: #2a3550;
+  --text: #e4e7ef;
+  --muted: #8a94ad;
+  --amber: #f0a93b;
+  --brass: #c9a227;
+  --red: #e0524a;
+  --mint: #4fbf9f;
+  --blue: #7fa8d9;
+
+  --font-body: 'Barlow', 'Segoe UI', system-ui, sans-serif;
+  --font-cond: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+
+  --radius: 4px;
+  --tap: 44px; /* mínimo táctil */
+  --tabbar-h: 62px;
+  color-scheme: dark;
+}
+
+/* ====== Reset ====== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.cond {
+  font-family: var(--font-cond);
+  letter-spacing: 0.02em;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--font-cond);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ====== Estructura ====== */
+.app-main {
+  min-height: 100%;
+  padding: 14px 16px calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px) + 18px);
+  max-width: 1180px;
+  margin: 0 auto;
+}
+.boot {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.page-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.page-head h1 {
+  font-size: 26px;
+  font-weight: 700;
+}
+.page-head .sub {
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--font-cond);
+}
+
+/* ====== Controles base ====== */
+.btn {
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  font-size: 14px;
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--line);
+  padding: 0 14px;
+  min-height: var(--tap);
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  user-select: none;
+}
+.btn:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+.btn.primary {
+  background: var(--amber);
+  color: var(--ink);
+  border-color: var(--amber);
+}
+.btn.primary:hover {
+  color: var(--ink);
+  filter: brightness(1.08);
+}
+.btn.danger {
+  color: var(--red);
+  border-color: color-mix(in srgb, var(--red) 55%, var(--line));
+}
+.btn.danger:hover {
+  border-color: var(--red);
+}
+.btn.ghost {
+  background: transparent;
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+}
+.icon-btn {
+  min-width: var(--tap);
+  min-height: var(--tap);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  color: var(--muted);
+  cursor: pointer;
+}
+.icon-btn:hover {
+  color: var(--amber);
+  border-color: var(--line);
+}
+
+.input,
+.select,
+textarea.input {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 8px 12px;
+  min-height: var(--tap);
+  border-radius: var(--radius);
+  font-size: 15px;
+  outline: none;
+}
+.input:focus,
+.select:focus,
+textarea.input:focus {
+  border-color: var(--amber);
+}
+.lbl {
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  color: var(--muted);
+  display: block;
+}
+.check {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+  min-height: var(--tap);
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 13px;
+  color: var(--muted);
+  user-select: none;
+}
+.check input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--amber);
+}
+
+/* ====== Chips de filtro ====== */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chip {
+  font-family: var(--font-cond);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  min-height: 40px;
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.chip:hover {
+  border-color: var(--muted);
+  color: var(--text);
+}
+.chip.on {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: var(--ink);
+}
+.chip.on.dance {
+  background: var(--brass);
+  border-color: var(--brass);
+}
+.chip .n {
+  opacity: 0.6;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* ====== Etiquetas ====== */
+.tag {
+  font-family: var(--font-cond);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.tag.dance {
+  border-color: var(--brass);
+  color: var(--brass);
+}
+.tag.local {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.tag.missing {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* ♦ memoria */
+.mem {
+  font-size: 18px;
+  color: var(--line);
+  background: none;
+  border: none;
+  cursor: pointer;
+  min-width: var(--tap);
+  min-height: var(--tap);
+  border-radius: var(--radius);
+}
+.mem.on {
+  color: var(--mint);
+}
+.mem:hover {
+  background: var(--surface2);
+}
+
+/* ====== Tab bar inferior ====== */
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: color-mix(in srgb, var(--ink) 92%, black);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.tabbar button {
+  min-height: var(--tabbar-h);
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  position: relative;
+}
+.tabbar button.on {
+  color: var(--amber);
+}
+.tabbar .badge {
+  position: absolute;
+  top: 7px;
+  right: calc(50% - 26px);
+  background: var(--red);
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  min-width: 17px;
+  height: 17px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* ====== Toasts ====== */
+.toasts {
+  position: fixed;
+  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px) + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  pointer-events: none;
+}
+.toast {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--mint);
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  max-width: min(92vw, 480px);
+}
+.toast.warn {
+  border-left-color: var(--red);
+}
+
+/* ====== Modal ====== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 6, 14, 0.72);
+  z-index: 70;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 4vh 12px calc(12px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+}
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  width: 100%;
+  max-width: 580px;
+  padding: 18px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+}
+.modal h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+/* ====== Banner de actualización (SW) ====== */
+.update-banner {
+  position: fixed;
+  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px) + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 80;
+  background: var(--surface2);
+  border: 1px solid var(--amber);
+  border-radius: 6px;
+  padding: 12px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  max-width: min(94vw, 520px);
+}
+
+/* ====== Avisos ====== */
+.note {
+  border-left: 2px solid var(--line);
+  padding: 6px 10px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.note.good {
+  border-color: var(--mint);
+  color: var(--mint);
+}
+.note.warn {
+  border-color: var(--red);
+  color: var(--red);
+}
+.note.info {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+/* ====== Scrollbars ====== */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ====== Impresión: solo la hoja del set ====== */
+.print-sheet {
+  display: none;
+}
+@media print {
+  body {
+    background: white;
+  }
+  .app-chrome {
+    display: none !important;
+  }
+  .print-sheet {
+    display: block !important;
+  }
+}
