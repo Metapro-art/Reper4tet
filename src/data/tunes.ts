@@ -1,5 +1,5 @@
 /**
- * CAPA BASE DEL REPERTORIO — 464 temas.
+ * CAPA BASE DEL REPERTORIO — 469 temas.
  * Bootstrap: scripts/migrate-seed.mjs desde seed/repertorio.html (363 temas).
  * Este archivo es la fuente de verdad y YA DIVERGE del seed: las altas curadas
  * posteriores (p. ej. la ampliación Beatles) viven aquí. NO re-ejecutar `migrate`:
@@ -496,4 +496,10 @@ export const TUNES: Tune[] = [
   { id: "the-way-we-were", title: "The Way We Were", composer: "Marvin Hamlisch", theme: "songbook", style: "balada", feel: "balada", bpm: 66, key: "A", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "Master Rhythm 383" },
   { id: "wonderful-tonight", title: "Wonderful Tonight", composer: "Eric Clapton", theme: "moderno", style: "balada", feel: "balada", bpm: 96, key: "G", dance: "slowfox", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
   { id: "unchained-melody", title: "Unchained Melody", composer: "Alex North", theme: "songbook", style: "balada", feel: "balada", bpm: 60, key: "C", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "Master Rhythm 063" },
+  // ---- ALTAS playlist boleros ----
+  { id: "la-vida-es-un-carnaval", title: "La Vida Es Un Carnaval", composer: "Víctor Daniel", theme: "latin", style: "latinjazz", feel: "latin", bpm: 180, key: "F", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "Partes completas en biblioteca (bajo, batería, pno/gtr, vientos)", notes: "Celia Cruz. Salsa/guaracha." },
+  { id: "te-busco", title: "Te Busco", composer: "Celia Cruz", theme: "latin", style: "latinjazz", feel: "latin", bpm: 190, key: "Am", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Salsa. Datos por confirmar contra el chart." },
+  { id: "el-contragolpe", title: "El Contragolpe", composer: "por confirmar", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "Am", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Alci Acosta. Compositor y tonalidad por confirmar." },
+  { id: "azabache", title: "Azabache", composer: "por confirmar", theme: "latin", style: "balada", feel: "vals", bpm: 120, key: "Am", bars: 32, beatsPerBar: 3, memorized: false, missing: true, notes: "Julio Jaramillo. Pasillo ecuatoriano, en 3. No es vals de salón." },
+  { id: "chacha-linda", title: "Chacha Linda", composer: "por confirmar", theme: "latin", style: "latinjazz", feel: "latin", bpm: 120, key: "C", dance: "chacha", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "Cuarteto Almanaque. Cha-cha de salón." },
 ];
