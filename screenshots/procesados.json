@@ -1,0 +1,101 @@
+{
+  "_descripcion": "Manifiesto de capturas de MobileSheets ya procesadas. Las capturas listadas aquí YA están reflejadas en src/data/tunes.ts. Para detectar capturas nuevas: comparar el contenido de screenshots/ contra esta lista. Lo mantiene Claude en el flujo \"procesa los screenshots nuevos\" (ver CLAUDE.md).",
+  "procesados": [
+    {
+      "archivo": "Screenshot_20260430_122948.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_122955.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123004.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123014.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123027.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123037.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123048.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123056.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123105.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123113.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123124.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123137.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123152.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123205.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123214.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123226.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123244.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123251.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123305.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123313.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123337.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123348.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123355.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    },
+    {
+      "archivo": "Screenshot_20260430_123407.jpg",
+      "via": "seed/repertorio.html (migración inicial 2026-07-08, dataset ya curado)"
+    }
+  ]
+}
