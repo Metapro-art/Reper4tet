@@ -1,5 +1,5 @@
 /**
- * CAPA BASE DEL REPERTORIO — 629 temas.
+ * CAPA BASE DEL REPERTORIO — 635 temas.
  * Bootstrap: scripts/migrate-seed.mjs desde seed/repertorio.html (363 temas).
  * Este archivo es la fuente de verdad y YA DIVERGE del seed: las altas curadas
  * posteriores (p. ej. la ampliación Beatles) viven aquí. NO re-ejecutar `migrate`:
@@ -667,4 +667,11 @@ export const TUNES: Tune[] = [
   { id: "eye-of-the-hurricane", title: "Eye Of The Hurricane", composer: "Hancock", theme: "moderno", style: "postbop", feel: "up", bpm: 230, key: "Dm", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
   { id: "butterfly", title: "Butterfly", composer: "Hancock", theme: "moderno", style: "fusion", feel: "funk", bpm: 100, key: "Dm", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
   { id: "actual-proof", title: "Actual Proof", composer: "Hancock", theme: "moderno", style: "fusion", feel: "funk", bpm: 120, key: "Dm", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "Forma larga y compleja. Confirmar compases." },
+  // ---- SAM RIVERS ----
+  { id: "beatrice", title: "Beatrice", composer: "Sam Rivers", theme: "moderno", style: "postbop", feel: "balada", bpm: 130, key: "F", bars: 16, beatsPerBar: 4, memorized: false, missing: false, notes: "Fuchsia Swing Song, 1964. Forma de 16 compases — confirmar contra el chart. Se toca medio o rubato." },
+  { id: "cyclic-episode", title: "Cyclic Episode", composer: "Sam Rivers", theme: "moderno", style: "postbop", feel: "up", bpm: 220, key: "Cm", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "BPM, tonalidad y forma por confirmar." },
+  { id: "fuchsia-swing-song", title: "Fuchsia Swing Song", composer: "Sam Rivers", theme: "moderno", style: "postbop", feel: "swing", bpm: 170, key: "Bb", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "BPM, tonalidad y forma por confirmar. En la biblioteca aparece como \"Fuschia Swing Song\"." },
+  { id: "luminescence", title: "Luminescence", composer: "Sam Rivers", theme: "moderno", style: "postbop", feel: "up", bpm: 200, key: "F", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "BPM, tonalidad y forma por confirmar." },
+  { id: "ellipsis-rivers", title: "Ellipsis", composer: "Sam Rivers", theme: "moderno", style: "postbop", feel: "swing", bpm: 160, key: "Dm", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "En la biblioteca aparece como \"Ellipsis (Rivers)\" — hay otra Ellipsis de Helias. BPM, tonalidad y forma por confirmar." },
+  { id: "point-of-return", title: "Point Of Return", composer: "por confirmar", theme: "moderno", style: "postbop", feel: "swing", bpm: 160, key: "Cm", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "Podría ser \"Point Of Many Returns\" de Sam Rivers (Contours, 1965). Autoría y datos por confirmar contra el chart." },
 ];
