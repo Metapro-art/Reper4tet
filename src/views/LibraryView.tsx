@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { ArrowDown, ArrowUp, Check, Pencil, Plus, X } from 'lucide-react';
+import { ArrowDown, ArrowUp, Check, ChevronDown, ChevronUp, Pencil, Plus, X } from 'lucide-react';
 import type { Dance, Feel, Style, Theme, Tune } from '../types';
 import {
   DANCES,
@@ -132,6 +132,8 @@ export function LibraryView() {
   const tuneMap = useTuneMap();
 
   const wide = useWide();
+  const filtersBarOpen = useFilterStore((st) => st.openGroups['mobile-filters']) ?? false;
+  const setGroupOpen = useFilterStore((st) => st.setGroupOpen);
 
   const [q, setQ] = useState('');
   const [themes, setThemes] = useState<ReadonlySet<Theme>>(new Set());
@@ -398,6 +400,9 @@ export function LibraryView() {
 
   // ---------- Móvil: lista densa virtualizada ----------
   if (!wide) {
+    const filterChips = activeChips.filter((c) => c.key !== 'q');
+    const activeFilterCount =
+      themes.size + styles.size + feels.size + dances.size + (onlyMem ? 1 : 0) + (hideMissing ? 1 : 0);
     return (
       <div className={s.mobileRoot}>
         <div className={s.mobileChrome}>
@@ -413,27 +418,58 @@ export function LibraryView() {
               <Plus size={22} />
             </button>
           </div>
-          <div className={s.mobileTools}>
-            <label className={`lbl ${s.mSort}`}>
-              Orden
-              <select
-                className="select"
-                value={sort.key}
-                onChange={(e) => setSort({ key: e.target.value as SortKey, asc: true })}
-              >
-                {SORT_LABELS.map(([key, label]) => (
-                  <option key={key} value={key}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <span className={s.mCount}>
-              {sorted.length} · {missingTotal} faltan
+
+          <button
+            className={s.filtersBar}
+            aria-expanded={filtersBarOpen}
+            onClick={() => setGroupOpen('mobile-filters', !filtersBarOpen)}
+          >
+            <span className={s.filtersBarLabel}>
+              Filtros
+              {activeFilterCount > 0 && <span className={s.filtersCount}>{activeFilterCount}</span>}
             </span>
-          </div>
-          {activeBar}
-          {filters}
+            {filtersBarOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          </button>
+
+          {filtersBarOpen ? (
+            <div className={s.filtersPanel}>
+              <div className={s.filtersPanelTop}>
+                <label className={`lbl ${s.mSort}`}>
+                  Orden
+                  <select
+                    className="select"
+                    value={sort.key}
+                    onChange={(e) => setSort({ key: e.target.value as SortKey, asc: true })}
+                  >
+                    {SORT_LABELS.map(([key, label]) => (
+                      <option key={key} value={key}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {anyFilter && (
+                  <button className="btn ghost" onClick={clearAll}>
+                    Limpiar todo
+                  </button>
+                )}
+              </div>
+              {filters}
+            </div>
+          ) : (
+            filterChips.length > 0 && (
+              <div className={s.chipRow}>
+                {filterChips.map((c) => (
+                  <button key={c.key} className={s.chipRowItem} onClick={c.remove}>
+                    {c.label} <X size={12} />
+                  </button>
+                ))}
+                <button className={s.chipRowClear} onClick={clearAll}>
+                  Limpiar
+                </button>
+              </div>
+            )
+          )}
         </div>
         <MobileLibraryList
           sorted={sorted}

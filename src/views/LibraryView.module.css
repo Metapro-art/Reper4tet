@@ -350,8 +350,8 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 8px 10px 6px;
+  gap: 4px;
+  padding: 4px 10px 2px;
 }
 .mobileTop {
   display: flex;
@@ -376,4 +376,122 @@
   font-size: 12px;
   color: var(--muted);
   white-space: nowrap;
+}
+
+/* barra de filtros colapsable (una línea, 44px) */
+.filtersBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.filtersBarLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+}
+.filtersCount {
+  background: var(--amber);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+}
+.filtersPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.filtersPanelTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* fila horizontal de chips activos (bloque colapsado) */
+.chipRow {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  align-items: center;
+  height: 36px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.chipRowItem {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 8px;
+  background: var(--amber);
+  color: var(--ink);
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.chipRowClear {
+  flex: 0 0 auto;
+  height: 30px;
+  padding: 0 10px;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* móvil: reloj/picker compacto en una línea */
+@media (max-width: 767px) {
+  .pickerBar {
+    position: static;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 8px 10px;
+    margin-bottom: 0;
+    box-shadow: none;
+  }
+  .pickerName {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+  .pickerClock {
+    font-size: 17px;
+    margin-left: 0;
+  }
 }

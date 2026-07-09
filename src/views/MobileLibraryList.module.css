@@ -8,7 +8,7 @@
 
 /* barra de sección pegajosa (letra actual) */
 .sectionBar {
-  height: 24px;
+  height: 20px;
   display: flex;
   align-items: center;
   padding: 0 12px;
@@ -96,7 +96,7 @@
 /* índice A-Z lateral */
 .indexBar {
   position: absolute;
-  top: 24px;
+  top: 20px;
   right: 0;
   bottom: 0;
   display: flex;
@@ -155,21 +155,39 @@
 .sheetBackdrop {
   position: fixed;
   inset: 0;
-  background: rgba(4, 6, 14, 0.6);
-  z-index: 80;
+  background: rgba(4, 6, 14, 0.62);
+  z-index: 200; /* por encima de la barra de navegación (z 40) */
   display: flex;
   align-items: flex-end;
+  touch-action: none;
 }
 .sheet {
   width: 100%;
   background: var(--surface);
   border-top: 1px solid var(--line);
-  border-radius: 12px 12px 0 0;
-  padding: 18px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+  border-radius: 14px 14px 0 0;
+  /* el padding inferior deja libres la barra de navegación + el notch */
+  padding: 4px 16px calc(18px + var(--tabbar-h) + env(safe-area-inset-bottom, 0px));
   box-shadow: 0 -12px 44px rgba(0, 0, 0, 0.5);
   position: relative;
-  max-height: 82vh;
+  max-height: 70vh;
+  max-height: 70svh;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  will-change: transform;
+}
+.grabber {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 6px;
+  touch-action: none;
+  cursor: grab;
+}
+.grabberBar {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
 }
 .sheetClose {
   position: absolute;

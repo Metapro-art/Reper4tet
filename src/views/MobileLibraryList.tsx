@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { FixedSizeList, type ListChildComponentProps } from 'react-window';
 import { Check, Copy, Pencil, Plus, Trash2, X } from 'lucide-react';
 import type { Tune } from '../types';
@@ -11,7 +12,7 @@ import type { OverrideMap } from '../types';
 import s from './MobileLibraryList.module.css';
 
 const ROW_H = 56;
-const BAR_H = 24;
+const BAR_H = 20;
 const INDEX_W = 24;
 
 interface Props {
@@ -48,6 +49,15 @@ export function MobileLibraryList({
   const [dragLetter, setDragLetter] = useState<string | null>(null);
   const [bubbleText, setBubbleText] = useState('');
   const [detail, setDetail] = useState<Tune | null>(null);
+  const [dragY, setDragY] = useState(0);
+  const [sheetDragging, setSheetDragging] = useState(false);
+  const sheetDragRef = useRef<number | null>(null);
+  const closeSheet = () => {
+    setDetail(null);
+    setDragY(0);
+    setSheetDragging(false);
+    sheetDragRef.current = null;
+  };
 
   // medir el área disponible (flex:1) para dar altura/anchura a react-window
   useLayoutEffect(() => {
@@ -102,7 +112,13 @@ export function MobileLibraryList({
     const inSet = pickerIds.has(t.id);
     return (
       <div style={style} className={s.row}>
-        <button className={s.main} onClick={() => setDetail(t)}>
+        <button
+          className={s.main}
+          onClick={() => {
+            setDragY(0);
+            setDetail(t);
+          }}
+        >
           <div className={`${s.title} ${t.missing ? s.missing : ''}`}>
             {t.missing && <span className={s.dot} />}
             {t.title}
@@ -199,55 +215,92 @@ export function MobileLibraryList({
 
       <div className={`${s.bubble} ${dragLetter ? s.bubbleOn : ''}`}>{bubbleText}</div>
 
-      {detail && (
-        <div className={s.sheetBackdrop} onClick={() => setDetail(null)}>
-          <div className={s.sheet} onClick={(e) => e.stopPropagation()} role="dialog" aria-label={detail.title}>
-            <button className={s.sheetClose} onClick={() => setDetail(null)} aria-label="Cerrar">
-              <X size={22} />
-            </button>
-            <div className={s.sheetTitle}>{detail.title}</div>
-            {detail.altTitle && <div className={s.sheetAlt}>{detail.altTitle}</div>}
-            <div className={s.sheetMeta}>
-              {detail.composer} · {THEME_LABELS[detail.theme]} · {STYLE_LABELS[detail.style]} ·{' '}
-              {FEEL_LABELS[detail.feel]} · {detail.bpm} bpm · {detail.key}
-              {detail.dance ? ` · ${DANCE_LABELS[detail.dance]}` : ''} · vuelta {fmtSec(chorusSec(detail))}
-              {detail.missing ? ' · falta el chart' : ''}
-              {isLocal ? ' · local' : ''}
+      {detail &&
+        createPortal(
+          <div className={s.sheetBackdrop} onClick={closeSheet}>
+            <div
+              className={s.sheet}
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label={detail.title}
+              style={{
+                transform: dragY ? `translateY(${dragY}px)` : undefined,
+                transition: sheetDragging ? 'none' : 'transform 0.2s ease',
+              }}
+            >
+              <div
+                className={s.grabber}
+                onPointerDown={(e) => {
+                  sheetDragRef.current = e.clientY;
+                  setSheetDragging(true);
+                  e.currentTarget.setPointerCapture(e.pointerId);
+                }}
+                onPointerMove={(e) => {
+                  if (sheetDragRef.current != null) setDragY(Math.max(0, e.clientY - sheetDragRef.current));
+                }}
+                onPointerUp={() => {
+                  if (dragY > 90) closeSheet();
+                  else setDragY(0);
+                  setSheetDragging(false);
+                  sheetDragRef.current = null;
+                }}
+                onPointerCancel={() => {
+                  setDragY(0);
+                  setSheetDragging(false);
+                  sheetDragRef.current = null;
+                }}
+              >
+                <span className={s.grabberBar} />
+              </div>
+              <button className={s.sheetClose} onClick={closeSheet} aria-label="Cerrar">
+                <X size={22} />
+              </button>
+              <div className={s.sheetTitle}>{detail.title}</div>
+              {detail.altTitle && <div className={s.sheetAlt}>{detail.altTitle}</div>}
+              <div className={s.sheetMeta}>
+                {detail.composer} · {THEME_LABELS[detail.theme]} · {STYLE_LABELS[detail.style]} ·{' '}
+                {FEEL_LABELS[detail.feel]} · {detail.bpm} bpm · {detail.key}
+                {detail.dance ? ` · ${DANCE_LABELS[detail.dance]}` : ''} · vuelta{' '}
+                {fmtSec(chorusSec(detail))}
+                {detail.missing ? ' · falta el chart' : ''}
+                {isLocal ? ' · local' : ''}
+              </div>
+              {detail.notes && <div className={s.sheetNotes}>{detail.notes}</div>}
+              <div className={s.sheetActions}>
+                <button
+                  className="btn"
+                  onClick={() => {
+                    onEdit(detail.id);
+                    closeSheet();
+                  }}
+                >
+                  <Pencil size={16} /> Editar
+                </button>
+                <button
+                  className="btn"
+                  onClick={() => {
+                    onDuplicate(detail);
+                    closeSheet();
+                  }}
+                >
+                  <Copy size={16} /> Duplicar
+                </button>
+                <button
+                  className="btn danger"
+                  onClick={() => {
+                    const t = detail;
+                    closeSheet();
+                    void onDelete(t);
+                  }}
+                >
+                  <Trash2 size={16} /> {isBase ? 'Ocultar' : 'Borrar'}
+                </button>
+              </div>
             </div>
-            {detail.notes && <div className={s.sheetNotes}>{detail.notes}</div>}
-            <div className={s.sheetActions}>
-              <button
-                className="btn"
-                onClick={() => {
-                  onEdit(detail.id);
-                  setDetail(null);
-                }}
-              >
-                <Pencil size={16} /> Editar
-              </button>
-              <button
-                className="btn"
-                onClick={() => {
-                  onDuplicate(detail);
-                  setDetail(null);
-                }}
-              >
-                <Copy size={16} /> Duplicar
-              </button>
-              <button
-                className="btn danger"
-                onClick={() => {
-                  const t = detail;
-                  setDetail(null);
-                  void onDelete(t);
-                }}
-              >
-                <Trash2 size={16} /> {isBase ? 'Ocultar' : 'Borrar'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
