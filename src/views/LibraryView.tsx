@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { ArrowDown, ArrowUp, Check, Copy, MoreHorizontal, Pencil, Plus, Trash2, X } from 'lucide-react';
+import { ArrowDown, ArrowUp, Check, Pencil, Plus, X } from 'lucide-react';
 import type { Dance, Feel, Style, Theme, Tune } from '../types';
 import {
   DANCES,
@@ -14,12 +14,14 @@ import {
 import { createSearcher } from '../lib/search';
 import { fmtSec } from '../lib/time';
 import { chorusSec, totalSec, resolveEntries, setStatus } from '../lib/setMath';
+import { sortTitleKey } from '../lib/alpha';
 import { BASE_BY_ID } from '../lib/merge';
 import { useMergedTunes, useTuneMap } from '../store/selectors';
 import { useLibraryStore } from '../store/libraryStore';
 import { useSetsStore } from '../store/setsStore';
 import { useUiStore } from '../store/uiStore';
 import { useFilterStore } from '../store/filterStore';
+import { MobileLibraryList } from './MobileLibraryList';
 import s from './LibraryView.module.css';
 
 type SortKey = 'title' | 'theme' | 'style' | 'feel' | 'bpm' | 'key' | 'dance' | 'chorus';
@@ -52,7 +54,7 @@ function sortValue(t: Tune, key: SortKey): string | number {
     case 'key':
       return t.key.toLowerCase();
     default:
-      return t.title.toLowerCase();
+      return sortTitleKey(t.title);
   }
 }
 
@@ -63,7 +65,7 @@ function toggleIn<T>(set: ReadonlySet<T>, v: T): Set<T> {
   return next;
 }
 
-/** Media query reactiva: ≥ 768px = escritorio (tabla), si no móvil (tarjetas). */
+/** Media query reactiva: ≥ 768px = escritorio (tabla), si no móvil (lista densa). */
 function useWide(): boolean {
   const [wide, setWide] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)').matches : true,
@@ -136,8 +138,6 @@ export function LibraryView() {
   const [styles, setStyles] = useState<ReadonlySet<Style>>(new Set());
   const [feels, setFeels] = useState<ReadonlySet<Feel>>(new Set());
   const [dances, setDances] = useState<ReadonlySet<Dance>>(new Set());
-  const [bpmMin, setBpmMin] = useState('');
-  const [bpmMax, setBpmMax] = useState('');
   const [onlyMem, setOnlyMem] = useState(false);
   const [hideMissing, setHideMissing] = useState(false);
   const [sort, setSort] = useState<{ key: SortKey; asc: boolean }>({ key: 'title', asc: true });
@@ -145,19 +145,14 @@ export function LibraryView() {
   const searcher = useMemo(() => createSearcher(tunes), [tunes]);
   const searched = useMemo(() => searcher(q), [searcher, q]);
 
-  const min = bpmMin ? Number(bpmMin) : null;
-  const max = bpmMax ? Number(bpmMax) : null;
-
   const baseFiltered = useMemo(
     () =>
       searched.filter((t) => {
         if (hideMissing && t.missing) return false;
         if (onlyMem && !t.memorized) return false;
-        if (min !== null && t.bpm < min) return false;
-        if (max !== null && t.bpm > max) return false;
         return true;
       }),
-    [searched, hideMissing, onlyMem, min, max],
+    [searched, hideMissing, onlyMem],
   );
 
   const filtered = useMemo(
@@ -207,8 +202,6 @@ export function LibraryView() {
     styles.size > 0 ||
     feels.size > 0 ||
     dances.size > 0 ||
-    bpmMin !== '' ||
-    bpmMax !== '' ||
     onlyMem ||
     hideMissing;
 
@@ -218,13 +211,10 @@ export function LibraryView() {
     setStyles(new Set());
     setFeels(new Set());
     setDances(new Set());
-    setBpmMin('');
-    setBpmMax('');
     setOnlyMem(false);
     setHideMissing(false);
   };
 
-  // chips activos (todos los grupos), cada uno removible
   const activeChips: { key: string; label: string; remove: () => void }[] = [];
   if (q) activeChips.push({ key: 'q', label: `«${q}»`, remove: () => setQ('') });
   themes.forEach((t) =>
@@ -239,8 +229,6 @@ export function LibraryView() {
   dances.forEach((d) =>
     activeChips.push({ key: `d-${d}`, label: DANCE_LABELS[d], remove: () => setDances(toggleIn(dances, d)) }),
   );
-  if (bpmMin) activeChips.push({ key: 'bmin', label: `≥ ${bpmMin} bpm`, remove: () => setBpmMin('') });
-  if (bpmMax) activeChips.push({ key: 'bmax', label: `≤ ${bpmMax} bpm`, remove: () => setBpmMax('') });
   if (onlyMem) activeChips.push({ key: 'mem', label: 'De memoria', remove: () => setOnlyMem(false) });
   if (hideMissing)
     activeChips.push({ key: 'miss', label: 'Sin faltantes', remove: () => setHideMissing(false) });
@@ -286,68 +274,44 @@ export function LibraryView() {
     openTuneEditor(newId);
   };
 
-  return (
-    <div>
-      {pickingSet && (
-        <div className={s.pickerBar}>
-          <span className={s.pickerName}>Añadiendo a «{pickingSet.name}»</span>
-          <span className={`${s.pickerClock} ${s[setStatus(pickerTotal)]}`}>
-            {fmtSec(pickerTotal)} <span style={{ color: 'var(--muted)', fontSize: 13 }}>/ 45:00</span>
-          </span>
-          <button className="btn primary" onClick={stopPicking}>
-            <Check size={17} /> Listo
-          </button>
-        </div>
-      )}
+  const pickerBar = pickingSet ? (
+    <div className={s.pickerBar}>
+      <span className={s.pickerName}>Añadiendo a «{pickingSet.name}»</span>
+      <span className={`${s.pickerClock} ${s[setStatus(pickerTotal)]}`}>
+        {fmtSec(pickerTotal)} <span style={{ color: 'var(--muted)', fontSize: 13 }}>/ 45:00</span>
+      </span>
+      <button className="btn primary" onClick={stopPicking}>
+        <Check size={17} /> Listo
+      </button>
+    </div>
+  ) : null;
 
-      <div className="page-head">
-        <h1>Biblioteca</h1>
-        <span className="sub">Cuarteto · gtr / pno / bajo / bat</span>
-        <div className={s.headBtns}>
-          <button className="btn" onClick={() => openTuneEditor('new')}>
-            <Plus size={17} /> Nuevo tema
-          </button>
-        </div>
-      </div>
+  const searchInput = (
+    <input
+      type="search"
+      className={`input ${s.search}`}
+      placeholder="Buscar título o compositor…"
+      value={q}
+      onChange={(e) => setQ(e.target.value)}
+      aria-label="Buscar"
+    />
+  );
 
-      <div className={s.controls}>
-        <input
-          type="search"
-          className={`input ${s.search}`}
-          placeholder="Buscar título o compositor…"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          aria-label="Buscar"
-        />
-        <label className={`lbl ${s.sortMobile}`}>
-          Orden
-          <select
-            className="select"
-            value={sort.key}
-            onChange={(e) => setSort({ key: e.target.value as SortKey, asc: true })}
-          >
-            {SORT_LABELS.map(([key, label]) => (
-              <option key={key} value={key}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+  const activeBar = anyFilter ? (
+    <div className={s.activeBar}>
+      {activeChips.map((c) => (
+        <button key={c.key} className={s.activeChip} onClick={c.remove}>
+          {c.label} <X size={13} />
+        </button>
+      ))}
+      <button className={`btn ghost ${s.clearBtn}`} onClick={clearAll}>
+        Limpiar todo
+      </button>
+    </div>
+  ) : null;
 
-      {anyFilter && (
-        <div className={s.activeBar}>
-          {activeChips.map((c) => (
-            <button key={c.key} className={s.activeChip} onClick={c.remove}>
-              {c.label} <X size={13} />
-            </button>
-          ))}
-          <button className={`btn ghost ${s.clearBtn}`} onClick={clearAll}>
-            Limpiar todo
-          </button>
-        </div>
-      )}
-
+  const filters = (
+    <>
       <FilterSection id="theme" title="Temática" count={themes.size} defaultOpen={wide}>
         <div className="chips">
           {THEMES.filter((t) => (facetCounts.th.get(t) ?? 0) > 0 || themes.has(t)).map((t) => (
@@ -409,35 +373,6 @@ export function LibraryView() {
       </FilterSection>
 
       <FilterSection
-        id="bpm"
-        title="BPM"
-        count={(bpmMin ? 1 : 0) + (bpmMax ? 1 : 0)}
-        defaultOpen={wide}
-      >
-        <div className={s.bpmRow}>
-          <input
-            type="number"
-            inputMode="numeric"
-            className={`input mono ${s.bpm}`}
-            placeholder="mín"
-            value={bpmMin}
-            onChange={(e) => setBpmMin(e.target.value)}
-            aria-label="BPM mínimo"
-          />
-          <span className="lbl">a</span>
-          <input
-            type="number"
-            inputMode="numeric"
-            className={`input mono ${s.bpm}`}
-            placeholder="máx"
-            value={bpmMax}
-            onChange={(e) => setBpmMax(e.target.value)}
-            aria-label="BPM máximo"
-          />
-        </div>
-      </FilterSection>
-
-      <FilterSection
         id="opts"
         title="Opciones"
         count={(onlyMem ? 1 : 0) + (hideMissing ? 1 : 0)}
@@ -458,66 +393,122 @@ export function LibraryView() {
           </label>
         </div>
       </FilterSection>
+    </>
+  );
 
-      {/* Escritorio: tabla */}
-      {wide ? (
-        <div className={s.tableWrap}>
-          <table className={s.table}>
-            <thead>
-              <tr>
-                {pickingSet && <th style={{ width: 48 }} />}
-                <th style={{ width: 48 }} title="De memoria">
-                  ♦
-                </th>
+  // ---------- Móvil: lista densa virtualizada ----------
+  if (!wide) {
+    return (
+      <div className={s.mobileRoot}>
+        <div className={s.mobileChrome}>
+          {pickerBar}
+          <div className={s.mobileTop}>
+            {searchInput}
+            <button
+              className="icon-btn"
+              onClick={() => openTuneEditor('new')}
+              aria-label="Nuevo tema"
+              title="Nuevo tema"
+            >
+              <Plus size={22} />
+            </button>
+          </div>
+          <div className={s.mobileTools}>
+            <label className={`lbl ${s.mSort}`}>
+              Orden
+              <select
+                className="select"
+                value={sort.key}
+                onChange={(e) => setSort({ key: e.target.value as SortKey, asc: true })}
+              >
                 {SORT_LABELS.map(([key, label]) => (
-                  <th key={key} onClick={() => clickSort(key)}>
+                  <option key={key} value={key}>
                     {label}
-                    {sort.key === key &&
-                      (sort.asc ? (
-                        <ArrowUp size={13} style={{ verticalAlign: -1 }} />
-                      ) : (
-                        <ArrowDown size={13} style={{ verticalAlign: -1 }} />
-                      ))}
-                  </th>
+                  </option>
                 ))}
-                <th style={{ width: 48 }} />
-              </tr>
-            </thead>
-            <tbody>
-              {sorted.map((t) => (
-                <TuneRow
-                  key={t.id}
-                  tune={t}
-                  picking={Boolean(pickingSet)}
-                  inSet={pickerIds.has(t.id)}
-                  isLocal={t.id in overrides || !BASE_BY_ID.has(t.id)}
-                  onToggleMem={toggleMemorized}
-                  onEdit={openTuneEditor}
-                  onAdd={pickingForSetId ? handleAdd : undefined}
-                />
+              </select>
+            </label>
+            <span className={s.mCount}>
+              {sorted.length} · {missingTotal} faltan
+            </span>
+          </div>
+          {activeBar}
+          {filters}
+        </div>
+        <MobileLibraryList
+          sorted={sorted}
+          showIndex={sort.key === 'title'}
+          picking={Boolean(pickingSet)}
+          pickerIds={pickerIds}
+          overrides={overrides}
+          onToggleMem={toggleMemorized}
+          onAdd={pickingForSetId ? handleAdd : undefined}
+          onEdit={openTuneEditor}
+          onDelete={handleDelete}
+          onDuplicate={handleDuplicate}
+        />
+      </div>
+    );
+  }
+
+  // ---------- Escritorio: tabla ----------
+  return (
+    <div>
+      {pickerBar}
+
+      <div className="page-head">
+        <h1>Biblioteca</h1>
+        <span className="sub">Cuarteto · gtr / pno / bajo / bat</span>
+        <div className={s.headBtns}>
+          <button className="btn" onClick={() => openTuneEditor('new')}>
+            <Plus size={17} /> Nuevo tema
+          </button>
+        </div>
+      </div>
+
+      <div className={s.controls}>{searchInput}</div>
+
+      {activeBar}
+      {filters}
+
+      <div className={s.tableWrap}>
+        <table className={s.table}>
+          <thead>
+            <tr>
+              {pickingSet && <th style={{ width: 48 }} />}
+              <th style={{ width: 48 }} title="De memoria">
+                ♦
+              </th>
+              {SORT_LABELS.map(([key, label]) => (
+                <th key={key} onClick={() => clickSort(key)}>
+                  {label}
+                  {sort.key === key &&
+                    (sort.asc ? (
+                      <ArrowUp size={13} style={{ verticalAlign: -1 }} />
+                    ) : (
+                      <ArrowDown size={13} style={{ verticalAlign: -1 }} />
+                    ))}
+                </th>
               ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <div className={s.cards}>
-          {sorted.map((t) => (
-            <TuneCard
-              key={t.id}
-              tune={t}
-              picking={Boolean(pickingSet)}
-              inSet={pickerIds.has(t.id)}
-              isLocal={t.id in overrides || !BASE_BY_ID.has(t.id)}
-              isBase={BASE_BY_ID.has(t.id)}
-              onToggleMem={toggleMemorized}
-              onEdit={openTuneEditor}
-              onAdd={pickingForSetId ? handleAdd : undefined}
-              onDelete={handleDelete}
-              onDuplicate={handleDuplicate}
-            />
-          ))}
-        </div>
-      )}
+              <th style={{ width: 48 }} />
+            </tr>
+          </thead>
+          <tbody>
+            {sorted.map((t) => (
+              <TuneRow
+                key={t.id}
+                tune={t}
+                picking={Boolean(pickingSet)}
+                inSet={pickerIds.has(t.id)}
+                isLocal={t.id in overrides || !BASE_BY_ID.has(t.id)}
+                onToggleMem={toggleMemorized}
+                onEdit={openTuneEditor}
+                onAdd={pickingForSetId ? handleAdd : undefined}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <div className={`lbl ${s.count}`}>
         {sorted.length} tema{sorted.length === 1 ? '' : 's'} en pantalla · {missingTotal} faltante
@@ -596,106 +587,5 @@ const TuneRow = memo(function TuneRow({
         </button>
       </td>
     </tr>
-  );
-});
-
-interface CardProps {
-  tune: Tune;
-  picking: boolean;
-  inSet: boolean;
-  isLocal: boolean;
-  isBase: boolean;
-  onToggleMem: (id: string, current: boolean) => void;
-  onEdit: (id: string) => void;
-  onAdd?: (id: string) => void;
-  onDelete: (t: Tune) => void;
-  onDuplicate: (t: Tune) => void;
-}
-
-const TuneCard = memo(function TuneCard({
-  tune: t,
-  picking,
-  inSet,
-  isLocal,
-  isBase,
-  onToggleMem,
-  onEdit,
-  onAdd,
-  onDelete,
-  onDuplicate,
-}: CardProps) {
-  const [more, setMore] = useState(false);
-  const primary = () => (picking ? onAdd?.(t.id) : onEdit(t.id));
-  return (
-    <div
-      className={`${s.card} ${t.missing ? s.cardMiss : ''}`}
-      role="button"
-      tabIndex={0}
-      onClick={primary}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') primary();
-      }}
-    >
-      <div className={s.cardTop}>
-        <span className={`cond ${s.cardTitle}`}>{t.title}</span>
-        <button
-          className={`mem ${t.memorized ? 'on' : ''}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleMem(t.id, t.memorized);
-          }}
-          aria-label={t.memorized ? 'Quitar de memoria' : 'Marcar de memoria'}
-          aria-pressed={t.memorized}
-        >
-          ♦
-        </button>
-      </div>
-      {t.altTitle && <div className={s.cardAlt}>{t.altTitle}</div>}
-      <div className={s.cardComposer}>{t.composer || '—'}</div>
-      <div className={s.cardChips}>
-        <span className={s.miniChip}>{STYLE_LABELS[t.style]}</span>
-        <span className={s.miniChip}>{FEEL_LABELS[t.feel]}</span>
-        <span className={`${s.miniChip} mono`}>{t.bpm} bpm</span>
-        <span className={`${s.miniChip} mono`}>{t.key}</span>
-        {t.dance && <span className="tag dance">{DANCE_LABELS[t.dance]}</span>}
-        {t.missing && <span className="tag missing">falta</span>}
-        {isLocal && <span className="tag local">local</span>}
-      </div>
-      <div className={s.cardActions} onClick={(e) => e.stopPropagation()}>
-        {picking && (
-          <button
-            className={`btn ${inSet ? '' : 'primary'} ${s.cardBtn}`}
-            disabled={inSet}
-            onClick={() => onAdd?.(t.id)}
-          >
-            {inSet ? <Check size={16} /> : <Plus size={16} />} {inSet ? 'En el set' : 'Añadir'}
-          </button>
-        )}
-        <button className={`btn ${s.cardBtn}`} onClick={() => onEdit(t.id)}>
-          <Pencil size={15} /> Editar
-        </button>
-        <button
-          className={`btn ${s.cardBtn}`}
-          aria-label="Más acciones"
-          aria-expanded={more}
-          onClick={() => setMore((v) => !v)}
-        >
-          <MoreHorizontal size={16} />
-        </button>
-      </div>
-      {more && (
-        <div className={s.morePanel} onClick={(e) => e.stopPropagation()}>
-          {t.notes && <div className={s.noteText}>{t.notes}</div>}
-          <div className={s.moreBtns}>
-            <button className={`btn ${s.cardBtn}`} onClick={() => onDuplicate(t)}>
-              <Copy size={15} /> Duplicar
-            </button>
-            <button className={`btn danger ${s.cardBtn}`} onClick={() => onDelete(t)}>
-              <Trash2 size={15} /> {isBase ? 'Ocultar' : 'Borrar'}
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
   );
 });
