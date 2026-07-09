@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import type { SetEntry, SetList, SetProfile } from '../types';
+import type { Feel, SetEntry, SetList, SetProfile } from '../types';
+import { BASE_BY_ID } from '../lib/merge';
 import { idbStorage } from './idbStorage';
 
 const now = () => new Date().toISOString();
@@ -13,10 +14,13 @@ function isProfile(v: unknown): v is SetProfile {
   return v === 'jazz' || v === 'ballroom' || v === 'cocktail';
 }
 
+const clampBpm = (n: number) => Math.max(30, Math.min(400, Math.round(n)));
+
 /**
- * Normaliza un set posiblemente heredado: `kind` → `profile` y descarta el
- * viejo `durationMin` por entrada (ahora la duración se calcula). Se usa al
- * migrar el almacenamiento y al restaurar un respaldo.
+ * Normaliza un set posiblemente heredado: `kind` → `profile`, y las entradas al
+ * modelo nuevo `{ tuneId, feel, bpm }`. Descarta los viejos campos de vueltas
+ * (headsIn/headsOut/soloChoruses/durationMin/length) y copia feel y bpm desde la
+ * biblioteca base cuando la entrada no los trae (sets guardados con el modelo viejo).
  */
 export function normalizeSet(raw: unknown): SetList {
   const s = (raw ?? {}) as Record<string, unknown>;
@@ -28,10 +32,13 @@ export function normalizeSet(raw: unknown): SetList {
   const rawEntries = Array.isArray(s.entries) ? s.entries : [];
   const entries: SetEntry[] = rawEntries.map((e) => {
     const en = (e ?? {}) as Record<string, unknown>;
-    const out: SetEntry = { tuneId: String(en.tuneId) };
-    if (typeof en.headsIn === 'number') out.headsIn = en.headsIn;
-    if (typeof en.soloChoruses === 'number') out.soloChoruses = en.soloChoruses;
-    if (typeof en.headsOut === 'number') out.headsOut = en.headsOut;
+    const tuneId = String(en.tuneId);
+    const base = BASE_BY_ID.get(tuneId);
+    const feel = typeof en.feel === 'string' ? (en.feel as Feel) : base?.feel;
+    const bpm = typeof en.bpm === 'number' ? en.bpm : base?.bpm;
+    const out: SetEntry = { tuneId };
+    if (feel !== undefined) out.feel = feel;
+    if (bpm !== undefined) out.bpm = bpm;
     return out;
   });
   return {
@@ -50,14 +57,14 @@ interface SetsState {
   updateSet: (id: string, patch: Partial<Pick<SetList, 'name' | 'profile'>>) => void;
   duplicateSet: (id: string) => string | null;
   deleteSet: (id: string) => void;
-  /** false si el tema ya estaba en el set. */
-  addEntry: (setId: string, tuneId: string) => boolean;
+  /** false si el tema ya estaba. feel/bpm se copian de la biblioteca al añadir. */
+  addEntry: (setId: string, tuneId: string, feel: Feel, bpm: number) => boolean;
   removeEntry: (setId: string, index: number) => void;
   moveEntry: (setId: string, from: number, to: number) => void;
-  /** Vueltas de solo (undefined = volver al valor del perfil). */
-  setEntrySolo: (setId: string, index: number, value: number | undefined) => void;
-  /** Cabeza de salida: 1 entera, 0.5 media, undefined = perfil. */
-  setEntryHeadsOut: (setId: string, index: number, value: number | undefined) => void;
+  /** Feel con el que se toca este tema en ESTE set. */
+  setEntryFeel: (setId: string, index: number, feel: Feel) => void;
+  /** Tempo con el que se toca este tema en ESTE set. */
+  setEntryBpm: (setId: string, index: number, bpm: number) => void;
   replaceSets: (sets: SetList[]) => void;
   resetLocal: () => void;
 }
@@ -107,10 +114,10 @@ export const useSetsStore = create<SetsState>()(
 
       deleteSet: (id) => set({ sets: get().sets.filter((s) => s.id !== id) }),
 
-      addEntry: (setId, tuneId) => {
+      addEntry: (setId, tuneId, feel, bpm) => {
         const s = get().sets.find((x) => x.id === setId);
         if (!s || s.entries.some((e) => e.tuneId === tuneId)) return false;
-        const entry: SetEntry = { tuneId };
+        const entry: SetEntry = { tuneId, feel, bpm: clampBpm(bpm) };
         set({
           sets: mapSet(get().sets, setId, (x) => touch(x, { entries: [...x.entries, entry] })),
         });
@@ -137,28 +144,17 @@ export const useSetsStore = create<SetsState>()(
         });
       },
 
-      setEntrySolo: (setId, index, value) => {
+      setEntryFeel: (setId, index, feel) => {
         set({
-          sets: mapSet(get().sets, setId, (s) =>
-            patchEntry(s, index, (e) => {
-              const next: SetEntry = { ...e };
-              if (value === undefined) delete next.soloChoruses;
-              else next.soloChoruses = Math.max(0, Math.min(12, Math.round(value)));
-              return next;
-            }),
-          ),
+          sets: mapSet(get().sets, setId, (s) => patchEntry(s, index, (e) => ({ ...e, feel }))),
         });
       },
 
-      setEntryHeadsOut: (setId, index, value) => {
+      setEntryBpm: (setId, index, bpm) => {
+        if (!Number.isFinite(bpm)) return;
         set({
           sets: mapSet(get().sets, setId, (s) =>
-            patchEntry(s, index, (e) => {
-              const next: SetEntry = { ...e };
-              if (value === undefined) delete next.headsOut;
-              else next.headsOut = value;
-              return next;
-            }),
+            patchEntry(s, index, (e) => ({ ...e, bpm: clampBpm(bpm) })),
           ),
         });
       },
@@ -168,7 +164,7 @@ export const useSetsStore = create<SetsState>()(
     }),
     {
       name: 'gigrep.v1.sets',
-      version: 2,
+      version: 3,
       storage: createJSONStorage(() => idbStorage),
       partialize: (s) => ({ sets: s.sets }),
       migrate: (persisted) => {

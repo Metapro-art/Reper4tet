@@ -248,7 +248,8 @@ export function LibraryView() {
   const handleAdd = (id: string) => {
     if (!pickingForSetId) return;
     const t2 = tuneMap.get(id);
-    if (addEntry(pickingForSetId, id)) toast(`Añadido: ${t2?.title ?? id}`);
+    if (!t2) return;
+    if (addEntry(pickingForSetId, id, t2.feel, t2.bpm)) toast(`Añadido: ${t2.title}`);
     else toast('Ya está en el set', 'warn');
   };
 

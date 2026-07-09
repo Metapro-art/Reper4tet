@@ -122,6 +122,8 @@
   min-width: 0;
 }
 .title {
+  flex: 1;
+  min-width: 0;
   font-weight: 500;
   line-height: 1.2;
   overflow: hidden;
@@ -136,15 +138,63 @@
   align-items: center;
   flex-wrap: wrap;
 }
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
 .dur {
   font-family: var(--font-mono);
-  font-size: 15px;
-  min-width: 48px;
-  text-align: center;
+  font-size: 16px;
   font-variant-numeric: tabular-nums;
+  color: var(--text);
+  white-space: nowrap;
 }
 .durEdited {
   color: var(--amber);
+}
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.feelSel {
+  min-width: 110px;
+  padding: 0 8px;
+  font-size: 14px;
+}
+.bpmInput {
+  width: 66px;
+  text-align: center;
+  padding: 0 6px;
+}
+.bpmLbl {
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  color: var(--muted);
+}
+.mem {
+  color: var(--mint);
+  font-size: 16px;
+}
+.removeBtn {
+  margin-left: auto;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.removeBtn:hover {
+  color: var(--red);
 }
 .vuelta {
   font-family: var(--font-mono);

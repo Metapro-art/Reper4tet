@@ -141,17 +141,6 @@ export const DANCE_LABELS: Record<Dance, string> = {
   merengue: 'Merengue',
 };
 
-/* ---------- Motor de duración (por forma y tempo) ---------- */
-
-/** Compases de intro por defecto. */
-export const DEFAULT_INTRO_BARS = 4;
-/** Compases de coda por defecto. */
-export const DEFAULT_CODA_BARS = 4;
-/** Las baladas cierran con una coda más larga. */
-export const BALLAD_CODA_BARS = 8;
-/** Segundos a los que apunta el reparto de solos en el perfil jazz. */
-export const JAZZ_TARGET_SEC = 330;
-
 export interface Tune {
   id: string;
   title: string;
@@ -170,9 +159,9 @@ export interface Tune {
   bars: number;
   /** 3 solo en vals y jazz waltz; 4 por defecto. */
   beatsPerBar: 3 | 4;
-  /** Compases de intro (por defecto DEFAULT_INTRO_BARS). */
+  /** Compases de intro (histórico; el motor actual usa overhead fijo). */
   introBars?: number;
-  /** Compases de coda (por defecto 4; 8 en baladas). */
+  /** Compases de coda (histórico; el motor actual usa overhead fijo). */
   codaBars?: number;
   memorized: boolean;
   /** true = todavía no tengo el chart */
@@ -200,10 +189,13 @@ export type SetProfile = 'jazz' | 'ballroom' | 'cocktail';
 
 export interface SetEntry {
   tuneId: string;
-  /** Vueltas de este tema en ESTE set. Si faltan, se toman del perfil. */
-  headsIn?: number;
-  soloChoruses?: number;
-  headsOut?: number;
+  /**
+   * Feel y tempo con los que se toca en ESTE set. Se copian de la biblioteca al
+   * añadir; el músico los cambia solo si lo va a tocar distinto esa noche. Si
+   * faltan (sets migrados), se toman del tema.
+   */
+  feel?: Feel;
+  bpm?: number;
 }
 
 export interface SetList {

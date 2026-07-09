@@ -71,8 +71,8 @@ export function PrintSheet({ setId }: { setId: string }) {
                 {r.tune?.composer ? <span className={s.cp}> — {r.tune.composer}</span> : null}
               </td>
               <td className={s.num}>{r.tune?.key ?? ''}</td>
-              <td className={s.num}>{r.tune?.bpm ?? ''}</td>
-              <td>{r.tune ? FEEL_LABELS[r.tune.feel] : ''}</td>
+              <td className={s.num}>{r.tune ? r.bpm : ''}</td>
+              <td>{r.tune ? FEEL_LABELS[r.feel] : ''}</td>
               {set.profile === 'ballroom' && (
                 <td>{r.tune?.dance ? DANCE_LABELS[r.tune.dance] : '—'}</td>
               )}

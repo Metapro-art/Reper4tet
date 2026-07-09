@@ -76,9 +76,9 @@ export function StageView({ setId }: { setId: string }) {
         {t && (
           <div className={s.data}>
             <span>{t.key}</span>
-            <span>{t.bpm} bpm</span>
+            <span>{cur.bpm} bpm</span>
             <span className={s.feel}>
-              {FEEL_LABELS[t.feel]}
+              {FEEL_LABELS[cur.feel]}
               {set.profile === 'ballroom' && t.dance ? ` · ${DANCE_LABELS[t.dance]}` : ''}
             </span>
             <span>{fmtSec(cur.durationSec)}</span>
@@ -94,7 +94,7 @@ export function StageView({ setId }: { setId: string }) {
             <div className={s.nextTitle}>{next.tune?.title ?? '(tema eliminado)'}</div>
             {next.tune && (
               <div className={s.nextData}>
-                {next.tune.key} · {next.tune.bpm} bpm · {FEEL_LABELS[next.tune.feel]}
+                {next.tune.key} · {next.bpm} bpm · {FEEL_LABELS[next.feel]}
                 {set.profile === 'ballroom' && next.tune.dance
                   ? ` · ${DANCE_LABELS[next.tune.dance]}`
                   : ''}
