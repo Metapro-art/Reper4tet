@@ -1,0 +1,61 @@
+@page {
+  margin: 14mm;
+}
+
+.sheet {
+  color: #000;
+  background: #fff;
+  font-family: 'Barlow', system-ui, sans-serif;
+  font-size: 12pt;
+}
+.sheet h1 {
+  font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  font-size: 22pt;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0 0 2mm;
+  color: #000;
+}
+.meta {
+  font-size: 10pt;
+  color: #333;
+  margin-bottom: 6mm;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th {
+  font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  text-transform: uppercase;
+  font-size: 9pt;
+  letter-spacing: 0.06em;
+  text-align: left;
+  border-bottom: 1.5pt solid #000;
+  padding: 1.5mm 2mm;
+  color: #000;
+}
+.table td {
+  border-bottom: 0.5pt solid #999;
+  padding: 2mm;
+  vertical-align: baseline;
+}
+.num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5pt;
+  white-space: nowrap;
+}
+.tt {
+  font-weight: 600;
+}
+.cp {
+  color: #444;
+  font-size: 9.5pt;
+}
+.foot {
+  margin-top: 6mm;
+  font-size: 10pt;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+}
