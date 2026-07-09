@@ -1,0 +1,54 @@
+.section {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 14px;
+  max-width: 760px;
+}
+.section h2 {
+  font-size: 17px;
+  margin-bottom: 10px;
+  color: var(--amber);
+}
+.rowBtns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.kv {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  padding: 3px 0;
+}
+.kv b {
+  font-weight: 600;
+}
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.hint {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 6px 0 0;
+}
+.importArea {
+  width: 100%;
+  min-height: 90px;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.fileBtn input {
+  display: none;
+}
+.danger {
+  border-color: color-mix(in srgb, var(--red) 45%, var(--line));
+}
+.danger h2 {
+  color: var(--red);
+}

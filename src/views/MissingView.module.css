@@ -1,0 +1,37 @@
+.group {
+  margin-top: 22px;
+}
+.groupTitle {
+  font-size: 17px;
+  color: var(--amber);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 6px;
+}
+.groupTitle .n {
+  color: var(--muted);
+  font-size: 13px;
+}
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(42, 53, 80, 0.4);
+}
+.info {
+  flex: 1;
+  min-width: 0;
+}
+.title {
+  font-weight: 500;
+  display: block;
+}
+.sub {
+  color: var(--muted);
+  font-size: 13px;
+}
