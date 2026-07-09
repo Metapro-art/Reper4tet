@@ -1,4 +1,4 @@
-import { Library, ListMusic, FileQuestion, Settings } from 'lucide-react';
+import { Library, ListMusic, FileQuestion, Settings, HelpCircle } from 'lucide-react';
 import { useUiStore, type View } from '../store/uiStore';
 import { useMergedTunes } from '../store/selectors';
 
@@ -14,6 +14,7 @@ export function TabBar() {
   const setView = useUiStore((s) => s.setView);
   const stopPicking = useUiStore((s) => s.stopPicking);
   const pickingForSetId = useUiStore((s) => s.pickingForSetId);
+  const openHelp = useUiStore((s) => s.openHelp);
   const missingCount = useMergedTunes().filter((t) => t.missing).length;
 
   return (
@@ -34,6 +35,10 @@ export function TabBar() {
           {v === 'missing' && missingCount > 0 && <span className="badge">{missingCount}</span>}
         </button>
       ))}
+      <button onClick={openHelp} aria-haspopup="dialog">
+        <HelpCircle size={22} strokeWidth={1.8} />
+        Ayuda
+      </button>
     </nav>
   );
 }

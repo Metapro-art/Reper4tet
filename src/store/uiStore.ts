@@ -38,6 +38,10 @@ interface UiState {
   editingTuneId: string | null; // modal editor de temas ('new' = alta)
   openTuneEditor: (id: string | null) => void;
 
+  helpOpen: boolean;
+  openHelp: () => void;
+  closeHelp: () => void;
+
   toasts: Toast[];
   toast: (msg: string, tone?: 'ok' | 'warn') => void;
   dismissToast: (id: number) => void;
@@ -73,6 +77,10 @@ export const useUiStore = create<UiState>()((set, get) => ({
 
   editingTuneId: null,
   openTuneEditor: (editingTuneId) => set({ editingTuneId }),
+
+  helpOpen: false,
+  openHelp: () => set({ helpOpen: true }),
+  closeHelp: () => set({ helpOpen: false }),
 
   toasts: [],
   toast: (msg, tone = 'ok') => {

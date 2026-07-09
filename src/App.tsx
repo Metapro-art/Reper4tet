@@ -5,6 +5,7 @@ import { Toasts } from './components/Toasts';
 import { ConfirmHost } from './components/ConfirmHost';
 import { UpdatePrompt } from './components/UpdatePrompt';
 import { TuneFormModal } from './components/TuneFormModal';
+import { HelpModal } from './components/HelpModal';
 import { LibraryView } from './views/LibraryView';
 import { SetsView } from './views/SetsView';
 import { SetEditorView } from './views/SetEditorView';
@@ -20,6 +21,7 @@ export default function App() {
   const stageSetId = useUiStore((s) => s.stageSetId);
   const printSetId = useUiStore((s) => s.printSetId);
   const editingTuneId = useUiStore((s) => s.editingTuneId);
+  const helpOpen = useUiStore((s) => s.helpOpen);
 
   if (!hydrated) return <div className="boot">Cargando repertorio…</div>;
 
@@ -38,6 +40,7 @@ export default function App() {
         <Toasts />
         <ConfirmHost />
         {editingTuneId !== null && <TuneFormModal tuneId={editingTuneId} />}
+        {helpOpen && <HelpModal />}
         {stageSetId && <StageView setId={stageSetId} />}
       </div>
       {printSetId && <PrintSheet setId={printSetId} />}
