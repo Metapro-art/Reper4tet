@@ -31,6 +31,13 @@ gris bajo el título, y la búsqueda encuentra el tema por CUALQUIERA de los
 dos. Ejemplo: "Solamente Una Vez" se anuncia como "You Belong To My Heart"
 (Bésame Mucho, en cambio, se quedó en español y no lleva alterno).
 
+## Ritmos colombianos
+El bambuco y el pasillo van en 3/4 (o 6/8): tres pulsos por compás, no
+cuatro. Por eso una vuelta de bambuco o pasillo dura distinto que un tema
+en 4 al mismo tempo — el reloj ya lo tiene en cuenta. Son repertorio de
+concierto: NO llevan ritmo de baile de salón, así que no verás etiqueta de
+baile en ellos.
+
 ## El reloj 45:00
 Verde hasta 43:30. Ámbar hasta 45:00. Rojo si te pasas.
 Suma 45 segundos de transición entre temas.

@@ -18,6 +18,7 @@ export const THEMES = [
   'latin',
   'bolero',
   'brasil',
+  'colombiana',
 ] as const;
 export type Theme = (typeof THEMES)[number];
 
@@ -35,6 +36,7 @@ export const THEME_LABELS: Record<Theme, string> = {
   latin: 'Latin',
   bolero: 'Bolero',
   brasil: 'Brasil',
+  colombiana: 'Colombiana',
 };
 
 /** Estilo = de qué escuela es el tema (cómo se toca), independiente de la temática. */
@@ -53,6 +55,7 @@ export const STYLES = [
   'gypsy',
   'blues',
   'balada',
+  'colombiana',
 ] as const;
 export type Style = (typeof STYLES)[number];
 
@@ -71,6 +74,7 @@ export const STYLE_LABELS: Record<Style, string> = {
   gypsy: 'Gypsy',
   blues: 'Blues',
   balada: 'Balada',
+  colombiana: 'Colombiana',
 };
 
 export const FEELS = [
@@ -83,6 +87,11 @@ export const FEELS = [
   'blues',
   'swing',
   'up',
+  'bambuco',
+  'pasillo',
+  'porro',
+  'cumbia',
+  'currulao',
 ] as const;
 export type Feel = (typeof FEELS)[number];
 
@@ -96,6 +105,11 @@ export const FEEL_LABELS: Record<Feel, string> = {
   blues: 'Blues',
   swing: 'Swing',
   up: 'Up',
+  bambuco: 'Bambuco',
+  pasillo: 'Pasillo',
+  porro: 'Porro',
+  cumbia: 'Cumbia',
+  currulao: 'Currulao',
 };
 
 export const DANCES = [
