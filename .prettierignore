@@ -1,0 +1,10 @@
+# Generado: un tema por línea a propósito (diffs de una línea por alta)
+src/data/tunes.ts
+# Material fuente / referencia histórica — no tocar
+seed/
+screenshots/
+# Build y deps
+dist/
+dev-dist/
+node_modules/
+package-lock.json

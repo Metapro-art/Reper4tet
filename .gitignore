@@ -1,0 +1,13 @@
+# Dependencias y build (screenshots/ y seed/ SÍ se versionan: son material fuente)
+node_modules/
+dist/
+dev-dist/
+
+# Temporales
+*.local
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+
+# Capturas del test offline (scripts/offline-test.mjs)
+scripts/.offline-*.png
