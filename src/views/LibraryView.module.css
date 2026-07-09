@@ -1,0 +1,118 @@
+.controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.search {
+  flex: 1;
+  min-width: 210px;
+}
+.bpm {
+  width: 88px;
+}
+
+.facetLbl {
+  margin: 12px 0 5px;
+}
+
+.pickerBar {
+  position: sticky;
+  top: 8px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--surface2);
+  border: 1px solid var(--amber);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+.pickerName {
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+.pickerClock {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 600;
+  margin-left: auto;
+}
+.ok {
+  color: var(--mint);
+}
+.near {
+  color: var(--amber);
+}
+.over {
+  color: var(--red);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  margin-top: 14px;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 780px;
+}
+.table th {
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid var(--line);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background: var(--ink);
+  z-index: 5;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+.table th:hover {
+  color: var(--amber);
+}
+.table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid rgba(42, 53, 80, 0.4);
+  vertical-align: middle;
+}
+.table tbody tr:hover td {
+  background: var(--surface);
+}
+.tt {
+  font-weight: 500;
+  line-height: 1.25;
+}
+.cp {
+  color: var(--muted);
+  font-size: 13px;
+}
+.miss td {
+  opacity: 0.55;
+}
+.num {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.count {
+  margin-top: 12px;
+}
+.headBtns {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}

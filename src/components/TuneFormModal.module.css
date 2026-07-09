@@ -1,0 +1,49 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.full {
+  grid-column: 1 / -1;
+}
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .full {
+    grid-column: auto;
+  }
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.field :global(.input),
+.field :global(.select) {
+  width: 100%;
+}
+.checks {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.altChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.meta {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  margin-top: 10px;
+}
+.restore {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
