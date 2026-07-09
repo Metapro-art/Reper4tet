@@ -1,0 +1,779 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repertorio — Cuarteto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#0B1020;
+  --surface:#141B2D;
+  --surface2:#1B2438;
+  --line:#2A3550;
+  --text:#E4E7EF;
+  --muted:#8A94AD;
+  --amber:#F0A93B;
+  --brass:#C9A227;
+  --red:#E0524A;
+  --mint:#4FBF9F;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--ink);
+  color:var(--text);
+  font-family:'Barlow',system-ui,sans-serif;
+  font-size:15px;
+  line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.cond{font-family:'Barlow Condensed',sans-serif;letter-spacing:.02em}
+.mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+
+/* ---------- SET BAR (signature) ---------- */
+#topbar{
+  position:sticky;top:0;z-index:50;
+  background:linear-gradient(180deg,#0B1020 70%,rgba(11,16,32,.85));
+  border-bottom:1px solid var(--line);
+  padding:10px 16px 12px;
+}
+.bar-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.bar-head h1{font-size:20px;margin:0;font-weight:700;text-transform:uppercase}
+.bar-head .sub{color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+#clock{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:600;line-height:1}
+#clock.ok{color:var(--mint)} #clock.near{color:var(--amber)} #clock.over{color:var(--red)}
+#clock small{font-size:12px;color:var(--muted);font-weight:400;margin-left:6px}
+
+.reel{margin-top:9px;height:26px;background:var(--surface);border:1px solid var(--line);border-radius:3px;display:flex;overflow:hidden;position:relative}
+.reel .seg{height:100%;border-right:1px solid rgba(11,16,32,.6);display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:#0B1020;font-family:'Barlow Condensed',sans-serif;font-weight:600;white-space:nowrap;padding:0 4px}
+.reel .empty{flex:1;background:repeating-linear-gradient(45deg,transparent,transparent 6px,rgba(42,53,80,.5) 6px,rgba(42,53,80,.5) 7px)}
+.reel .over{background:var(--red)!important;color:#fff!important}
+.reel .mark{position:absolute;top:0;bottom:0;width:1px;background:var(--line)}
+.reel .mark.q{background:rgba(240,169,59,.35)}
+
+/* ---------- LAYOUT ---------- */
+.wrap{display:grid;grid-template-columns:1fr 380px;gap:0;align-items:start}
+@media(max-width:900px){.wrap{grid-template-columns:1fr}}
+#left{padding:14px 16px 80px;min-width:0}
+#right{position:sticky;top:112px;border-left:1px solid var(--line);padding:14px 16px 60px;height:calc(100vh - 112px);overflow-y:auto}
+@media(max-width:900px){#right{position:static;height:auto;border-left:0;border-top:1px solid var(--line)}}
+
+/* ---------- FILTERS ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chip{
+  font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;
+  text-transform:uppercase;letter-spacing:.04em;
+  padding:4px 10px;border:1px solid var(--line);border-radius:2px;
+  background:var(--surface);color:var(--muted);cursor:pointer;user-select:none;
+}
+.chip:hover{border-color:var(--muted);color:var(--text)}
+.chip.on{background:var(--amber);border-color:var(--amber);color:#0B1020}
+.chip.on.dance{background:var(--brass);border-color:var(--brass)}
+.chip .n{opacity:.55;margin-left:5px;font-family:'IBM Plex Mono',monospace;font-size:11px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+input[type=search],select{
+  background:var(--surface);border:1px solid var(--line);color:var(--text);
+  padding:6px 9px;border-radius:2px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;
+}
+input[type=search]:focus,select:focus{border-color:var(--amber)}
+input[type=search]{flex:1;min-width:160px}
+.lbl{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--muted)}
+button{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.05em;font-weight:600;font-size:12px;background:var(--surface2);color:var(--text);border:1px solid var(--line);padding:5px 10px;border-radius:2px;cursor:pointer}
+button:hover{border-color:var(--amber);color:var(--amber)}
+button.primary{background:var(--amber);color:#0B1020;border-color:var(--amber)}
+button.primary:hover{color:#0B1020;filter:brightness(1.1)}
+button:focus-visible,.chip:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+/* ---------- TABLE ---------- */
+table{width:100%;border-collapse:collapse}
+th{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);font-weight:600;position:sticky;top:112px;background:var(--ink);z-index:5;cursor:pointer;white-space:nowrap}
+th:hover{color:var(--amber)}
+td{padding:5px 8px;border-bottom:1px solid rgba(42,53,80,.4);vertical-align:middle}
+tr:hover td{background:var(--surface)}
+.tt{font-weight:500}
+.cp{color:var(--muted);font-size:12px}
+.tag{font-family:'Barlow Condensed',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding:1px 6px;border-radius:2px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.d{border-color:var(--brass);color:var(--brass)}
+.bpm{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted)}
+.mem{cursor:pointer;font-size:14px;width:22px;text-align:center;user-select:none;color:var(--line)}
+.mem.on{color:var(--mint)}
+.add{cursor:pointer;color:var(--muted);font-size:17px;width:24px;text-align:center;user-select:none;line-height:1}
+.add:hover{color:var(--amber)}
+.miss td{opacity:.55}
+.miss .tt::after{content:" · falta";color:var(--red);font-size:11px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.06em}
+
+/* ---------- SET PANEL ---------- */
+#right h2{font-size:16px;text-transform:uppercase;margin:0 0 2px;letter-spacing:.06em}
+.hint{color:var(--muted);font-size:12px;margin:0 0 12px}
+ol#setlist{list-style:none;margin:0;padding:0}
+ol#setlist li{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid rgba(42,53,80,.4)}
+ol#setlist .num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);width:16px}
+ol#setlist .st{flex:1;min-width:0}
+ol#setlist .st b{font-weight:500;display:block;line-height:1.2}
+ol#setlist .st span{font-size:11px;color:var(--muted)}
+.dur{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);width:38px;text-align:right}
+.mini{background:none;border:none;color:var(--muted);cursor:pointer;padding:1px 3px;font-size:13px;line-height:1}
+.mini:hover{color:var(--amber)}
+.warn{border-left:2px solid var(--red);padding-left:8px;color:var(--red);font-size:12px;margin:10px 0}
+.good{border-left:2px solid var(--mint);padding-left:8px;color:var(--mint);font-size:12px;margin:10px 0}
+.saved{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.saved .s{font-family:'Barlow Condensed',sans-serif;font-size:12px;text-transform:uppercase;border:1px solid var(--line);padding:3px 8px;border-radius:2px;cursor:pointer;color:var(--muted)}
+.saved .s:hover{border-color:var(--amber);color:var(--amber)}
+hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+#status{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:10px}
+@media(prefers-reduced-motion:no-preference){.reel .seg{transition:width .18s ease}}
+</style>
+
+<div id="topbar">
+  <div class="bar-head">
+    <h1>Repertorio</h1>
+    <span class="sub">Cuarteto · gtr / pno / bajo / bat</span>
+    <div id="clock" class="ok">00:00<small>/ 45:00</small></div>
+  </div>
+  <div class="reel" id="reel"></div>
+</div>
+
+<div class="wrap">
+  <div id="left">
+    <div class="row">
+      <input type="search" id="q" placeholder="Buscar título o compositor…" aria-label="Buscar">
+      <span class="lbl">BPM</span>
+      <input type="number" id="bmin" placeholder="min" style="width:66px;background:var(--surface);border:1px solid var(--line);color:var(--text);padding:6px;border-radius:2px">
+      <input type="number" id="bmax" placeholder="max" style="width:66px;background:var(--surface);border:1px solid var(--line);color:var(--text);padding:6px;border-radius:2px">
+      <label class="lbl" style="display:flex;gap:5px;align-items:center;cursor:pointer"><input type="checkbox" id="onlyMem"> Solo de memoria</label>
+      <label class="lbl" style="display:flex;gap:5px;align-items:center;cursor:pointer"><input type="checkbox" id="hideMiss" checked> Ocultar faltantes</label>
+      <button id="clearF">Limpiar</button>
+    </div>
+
+    <div class="lbl" style="margin:10px 0 4px">Temática</div>
+    <div class="filters" id="fTheme"></div>
+
+    <div class="lbl" style="margin:10px 0 4px">Ritmo de baile · ballroom</div>
+    <div class="filters" id="fDance"></div>
+
+    <div class="lbl" style="margin:10px 0 4px">Feel</div>
+    <div class="filters" id="fFeel"></div>
+
+    <table>
+      <thead><tr>
+        <th style="width:24px"></th>
+        <th style="width:24px" title="De memoria">♦</th>
+        <th data-s="t">Tema</th>
+        <th data-s="th">Temática</th>
+        <th data-s="feel">Feel</th>
+        <th data-s="b">BPM</th>
+        <th data-s="k">Ton.</th>
+        <th data-s="dance">Baile</th>
+      </tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+    <div id="count" class="lbl" style="margin-top:10px"></div>
+  </div>
+
+  <div id="right">
+    <h2>Set de 45:00</h2>
+    <p class="hint">7 temas ≈ 44:45 con transiciones de 45 s. Toca <b>+</b> para añadir.</p>
+    <ol id="setlist"></ol>
+    <div id="verdict"></div>
+    <div class="row" style="margin-top:12px">
+      <input type="search" id="setname" placeholder="Nombre del set" style="flex:1">
+      <button class="primary" id="save">Guardar</button>
+      <button id="clearSet">Vaciar</button>
+      <button id="copy">Copiar</button>
+    </div>
+    <div class="saved" id="savedList"></div>
+    <div id="status"></div>
+    <hr>
+    <div class="lbl">Cómo leer la barra</div>
+    <p class="hint" style="margin-top:6px">Cada bloque es un tema, a escala de su duración. Las líneas ámbar marcan 15:00 y 30:00. Lo que se pinta en rojo se pasa de 45.</p>
+  </div>
+</div>
+
+<script>
+/* ============ DATOS ============
+   [ título, compositor, temática, feel, bpm, tonalidad, memoria(0/1), baile, falta(0/1) ] */
+const TH = {ELL:"Ellington",MNK:"Monk",BRD:"Bird",BOP:"Bebop",HB:"Hard Bop",SJ:"Soul Jazz",BAS:"Basie/Swing",GAS:"Songbook",BRA:"Brasil",LAT:"Latin/Bolero",MIL:"Miles",TRN:"Coltrane",SHO:"Shorter",MOD:"Moderno",BTL:"Beatles",XMS:"Navidad",BLU:"Blues"};
+const DUR = {"Balada":6.0,"Bossa":5.5,"Samba":5.25,"Latin":5.5,"Funk":6.5,"Vals":5.5,"Blues":6.0,"Swing":5.75,"Up":5.0};
+
+const D=[
+// ---- ELLINGTON / STRAYHORN ----
+["Take The A Train","Strayhorn","ELL","Swing",160,"C",1,"Swing",0],
+["Cotton Tail","Ellington","ELL","Up",240,"Bb",0,"Jive",0],
+["In A Mellow Tone","Ellington","ELL","Swing",132,"Ab",1,"Foxtrot",0],
+["Do Nothin' Till You Hear From Me","Ellington","ELL","Swing",112,"C",1,"Slow Fox",0],
+["Caravan","Ellington/Tizol","ELL","Latin",150,"Cm",1,"",0],
+["Sophisticated Lady","Ellington","ELL","Balada",66,"Ab",0,"",0],
+["Just Squeeze Me","Ellington","ELL","Swing",120,"C",0,"Foxtrot",0],
+["In A Sentimental Mood","Ellington","ELL","Balada",64,"Dm",1,"",0],
+["Just A Sittin' And A Rockin'","Ellington","ELL","Swing",138,"C",0,"Swing",0],
+["Chelsea Bridge","Strayhorn","ELL","Balada",60,"Db",0,"",0],
+["Day Dream","Strayhorn","ELL","Balada",62,"Db",0,"",0],
+["Isfahan","Strayhorn","ELL","Balada",66,"Db",0,"",0],
+["Upper Manhattan Medical Group","Strayhorn","ELL","Swing",150,"Bb",0,"",0],
+["Perdido","Tizol","ELL","Swing",180,"Bb",1,"Swing",0],
+["Prelude To A Kiss","Ellington","ELL","Balada",60,"C",0,"",0],
+["Don't Get Around Much Anymore","Ellington","ELL","Swing",126,"C",1,"Foxtrot",0],
+["I'm Beginning To See The Light","Ellington","ELL","Swing",144,"C",1,"Swing",0],
+["Mood Indigo","Ellington","ELL","Balada",68,"Ab",0,"Slow Fox",0],
+["I Got It Bad And That Ain't Good","Ellington","ELL","Balada",62,"G",0,"",0],
+["Satin Doll","Ellington","ELL","Swing",124,"C",1,"Foxtrot",0],
+["Come Sunday","Ellington","ELL","Balada",58,"Ab",0,"",0],
+["Things Ain't What They Used To Be","M. Ellington","ELL","Blues",108,"Bb",1,"",0],
+["Lush Life","Strayhorn","ELL","Balada",56,"Db",0,"",0],
+
+// ---- MONK ----
+["Blue Monk","Monk","MNK","Blues",112,"Bb",1,"",0],
+["Well You Needn't","Monk","MNK","Swing",160,"F",1,"",0],
+["Ruby My Dear","Monk","MNK","Balada",58,"Eb",0,"",0],
+["Bemsha Swing","Monk","MNK","Swing",150,"C",0,"",0],
+["Brilliant Corners","Monk","MNK","Swing",130,"Bb",0,"",0],
+["Pannonica","Monk","MNK","Balada",90,"Bb",0,"",0],
+["Eronel","Monk","MNK","Swing",170,"F",0,"",0],
+["Ba-lue Bolivar Ba-lues-Are","Monk","MNK","Blues",120,"Bb",0,"",0],
+["Light Blue","Monk","MNK","Swing",96,"C",0,"",0],
+["Played Twice","Monk","MNK","Swing",150,"F",0,"",0],
+["Off Minor","Monk","MNK","Swing",150,"Cm",0,"",0],
+["Reflections","Monk","MNK","Balada",92,"Bb",0,"",0],
+["Monk's Dream","Monk","MNK","Swing",160,"C",0,"",0],
+["Epistrophy","Monk","MNK","Swing",150,"Db",1,"",0],
+["I Mean You","Monk","MNK","Swing",170,"F",0,"",0],
+["Let's Cool One","Monk","MNK","Swing",130,"Bb",0,"",0],
+["Ask Me Now","Monk","MNK","Balada",62,"Bb",0,"",0],
+["We See","Monk","MNK","Swing",160,"Bb",0,"",0],
+["Let's Call This","Monk","MNK","Swing",150,"Bb",0,"",0],
+["'Round Midnight","Monk","MNK","Balada",56,"Ebm",1,"",1],
+["Straight No Chaser","Monk","MNK","Blues",150,"F",1,"",1],
+
+// ---- BIRD ----
+["Confirmation","Parker","BRD","Up",220,"F",0,"",0],
+["Ornithology","Parker","BRD","Up",220,"G",0,"",0],
+["Scrapple From The Apple","Parker","BRD","Up",210,"F",0,"",0],
+["Moose The Mooche","Parker","BRD","Up",220,"Bb",0,"",0],
+["My Little Suede Shoes","Parker","BRD","Latin",160,"Eb",1,"",0],
+["Now's The Time","Parker","BRD","Blues",130,"F",1,"",0],
+["Au Privave","Parker","BRD","Blues",180,"F",1,"",0],
+["Blues For Alice","Parker","BRD","Blues",180,"F",0,"",0],
+["Barbados","Parker","BRD","Blues",170,"F",0,"",0],
+["Dexterity","Parker","BRD","Up",210,"Bb",0,"",0],
+["Anthropology","Parker/Gillespie","BRD","Up",230,"Bb",0,"",0],
+["Cherokee","Noble","BRD","Up",200,"Bb",0,"Quickstep",0],
+["Passport","Parker","BRD","Blues",190,"Bb",0,"",0],
+["I Remember Bird","Zawinul","BRD","Balada",64,"Cm",0,"",0],
+["Dewey Square","Parker","BRD","Up",200,"Eb",0,"",0],
+["Yardbird Suite","Parker","BRD","Swing",180,"C",0,"",1],
+["Donna Lee","Parker","BRD","Up",240,"Ab",0,"",1],
+
+// ---- BEBOP compositores ----
+["Groovin' High","Gillespie","BOP","Up",200,"Eb",0,"",0],
+["A Night In Tunisia","Gillespie","BOP","Latin",180,"Dm",1,"",0],
+["Con Alma","Gillespie","BOP","Latin",140,"E",0,"",0],
+["Bouncin' With Bud","Powell","BOP","Up",210,"Bb",0,"",0],
+["Celia","Powell","BOP","Swing",180,"Bb",0,"",0],
+["Hallucinations","Powell","BOP","Up",210,"Bb",0,"",0],
+["Lady Bird","Dameron","BOP","Swing",150,"C",1,"",0],
+["Our Delight","Dameron","BOP","Swing",160,"Db",0,"",0],
+["Jordu","Jordan","BOP","Swing",150,"Cm",1,"",0],
+["I Remember Clifford","Golson","BOP","Balada",60,"Eb",0,"",0],
+["Half Nelson","Davis","BOP","Swing",180,"C",0,"",0],
+["Valse Hot","Rollins","BOP","Vals",190,"Bb",0,"",0],
+
+// ---- HARD BOP ----
+["Señor Blues","Silver","HB","Blues",110,"Fm",1,"",0],
+["The Preacher","Silver","HB","Swing",150,"F",1,"",0],
+["Strollin'","Silver","HB","Swing",130,"F",0,"",0],
+["Sister Sadie","Silver","HB","Swing",150,"F",1,"",0],
+["Nica's Dream","Silver","HB","Latin",130,"Bbm",0,"",1],
+["Moanin'","Timmons","HB","Blues",130,"Fm",1,"",0],
+["Dat Dere","Timmons","HB","Swing",140,"Bb",0,"",0],
+["One For Daddy-O","N. Adderley","HB","Blues",120,"Bb",0,"",0],
+["Blues Walk","Donaldson","HB","Blues",170,"F",0,"",0],
+["Sack Of Woe","C. Adderley","HB","Blues",140,"Bb",0,"",0],
+["Whisper Not","Golson","HB","Swing",130,"Cm",1,"",0],
+["Minor Mood","Brown","HB","Swing",170,"Cm",0,"",0],
+["Pent Up House","Rollins","HB","Swing",180,"F",0,"",0],
+["Ceora","L. Morgan","HB","Bossa",130,"Ab",1,"",0],
+["The Sidewinder","L. Morgan","HB","Funk",130,"F",1,"",0],
+["This I Dig Of You","Mobley","HB","Swing",180,"Eb",0,"",0],
+["Recordame","J. Henderson","HB","Latin",180,"Am",1,"",0],
+["Punjab","J. Henderson","HB","Swing",160,"Eb",0,"",0],
+["Mamacita","J. Henderson","HB","Latin",150,"F",0,"",0],
+["Jeannine","Pierce","HB","Swing",180,"Cm",0,"",0],
+["Stolen Moments","O. Nelson","HB","Swing",120,"Cm",1,"",0],
+["Little Sunflower","Hubbard","HB","Latin",130,"Dm",1,"",0],
+["Up Jumped Spring","Hubbard","HB","Vals",170,"Bb",0,"",0],
+["St. Thomas","Rollins","HB","Latin",180,"C",1,"",0],
+["Killer Joe","Golson","HB","Swing",120,"C",0,"",1],
+["Song For My Father","Silver","HB","Latin",120,"Fm",1,"",1],
+
+// ---- SOUL JAZZ ----
+["Cantaloupe Island","Hancock","SJ","Funk",110,"Fm",1,"",0],
+["Watermelon Man","Hancock","SJ","Funk",118,"F",1,"Cha-cha",0],
+["Chameleon","Hancock","SJ","Funk",96,"Bbm",1,"",0],
+["Driftin'","Hancock","SJ","Swing",140,"Bb",0,"",0],
+["Cold Duck Time","E. Harris","SJ","Funk",96,"Eb",0,"",0],
+["Hard Times","D. Ellis","SJ","Funk",100,"F",0,"",0],
+["Mercy Mercy Mercy","Zawinul","SJ","Funk",92,"Bb",1,"",0],
+["Sunny","Bobby Hebb","SJ","Funk",118,"Am",1,"",0],
+["The Chicken","Ellis","SJ","Funk",112,"Bb",0,"",1],
+
+// ---- BASIE / SWING ERA ----
+["Lil' Darlin'","Hefti","BAS","Balada",68,"Db",1,"Slow Fox",0],
+["Splanky","Hefti","BAS","Blues",120,"Ab",0,"Foxtrot",0],
+["Cute","Hefti","BAS","Swing",130,"Bb",0,"Foxtrot",0],
+["Shiny Stockings","F. Foster","BAS","Swing",128,"Ab",1,"Foxtrot",0],
+["Down For Double","F. Green","BAS","Swing",140,"Ab",0,"Swing",0],
+["Jive At Five","Basie","BAS","Swing",140,"Ab",0,"Swing",0],
+["Lester Leaps In","Young","BAS","Up",200,"Bb",0,"Jive",0],
+["Groove Merchant","J. Richardson","BAS","Swing",120,"F",0,"Foxtrot",0],
+["Jersey Bounce","Bradshaw","BAS","Swing",140,"Bb",0,"Swing",0],
+["Honeysuckle Rose","Waller","BAS","Swing",132,"F",1,"Swing",0],
+["Jitterbug Waltz","Waller","BAS","Vals",180,"Bb",0,"",0],
+["Blues For Yna Yna","Ellis","BAS","Blues",110,"C",0,"",0],
+["Corner Pocket","F. Green","BAS","Swing",130,"C",0,"Foxtrot",0],
+["Moten Swing","Moten","BAS","Swing",140,"Ab",1,"Swing",0],
+["Topsy","Battle/Durham","BAS","Swing",150,"Bbm",0,"Swing",0],
+["Backstage Sally","Wess","BAS","Swing",140,"F",0,"",0],
+["Freight Trane","Flanagan","BAS","Swing",180,"F",0,"",0],
+["Stompin' At The Savoy","Goodman","BAS","Swing",150,"Db",0,"Swing",1],
+["Sweet Georgia Brown","Bernie","BAS","Up",200,"Ab",1,"Quickstep",0],
+["After You've Gone","Creamer","BAS","Up",200,"F",0,"Quickstep",0],
+["Oh, Lady Be Good","Gershwin","BAS","Swing",180,"G",1,"Swing",0],
+["I Got Rhythm","Gershwin","BAS","Up",200,"Bb",1,"Swing",0],
+["Basin Street Blues","Williams","BAS","Blues",110,"Bb",1,"Swing",0],
+["St. Louis Blues","Handy","BAS","Blues",120,"G",0,"Swing",0],
+["Mack The Knife","Weill","BAS","Swing",130,"Bb",1,"Foxtrot",0],
+["Flintstones","Curtin","BAS","Swing",140,"Eb",1,"Swing",0],
+
+// ---- SONGBOOK · baladas ----
+["The Nearness Of You","Carmichael","GAS","Balada",62,"F",1,"",0],
+["My Funny Valentine","Rodgers","GAS","Balada",60,"Cm",1,"",0],
+["Darn That Dream","Van Heusen","GAS","Balada",64,"G",0,"",0],
+["Old Folks","Robison","GAS","Balada",60,"F",0,"",0],
+["Moonlight In Vermont","Suessdorf","GAS","Balada",70,"Eb",1,"Slow Fox",0],
+["When Sunny Gets Blue","Fischer","GAS","Balada",60,"F",0,"",0],
+["Emily","Mandel","GAS","Vals",90,"C",0,"Vals",0],
+["The Very Thought Of You","Noble","GAS","Balada",68,"Eb",1,"Slow Fox",0],
+["Beautiful Love","Young","GAS","Balada",100,"Dm",1,"",0],
+["Where Are You","McHugh","GAS","Balada",58,"Eb",0,"",0],
+["Angel Eyes","Dennis","GAS","Balada",58,"Cm",1,"",0],
+["My Foolish Heart","Young","GAS","Balada",56,"Eb",0,"",0],
+["Polkadots And Moonbeams","Van Heusen","GAS","Balada",64,"F",0,"",0],
+["Everything Happens To Me","Dennis","GAS","Balada",60,"C",0,"",0],
+["Spring Can Really Hang You Up The Most","Wolf","GAS","Balada",56,"C",0,"",0],
+["Blame It On My Youth","Levant","GAS","Balada",58,"Eb",0,"",0],
+["Skylark","Carmichael","GAS","Balada",64,"Eb",0,"",0],
+["Lover Man","Davis","GAS","Balada",58,"Bb",0,"",0],
+["I Loves You Porgy","Gershwin","GAS","Balada",56,"Eb",0,"",0],
+["Somewhere Over The Rainbow","Arlen","GAS","Balada",60,"Eb",1,"",0],
+["I'll Be Seeing You","Fain","GAS","Balada",70,"F",1,"Slow Fox",0],
+["In The Wee Small Hours Of The Morning","Mann","GAS","Balada",58,"C",0,"",0],
+["What's New?","Haggart","GAS","Balada",58,"C",0,"",0],
+["Turn Out The Stars","Evans","GAS","Balada",60,"Cm",0,"",0],
+["Time Remembered","Evans","GAS","Balada",70,"Bb",0,"",0],
+["Waltz For Debbie","Evans","GAS","Vals",190,"F",0,"",0],
+["Tenderly","Gross","GAS","Vals",96,"Eb",1,"Vals",0],
+["Misty","Garner","GAS","Balada",60,"Eb",1,"",1],
+["Body And Soul","Green","GAS","Balada",58,"Db",1,"",1],
+
+// ---- SONGBOOK · medium ----
+["Bye Bye Blackbird","Henderson","GAS","Swing",140,"F",1,"Swing",0],
+["On Green Dolphin Street","Kaper","GAS","Swing",150,"C",1,"",0],
+["There Is No Greater Love","Jones","GAS","Swing",140,"Bb",1,"Foxtrot",0],
+["Have You Met Miss Jones","Rodgers","GAS","Swing",170,"F",1,"",0],
+["Exactly Like You","McHugh","GAS","Swing",140,"C",0,"Swing",0],
+["Like Someone In Love","Van Heusen","GAS","Swing",130,"Eb",1,"",0],
+["All Of Me","Simons","GAS","Swing",128,"C",1,"Foxtrot",0],
+["Autumn Leaves","Kosma","GAS","Swing",140,"Gm",1,"",0],
+["Autumn In New York","Duke","GAS","Balada",70,"C",0,"",0],
+["Days Of Wine And Roses","Mancini","GAS","Swing",150,"F",1,"",0],
+["All Of You","Porter","GAS","Swing",150,"Eb",1,"",0],
+["I Could Write A Book","Rodgers","GAS","Swing",150,"C",1,"",0],
+["Someone To Watch Over Me","Gershwin","GAS","Balada",64,"Eb",0,"",0],
+["You Stepped Out Of A Dream","Brown","GAS","Swing",180,"C",0,"",0],
+["I Remember You","Schertzinger","GAS","Swing",160,"F",0,"",0],
+["Embraceable You","Gershwin","GAS","Balada",70,"G",0,"",0],
+["The Way You Look Tonight","Kern","GAS","Swing",128,"Eb",1,"Foxtrot",0],
+["Blue Moon","Rodgers","GAS","Swing",118,"C",1,"Slow Fox",0],
+["Star Eyes","DePaul","GAS","Latin",140,"Eb",0,"",0],
+["Fly Me To The Moon","Howard","GAS","Swing",126,"C",1,"Foxtrot",0],
+["Teach Me Tonight","DePaul","GAS","Swing",110,"Eb",0,"Slow Fox",0],
+["Invitation","Kaper","GAS","Latin",140,"Cm",0,"",0],
+["I Should Care","Cahn","GAS","Balada",64,"C",0,"",0],
+["Alone Together","Schwartz","GAS","Swing",150,"Dm",0,"",1],
+["Stella By Starlight","Young","GAS","Swing",140,"Bb",1,"",1],
+["All The Things You Are","Kern","GAS","Swing",150,"Ab",1,"",1],
+["There Will Never Be Another You","Warren","GAS","Swing",170,"Eb",1,"",1],
+["What Is This Thing Called Love","Porter","GAS","Swing",170,"C",0,"",1],
+["Out Of Nowhere","Green","GAS","Swing",160,"G",0,"",1],
+["Just Friends","Klenner","GAS","Swing",180,"F",0,"",1],
+["Yesterdays","Kern","GAS","Swing",150,"Dm",0,"",1],
+["Softly As In A Morning Sunrise","Romberg","GAS","Latin",150,"Cm",0,"",1],
+["Georgia On My Mind","Carmichael","GAS","Balada",64,"F",1,"",1],
+["Nature Boy","Ahbez","GAS","Balada",70,"Dm",0,"",1],
+["Old Devil Moon","Lane","GAS","Swing",140,"F",0,"",1],
+
+// ---- SONGBOOK · up / baile ----
+["Cheek To Cheek","Berlin","GAS","Swing",132,"C",1,"Foxtrot",0],
+["I Get A Kick Out Of You","Porter","GAS","Swing",130,"Eb",1,"Foxtrot",0],
+["Just One Of Those Things","Porter","GAS","Up",190,"F",0,"Quickstep",0],
+["How High The Moon","Lewis","GAS","Up",200,"G",1,"",0],
+["Tea For Two","Youmans","GAS","Swing",124,"Ab",1,"Cha-cha",0],
+["Night And Day","Porter","GAS","Swing",128,"Eb",1,"Foxtrot",0],
+["I've Got You Under My Skin","Porter","GAS","Swing",130,"Eb",1,"Foxtrot",0],
+["Love For Sale","Porter","GAS","Latin",160,"Bbm",0,"",0],
+["It's You Or No One","Styne","GAS","Swing",180,"Eb",0,"",0],
+["Falling In Love With Love","Rodgers","GAS","Vals",190,"Bb",0,"",0],
+["This Can't Be Love","Rodgers","GAS","Swing",180,"G",0,"",0],
+["Taking A Chance On Love","Duke","GAS","Swing",160,"C",0,"Swing",0],
+["Route 66","Troup","GAS","Blues",140,"F",1,"Swing",0],
+["Sheik Of Araby","Snyder","GAS","Up",200,"Bb",0,"Quickstep",0],
+["I've Got My Love To Keep Me Warm","Berlin","GAS","Swing",160,"C",0,"Swing",0],
+["Lullaby Of Birdland","Shearing","GAS","Swing",160,"Fm",1,"",0],
+["Bluesette","Thielemans","GAS","Vals",190,"Bb",1,"",0],
+["Take Five","Desmond","GAS","Latin",170,"Ebm",1,"",0],
+["As Time Goes By","Hupfeld","GAS","Balada",112,"Eb",1,"Slow Fox",0],
+["What A Wonderful World","Weiss","GAS","Balada",70,"F",1,"",0],
+["Summertime","Gershwin","GAS","Latin",110,"Am",1,"",0],
+["Girl From Ipanema","Jobim","BRA","Bossa",130,"F",1,"",0],
+["Mas Que Nada","Ben Jor","BRA","Samba",122,"Gm",1,"Cha-cha",0],
+
+// ---- BRASIL ----
+["Wave","Jobim","BRA","Bossa",130,"D",1,"",0],
+["Meditation","Jobim","BRA","Bossa",130,"C",1,"",0],
+["Desafinado","Jobim","BRA","Bossa",140,"F",0,"",0],
+["Corcovado","Jobim","BRA","Bossa",120,"Am",1,"",0],
+["How Insensitive","Jobim","BRA","Bossa",110,"Dm",1,"",0],
+["Triste","Jobim","BRA","Bossa",140,"Bb",0,"",0],
+["Chega De Saudade","Jobim","BRA","Bossa",150,"Dm",0,"",0],
+["Recado Bossa Nova","Ferreira","BRA","Bossa",150,"Dm",0,"",0],
+["Samba De Orfeu","Bonfá","BRA","Samba",180,"Gm",0,"",0],
+["Manha De Carnaval","Bonfá","BRA","Bossa",110,"Am",1,"",0],
+["Tristeza","Lobo","BRA","Samba",130,"F",0,"",0],
+["One Note Samba","Jobim","BRA","Bossa",150,"Bb",1,"",1],
+["So Danço Samba","Jobim","BRA","Samba",160,"F",0,"",1],
+["Dindi","Jobim","BRA","Bossa",100,"C",0,"",1],
+["Água De Beber","Jobim","BRA","Bossa",130,"Dm",0,"",1],
+["O Grande Amor","Jobim","BRA","Bossa",140,"Gm",0,"",1],
+["Blue Bossa","Dorham","BRA","Bossa",150,"Cm",1,"",1],
+
+// ---- LATIN / BOLERO / BALLROOM ----
+["Bésame Mucho","Velázquez","LAT","Latin",104,"Dm",1,"Rumba",0],
+["Perfidia","Domínguez","LAT","Latin",106,"C",1,"Rumba",0],
+["Quizás Quizás Quizás","Farrés","LAT","Latin",102,"Dm",1,"Rumba",0],
+["Historia de un Amor","Almarán","LAT","Latin",100,"Dm",1,"Rumba",0],
+["Corazón Loco","Cuéllar","LAT","Latin",104,"C",1,"Rumba",0],
+["La Puerta","L. Demetrio","LAT","Latin",100,"C",1,"Rumba",0],
+["La Última Noche","B. Collazo","LAT","Latin",102,"Am",0,"Rumba",0],
+["Los Aretes de la Luna","Rigual","LAT","Latin",100,"C",0,"Rumba",0],
+["Lágrimas Negras","M. Matamoros","LAT","Latin",106,"Dm",1,"Rumba",0],
+["Sway (Quién Será)","Ruiz","LAT","Latin",108,"Dm",1,"Rumba",0],
+["Oye Como Va","Puente","LAT","Latin",120,"Am",1,"Cha-cha",0],
+["El Choclo","Villoldo","LAT","Latin",126,"Dm",0,"Tango",0],
+["La Cumparsita","Rodríguez","LAT","Latin",128,"Dm",0,"Tango",0],
+["Por Una Cabeza","Gardel","LAT","Latin",120,"D",0,"Tango",0],
+["Nostalgias","Cobián","LAT","Latin",122,"Dm",0,"Tango",0],
+["Hernando's Hideaway","Adler","LAT","Latin",124,"Dm",1,"Tango",0],
+["Compadre Pedro Juan","L. Alberti","LAT","Latin",130,"F",0,"Merengue",0],
+["Tennessee Waltz","King","LAT","Vals",88,"G",1,"Vals",0],
+["Moon River","Mancini","LAT","Vals",86,"C",1,"Vals",0],
+["La Bamba","tradicional","LAT","Latin",176,"C",1,"Jive",0],
+["Rock Around The Clock","Freedman","LAT","Blues",180,"A",1,"Jive",0],
+["Blue Suede Shoes","Perkins","LAT","Blues",172,"A",1,"Jive",0],
+["Fascination","Marchetti","LAT","Vals",88,"C",0,"Vals",1],
+["Around The World","Young","LAT","Vals",86,"C",0,"Vals",1],
+["Sabor A Mí","Carrillo","LAT","Latin",100,"C",0,"Rumba",1],
+
+// ---- MILES ----
+["So What","Davis","MIL","Swing",140,"Dm",1,"",0],
+["Walkin'","Carpenter","MIL","Blues",160,"F",1,"",0],
+["Seven Steps To Heaven","Feldman","MIL","Up",210,"F",0,"",0],
+["Joshua","Feldman","MIL","Swing",190,"Cm",0,"",0],
+["Four","Davis","MIL","Swing",180,"Eb",1,"",0],
+["Freddie Freeloader","Davis","MIL","Blues",130,"Bb",1,"",0],
+["Pfrancing","Davis","MIL","Blues",140,"F",0,"",0],
+["Bags' Groove","Jackson","MIL","Blues",130,"F",1,"",0],
+["Blues By Five","Garland","MIL","Blues",150,"C",0,"",0],
+["Solar","Davis","MIL","Swing",160,"Cm",1,"",1],
+["All Blues","Davis","MIL","Blues",140,"G",1,"",1],
+["Milestones","Davis","MIL","Swing",180,"Gm",0,"",1],
+["Blue In Green","Evans/Davis","MIL","Balada",56,"Gm",0,"",1],
+
+// ---- COLTRANE ----
+["Blue Train","Coltrane","TRN","Blues",130,"Eb",1,"",0],
+["Equinox","Coltrane","TRN","Blues",90,"C#m",1,"",0],
+["Moment's Notice","Coltrane","TRN","Up",210,"Eb",0,"",0],
+["Naima","Coltrane","TRN","Balada",58,"Eb",0,"",0],
+["My Favorite Things","Rodgers","TRN","Vals",180,"Em",1,"",0],
+["Impressions","Coltrane","TRN","Up",220,"Dm",0,"",1],
+["Mr. P.C.","Coltrane","TRN","Blues",200,"Cm",0,"",1],
+["Central Park West","Coltrane","TRN","Balada",60,"B",0,"",1],
+["Giant Steps","Coltrane","TRN","Up",240,"B",0,"",1],
+
+// ---- SHORTER ----
+["Footprints","Shorter","SHO","Vals",150,"Cm",1,"",0],
+["Speak No Evil","Shorter","SHO","Swing",140,"Cm",0,"",0],
+["Wild Flower","Shorter","SHO","Vals",160,"Eb",0,"",0],
+["Infant Eyes","Shorter","SHO","Balada",56,"Eb",0,"",0],
+["One By One","Shorter","SHO","Latin",160,"Fm",0,"",0],
+["Virgo","Shorter","SHO","Balada",70,"Dm",0,"",0],
+
+// ---- MODERNO ----
+["Spain","Corea","MOD","Latin",180,"D",1,"",0],
+["500 Miles High","Corea","MOD","Latin",140,"Em",0,"",0],
+["Windows","Corea","MOD","Vals",190,"Em",0,"",0],
+["Children's Song","Corea","MOD","Latin",130,"C",0,"",0],
+["Strasbourg St. Denis","Hargrove","MOD","Funk",120,"Fm",1,"",0],
+["James","Metheny","MOD","Balada",80,"C",0,"",0],
+["Affirmation","Benson","MOD","Funk",110,"Gm",1,"",0],
+["Lucky Southern","Jarrett","MOD","Swing",130,"C",0,"",0],
+["Bolivia","Walton","MOD","Latin",160,"Cm",0,"",0],
+["Dolphin Dance","Hancock","MOD","Swing",130,"Eb",0,"",0],
+["You Are The Sunshine Of My Life","Wonder","MOD","Bossa",120,"Bb",1,"",0],
+["Feel Like Makin' Love","McDaniels","MOD","Funk",90,"Eb",1,"",0],
+["Lovely Day","Withers","MOD","Funk",96,"Eb",1,"",0],
+["Let's Stay Together","Green","MOD","Funk",100,"Ab",1,"",0],
+["Throughout","Frisell","MOD","Balada",70,"D",0,"",0],
+["Four On Six","Montgomery","MOD","Swing",180,"Gm",1,"",0],
+["Road Song","Montgomery","MOD","Swing",130,"F",0,"",0],
+["West Coast Blues","Montgomery","MOD","Vals",170,"Bb",1,"",0],
+
+// ---- BEATLES (versionar) ----
+["Michelle","Lennon/McCartney","BTL","Bossa",120,"Fm",1,"",0],
+["Here There And Everywhere","Lennon/McCartney","BTL","Balada",70,"G",1,"",0],
+["Blackbird","Lennon/McCartney","BTL","Vals",96,"G",0,"Vals",0],
+["Come Together","Lennon/McCartney","BTL","Funk",84,"Dm",1,"",0],
+["Eleanor Rigby","Lennon/McCartney","BTL","Latin",100,"Em",0,"Rumba",0],
+["Norwegian Wood","Lennon/McCartney","BTL","Vals",86,"E",0,"Vals",0],
+["Day Tripper","Lennon/McCartney","BTL","Funk",120,"E",1,"",0],
+["Yesterday","Lennon/McCartney","BTL","Samba",120,"F",1,"",0],
+["And I Love Her","Lennon/McCartney","BTL","Latin",120,"F#m",1,"Cha-cha",0],
+["Can't Buy Me Love","Lennon/McCartney","BTL","Blues",176,"C",1,"Jive",0],
+["Something","Harrison","BTL","Balada",68,"C",1,"",0],
+["Ob-La-Di, Ob-La-Da","Lennon/McCartney","BTL","Latin",130,"Bb",0,"",0],
+["In My Life","Lennon/McCartney","BTL","Balada",76,"A",0,"",0],
+["Fool On The Hill","Lennon/McCartney","BTL","Bossa",110,"D",0,"",0],
+["Golden Slumbers","Lennon/McCartney","BTL","Balada",64,"C",0,"",0],
+["Hey Jude","Lennon/McCartney","BTL","Balada",76,"F",1,"",0],
+
+// ---- NAVIDAD ----
+["Have Yourself A Merry Little Christmas","Martin/Blane","XMS","Balada",64,"Eb",1,"",0],
+["The Christmas Song","Torme","XMS","Balada",62,"C",1,"",1],
+["White Christmas","Berlin","XMS","Balada",70,"C",1,"Slow Fox",1],
+["Winter Wonderland","Bernard","XMS","Swing",140,"C",1,"Swing",1],
+["Let It Snow","Styne","XMS","Swing",130,"C",1,"Foxtrot",1],
+["Sleigh Ride","Anderson","XMS","Swing",150,"Bb",0,"Swing",1],
+["Santa Claus Is Coming To Town","Coots","XMS","Swing",140,"C",1,"Swing",0],
+["Rudolph The Red-Nosed Reindeer","Marks","XMS","Swing",150,"C",1,"Swing",0],
+["It's Beginning To Look Like Christmas","Willson","XMS","Swing",120,"C",0,"Foxtrot",0],
+["The Most Wonderful Time Of The Year","Pola","XMS","Swing",150,"C",0,"Swing",0],
+["Cool Yule","Allen","XMS","Blues",140,"C",0,"Swing",0],
+["The Man With The Bag","Brooks","XMS","Swing",150,"C",0,"Swing",0],
+["Baby It's Cold Outside","Loesser","XMS","Swing",110,"F",0,"Slow Fox",0],
+["Dance Of The Sugar Plum Fairy","Tchaikovsky","XMS","Latin",110,"Em",0,"",0],
+["God Rest Ye Merry Gentlemen","tradicional","XMS","Latin",130,"Em",0,"",0],
+["Christmas Time Is Here","Guaraldi","XMS","Vals",90,"F",1,"Vals",1],
+["Jingle Bells","Pierpont","XMS","Swing",160,"F",1,"Swing",1],
+["Silent Night","Gruber","XMS","Balada",60,"Bb",1,"",1],
+["Blue Christmas","Hayes","XMS","Blues",100,"Bb",0,"",1],
+["Merry Christmas Baby","Baxter","XMS","Blues",80,"Bb",0,"",1],
+["I'll Be Home For Christmas","Kent","XMS","Balada",64,"C",0,"",1],
+["Feliz Navidad","J. Feliciano","XMS","Latin",130,"D",1,"Merengue",1],
+["Carol Of The Bells","Leontovych","XMS","Latin",170,"Gm",0,"",1],
+["What Child Is This (Greensleeves)","tradicional","XMS","Vals",90,"Em",0,"Vals",1],
+["Jingle Bell Rock","Beal","XMS","Blues",160,"C",0,"Jive",1],
+["Santa Baby","Javits","XMS","Swing",100,"C",0,"Slow Fox",1],
+["This Christmas","D. Hathaway","XMS","Funk",100,"Bb",0,"",1],
+["Little Drummer Boy","Davis","XMS","Latin",120,"Cm",0,"",1],
+["Mele Kalikimaka","Anderson","XMS","Swing",140,"C",0,"Swing",1],
+
+// ---- BLUES / otros ----
+["Goodbye Pork Pie Hat","Mingus","BLU","Balada",56,"F",0,"",0],
+["Minority","Gryce","BLU","Up",200,"Fm",0,"",0],
+["Sub-Conscious-Lee","Tristano","BLU","Up",200,"C",0,"",0],
+["The Blessing","Coleman","BLU","Swing",160,"F",0,"",0],
+["When Will The Blues Leave","Coleman","BLU","Blues",180,"Bb",0,"",0],
+["Fried Pies","Montgomery","BLU","Swing",160,"F",0,"",0],
+["Fried Bananas","Gordon","BLU","Up",200,"F",0,"",0],
+["Petite Fleur","Bechet","BLU","Balada",80,"Bb",0,"",0],
+["Sack O' Woe","C. Adderley","BLU","Blues",140,"Bb",0,"",0]
+];
+
+/* ============ ESTADO ============ */
+const S={theme:new Set(),dance:new Set(),feel:new Set(),q:"",bmin:null,bmax:null,mem:false,hideMiss:true,sort:"t",asc:true};
+let SET=[];              // [{i, dur}]
+let MEMO={};             // overrides de memoria
+const TARGET=45*60, GAP=45;
+
+/* ============ STORAGE ============ */
+const st=document.getElementById('status');
+async function sGet(k){try{const r=await window.storage.get(k);return r?JSON.parse(r.value):null}catch(e){return null}}
+async function sSet(k,v){try{await window.storage.set(k,JSON.stringify(v));return true}catch(e){st.textContent="Sin guardar: almacenamiento no disponible";return false}}
+async function sList(p){try{const r=await window.storage.list(p);return r?r.keys:[]}catch(e){return []}}
+
+/* ============ RENDER FILTROS ============ */
+function chips(el,items,setRef,cls){
+  el.innerHTML="";
+  items.forEach(([val,label,n])=>{
+    const b=document.createElement('button');
+    b.className='chip'+(cls?' '+cls:'')+(setRef.has(val)?' on':'');
+    b.innerHTML=label+(n!=null?`<span class="n">${n}</span>`:'');
+    b.onclick=()=>{setRef.has(val)?setRef.delete(val):setRef.add(val);render()};
+    el.appendChild(b);
+  });
+}
+function counts(idx){const m={};D.forEach(r=>{if(r[8]&&S.hideMiss)return;const v=r[idx];if(!v)return;m[v]=(m[v]||0)+1});return m}
+
+/* ============ FILTRADO ============ */
+function pass(r){
+  if(S.hideMiss&&r[8])return false;
+  if(S.theme.size&&!S.theme.has(r[2]))return false;
+  if(S.dance.size&&!S.dance.has(r[7]))return false;
+  if(S.feel.size&&!S.feel.has(r[3]))return false;
+  if(S.mem&&!isMem(r))return false;
+  if(S.bmin!=null&&r[4]<S.bmin)return false;
+  if(S.bmax!=null&&r[4]>S.bmax)return false;
+  if(S.q){const q=S.q.toLowerCase();if(!(r[0].toLowerCase().includes(q)||r[1].toLowerCase().includes(q)))return false}
+  return true;
+}
+function isMem(r){const k=r[0];return MEMO[k]!==undefined?MEMO[k]:!!r[6]}
+function dur(r){return DUR[r[3]]||5.75}
+function mmss(sec){const m=Math.floor(sec/60),s=Math.round(sec%60);return String(m).padStart(2,'0')+":"+String(s).padStart(2,'0')}
+
+/* ============ TABLA ============ */
+function render(){
+  const tCounts=counts(2), dCounts=counts(7), fCounts=counts(3);
+  chips(document.getElementById('fTheme'),Object.keys(TH).filter(k=>tCounts[k]).map(k=>[k,TH[k],tCounts[k]]),S.theme);
+  chips(document.getElementById('fDance'),Object.keys(dCounts).sort().map(k=>[k,k,dCounts[k]]),S.dance,'dance');
+  chips(document.getElementById('fFeel'),Object.keys(fCounts).sort().map(k=>[k,k,fCounts[k]]),S.feel);
+
+  const idx={t:0,th:2,feel:3,b:4,k:5,dance:7}[S.sort];
+  const rows=D.map((r,i)=>[r,i]).filter(([r])=>pass(r)).sort((a,b)=>{
+    let x=a[0][idx],y=b[0][idx];
+    if(typeof x==='string'){x=x.toLowerCase();y=y.toLowerCase()}
+    return (x<y?-1:x>y?1:0)*(S.asc?1:-1);
+  });
+
+  const tb=document.getElementById('tb');tb.innerHTML="";
+  rows.forEach(([r,i])=>{
+    const tr=document.createElement('tr');
+    if(r[8])tr.className='miss';
+    tr.innerHTML=`
+      <td class="add" data-add="${i}" title="Añadir al set">+</td>
+      <td class="mem ${isMem(r)?'on':''}" data-mem="${r[0]}" title="De memoria">♦</td>
+      <td><div class="tt">${r[0]}</div><div class="cp">${r[1]}</div></td>
+      <td><span class="tag">${TH[r[2]]}</span></td>
+      <td>${r[3]}</td>
+      <td class="bpm">${r[4]}</td>
+      <td class="bpm">${r[5]}</td>
+      <td>${r[7]?`<span class="tag d">${r[7]}</span>`:''}</td>`;
+    tb.appendChild(tr);
+  });
+  document.getElementById('count').textContent=`${rows.length} temas · ${D.filter(r=>r[8]).length} faltantes en total`;
+  drawSet();
+}
+
+document.getElementById('tb').addEventListener('click',e=>{
+  const a=e.target.dataset.add, m=e.target.dataset.mem;
+  if(a!==undefined){addTune(+a)}
+  if(m!==undefined){const r=D.find(x=>x[0]===m);MEMO[m]=!isMem(r);sSet('memo',MEMO);render()}
+});
+
+/* ============ SET ============ */
+function addTune(i){if(SET.some(s=>s.i===i))return;SET.push({i,dur:dur(D[i])*60});drawSet()}
+function setSeconds(){return SET.reduce((a,s)=>a+s.dur,0)+Math.max(0,SET.length-1)*GAP}
+
+function drawSet(){
+  const ol=document.getElementById('setlist');ol.innerHTML="";
+  SET.forEach((s,n)=>{
+    const r=D[s.i];
+    const li=document.createElement('li');
+    li.innerHTML=`<span class="num">${n+1}</span>
+      <span class="st"><b>${r[0]}</b><span>${TH[r[2]]} · ${r[3]} · ${r[4]} bpm · ${r[5]}</span></span>
+      <span class="dur">${mmss(s.dur)}</span>
+      <button class="mini" data-m="${n}">−</button>
+      <button class="mini" data-p="${n}">+</button>
+      <button class="mini" data-u="${n}">↑</button>
+      <button class="mini" data-x="${n}">×</button>`;
+    ol.appendChild(li);
+  });
+
+  const tot=setSeconds();
+  const c=document.getElementById('clock');
+  c.innerHTML=mmss(tot)+'<small>/ 45:00</small>';
+  c.className = tot>TARGET ? 'over' : tot>TARGET-90 ? 'near' : 'ok';
+
+  // barra
+  const reel=document.getElementById('reel');reel.innerHTML="";
+  const scale=Math.max(TARGET,tot);
+  const hues=['#F0A93B','#C9A227','#4FBF9F','#7FA8D9','#B98BD9','#E88A6B','#8FCB9B'];
+  let acc=0;
+  SET.forEach((s,n)=>{
+    const d=document.createElement('div');
+    d.className='seg'+(acc>=TARGET?' over':'');
+    d.style.width=(s.dur/scale*100)+'%';
+    d.style.background=acc>=TARGET?'var(--red)':hues[n%hues.length];
+    d.textContent=D[s.i][0];
+    d.title=D[s.i][0]+' · '+mmss(s.dur);
+    reel.appendChild(d);
+    acc+=s.dur+GAP;
+  });
+  if(tot<TARGET){const e=document.createElement('div');e.className='empty';e.style.width=((TARGET-tot)/scale*100)+'%';reel.appendChild(e)}
+  [15,30].forEach(m=>{const k=document.createElement('div');k.className='mark q';k.style.left=(m*60/scale*100)+'%';reel.appendChild(k)});
+
+  const v=document.getElementById('verdict');
+  if(!SET.length){v.innerHTML='';}
+  else if(tot>TARGET){v.innerHTML=`<div class="warn">Te pasas ${mmss(tot-TARGET)}. Quita un tema o recorta solos.</div>`}
+  else if(tot>=TARGET-120){v.innerHTML=`<div class="good">Listo. Faltan ${mmss(TARGET-tot)} de margen.</div>`}
+  else{v.innerHTML=`<div class="hint">Faltan ${mmss(TARGET-tot)}. Vas en ${SET.length} tema${SET.length==1?'':'s'}.</div>`}
+}
+
+document.getElementById('setlist').addEventListener('click',e=>{
+  const d=e.target.dataset;
+  if(d.x!==undefined)SET.splice(+d.x,1);
+  if(d.u!==undefined&&+d.u>0){const i=+d.u;[SET[i-1],SET[i]]=[SET[i],SET[i-1]]}
+  if(d.m!==undefined)SET[+d.m].dur=Math.max(60,SET[+d.m].dur-30);
+  if(d.p!==undefined)SET[+d.p].dur+=30;
+  drawSet();
+});
+
+/* ============ CONTROLES ============ */
+document.getElementById('q').oninput=e=>{S.q=e.target.value;render()};
+document.getElementById('bmin').oninput=e=>{S.bmin=e.target.value?+e.target.value:null;render()};
+document.getElementById('bmax').oninput=e=>{S.bmax=e.target.value?+e.target.value:null;render()};
+document.getElementById('onlyMem').onchange=e=>{S.mem=e.target.checked;render()};
+document.getElementById('hideMiss').onchange=e=>{S.hideMiss=e.target.checked;render()};
+document.getElementById('clearF').onclick=()=>{S.theme.clear();S.dance.clear();S.feel.clear();S.q="";S.bmin=S.bmax=null;S.mem=false;
+  document.getElementById('q').value="";document.getElementById('bmin').value="";document.getElementById('bmax').value="";document.getElementById('onlyMem').checked=false;render()};
+document.querySelectorAll('th[data-s]').forEach(th=>th.onclick=()=>{const s=th.dataset.s;S.asc=(S.sort===s)?!S.asc:true;S.sort=s;render()});
+document.getElementById('clearSet').onclick=()=>{SET=[];drawSet()};
+document.getElementById('copy').onclick=()=>{
+  const txt=SET.map((s,n)=>`${n+1}. ${D[s.i][0]} — ${D[s.i][3]} ${D[s.i][4]}bpm ${D[s.i][5]} (${mmss(s.dur)})`).join('\n')+`\n\nTotal: ${mmss(setSeconds())}`;
+  navigator.clipboard.writeText(txt).then(()=>{st.textContent="Set copiado"},()=>{st.textContent="No se pudo copiar"});
+};
+document.getElementById('save').onclick=async()=>{
+  const n=document.getElementById('setname').value.trim();
+  if(!n){st.textContent="Ponle nombre al set";return}
+  if(!SET.length){st.textContent="El set está vacío";return}
+  const ok=await sSet('set:'+n,SET);
+  st.textContent=ok?`Guardado "${n}"`:'No se pudo guardar';
+  loadSaved();
+};
+async function loadSaved(){
+  const keys=await sList('set:');
+  const el=document.getElementById('savedList');el.innerHTML="";
+  keys.forEach(k=>{
+    const name=k.slice(4);
+    const b=document.createElement('span');b.className='s';b.textContent=name;
+    b.onclick=async()=>{const v=await sGet(k);if(v){SET=v;document.getElementById('setname').value=name;drawSet();st.textContent=`Cargado "${name}"`}};
+    el.appendChild(b);
+  });
+}
+
+/* ============ INIT ============ */
+(async()=>{
+  const m=await sGet('memo'); if(m)MEMO=m;
+  await loadSaved();
+  render();
+})();
+</script>
