@@ -1,5 +1,5 @@
 /**
- * CAPA BASE DEL REPERTORIO — 432 temas.
+ * CAPA BASE DEL REPERTORIO — 464 temas.
  * Bootstrap: scripts/migrate-seed.mjs desde seed/repertorio.html (363 temas).
  * Este archivo es la fuente de verdad y YA DIVERGE del seed: las altas curadas
  * posteriores (p. ej. la ampliación Beatles) viven aquí. NO re-ejecutar `migrate`:
@@ -463,4 +463,37 @@ export const TUNES: Tune[] = [
   { id: "odiame", title: "Ódiame", composer: "Rafael Otero", theme: "latin", style: "balada", feel: "vals", bpm: 88, key: "Am", dance: "vals", bars: 32, beatsPerBar: 3, memorized: false, missing: true, notes: "Vals criollo peruano. Tapa el hueco de vals de salón." },
   { id: "nuestro-juramento", title: "Nuestro Juramento", composer: "Benito de Jesús", theme: "latin", style: "balada", feel: "balada", bpm: 88, key: "Am", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Pasillo ecuatoriano." },
   { id: "triunfamos", title: "Triunfamos", composer: "por confirmar", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "Dm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "partitura propia", notes: "Trío Martino. Compositor, tonalidad y forma por confirmar contra la partitura." },
+  // ---- ALTAS: clásicos de los 70 ----
+  { id: "how-deep-is-your-love", title: "How Deep Is Your Love", composer: "Bee Gees", theme: "moderno", style: "balada", feel: "latin", bpm: 104, key: "Eb", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false, altStyles: ["bossa"] },
+  { id: "this-masquerade", title: "This Masquerade", composer: "Leon Russell", theme: "moderno", style: "bossa", feel: "bossa", bpm: 110, key: "Cm", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "Benson. Ya es standard." },
+  { id: "the-look-of-love", title: "The Look Of Love", composer: "Bacharach", theme: "songbook", style: "bossa", feel: "bossa", bpm: 110, key: "Bbm", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "alfie", title: "Alfie", composer: "Bacharach", theme: "songbook", style: "balada", feel: "balada", bpm: 66, key: "C", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "this-guys-in-love-with-you", title: "This Guy's In Love With You", composer: "Bacharach", theme: "songbook", style: "balada", feel: "latin", bpm: 100, key: "F", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "walk-on-by", title: "Walk On By", composer: "Bacharach", theme: "songbook", style: "bossa", feel: "bossa", bpm: 116, key: "Am", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "raindrops-keep-fallin", title: "Raindrops Keep Fallin' On My Head", composer: "Bacharach", theme: "songbook", style: "bossa", feel: "bossa", bpm: 120, key: "F", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "Master Rhythm 278" },
+  { id: "what-the-world-needs-now", title: "What The World Needs Now", composer: "Bacharach", theme: "songbook", style: "balada", feel: "vals", bpm: 96, key: "C", dance: "vals", bars: 32, beatsPerBar: 3, memorized: false, missing: false, source: "Master Rhythm 390" },
+  { id: "my-cherie-amour", title: "My Cherie Amour", composer: "Stevie Wonder", theme: "moderno", style: "bossa", feel: "bossa", bpm: 120, key: "F", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "isnt-she-lovely", title: "Isn't She Lovely", composer: "Stevie Wonder", theme: "moderno", style: "souljazz", feel: "funk", bpm: 120, key: "E", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "for-once-in-my-life", title: "For Once In My Life", composer: "Miller/Murden", theme: "songbook", style: "swing", feel: "swing", bpm: 160, key: "F", dance: "swing", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "sir-duke", title: "Sir Duke", composer: "Stevie Wonder", theme: "moderno", style: "souljazz", feel: "funk", bpm: 126, key: "B", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "dont-you-worry-bout-a-thing", title: "Don't You Worry 'Bout A Thing", composer: "Stevie Wonder", theme: "moderno", style: "latinjazz", feel: "latin", bpm: 118, key: "Cm", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "just-the-way-you-are", title: "Just The Way You Are", composer: "Billy Joel", theme: "moderno", style: "bossa", feel: "bossa", bpm: 120, key: "D", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "new-york-state-of-mind", title: "New York State Of Mind", composer: "Billy Joel", theme: "moderno", style: "blues", feel: "blues", bpm: 76, key: "G", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "killing-me-softly", title: "Killing Me Softly With His Song", composer: "Fox/Gimbel", theme: "songbook", style: "balada", feel: "latin", bpm: 100, key: "Am", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "Master Rhythm 179" },
+  { id: "moondance", title: "Moondance", composer: "Van Morrison", theme: "songbook", style: "swing", feel: "swing", bpm: 140, key: "Am", dance: "swing", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "Master Rhythm 228" },
+  { id: "aint-no-sunshine", title: "Ain't No Sunshine", composer: "Bill Withers", theme: "moderno", style: "blues", feel: "blues", bpm: 80, key: "Am", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "me-and-mrs-jones", title: "Me And Mrs. Jones", composer: "Gamble/Huff", theme: "moderno", style: "balada", feel: "latin", bpm: 76, key: "Fm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "if-you-dont-know-me-by-now", title: "If You Don't Know Me By Now", composer: "Gamble/Huff", theme: "moderno", style: "balada", feel: "latin", bpm: 88, key: "Ab", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "eres-tu", title: "Eres Tú", composer: "Juan Carlos Calderón", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "Mocedades. Partes completas en biblioteca." },
+  { id: "easy", title: "Easy", composer: "Lionel Richie", theme: "moderno", style: "blues", feel: "blues", bpm: 88, key: "Bb", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "never-can-say-goodbye", title: "Never Can Say Goodbye", composer: "Clifton Davis", theme: "moderno", style: "bossa", feel: "bossa", bpm: 120, key: "Am", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "just-the-two-of-us", title: "Just The Two Of Us", composer: "Bill Withers/Grover Washington", theme: "moderno", style: "bossa", feel: "bossa", bpm: 100, key: "Db", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "mr-magic", title: "Mr. Magic", composer: "Ralph MacDonald", theme: "moderno", style: "souljazz", feel: "funk", bpm: 96, key: "Cm", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "cant-help-falling-in-love", title: "Can't Help Falling In Love", composer: "Peretti/Creatore/Weiss", theme: "songbook", style: "balada", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "Master Rhythm 053" },
+  { id: "you-are-so-beautiful", title: "You Are So Beautiful", composer: "Preston/Fisher", theme: "moderno", style: "balada", feel: "balada", bpm: 60, key: "C", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "the-rose", title: "The Rose", composer: "Amanda McBroom", theme: "moderno", style: "balada", feel: "balada", bpm: 64, key: "C", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "your-song", title: "Your Song", composer: "Elton John", theme: "moderno", style: "balada", feel: "balada", bpm: 72, key: "Eb", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "the-way-we-were", title: "The Way We Were", composer: "Marvin Hamlisch", theme: "songbook", style: "balada", feel: "balada", bpm: 66, key: "A", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "Master Rhythm 383" },
+  { id: "wonderful-tonight", title: "Wonderful Tonight", composer: "Eric Clapton", theme: "moderno", style: "balada", feel: "balada", bpm: 96, key: "G", dance: "slowfox", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "unchained-melody", title: "Unchained Melody", composer: "Alex North", theme: "songbook", style: "balada", feel: "balada", bpm: 60, key: "C", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "Master Rhythm 063" },
 ];
