@@ -16,6 +16,7 @@ export const THEMES = [
   'moderno',
   'songbook',
   'latin',
+  'bolero',
   'brasil',
 ] as const;
 export type Theme = (typeof THEMES)[number];
@@ -31,7 +32,8 @@ export const THEME_LABELS: Record<Theme, string> = {
   navidad: 'Navidad',
   moderno: 'Moderno',
   songbook: 'Songbook',
-  latin: 'Latin/Bolero',
+  latin: 'Latin',
+  bolero: 'Bolero',
   brasil: 'Brasil',
 };
 
@@ -137,6 +139,8 @@ export const JAZZ_TARGET_SEC = 330;
 export interface Tune {
   id: string;
   title: string;
+  /** Título alterno con el que se anuncia (p. ej. en inglés). */
+  altTitle?: string;
   composer: string;
   /** Temática: artista u ocasión (qué noche). */
   theme: Theme;

@@ -9,6 +9,7 @@ type TuneData = Omit<Tune, 'id'>;
 
 const PATCHABLE: (keyof TuneData)[] = [
   'title',
+  'altTitle',
   'composer',
   'theme',
   'style',

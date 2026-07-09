@@ -576,6 +576,7 @@ const TuneRow = memo(function TuneRow({
           {t.title} {t.missing && <span className="tag missing">falta</span>}{' '}
           {isLocal && <span className="tag local">local</span>}
         </div>
+        {t.altTitle && <div className={s.altTitle}>{t.altTitle}</div>}
         <div className={s.cp}>{t.composer}</div>
       </td>
       <td>
@@ -649,6 +650,7 @@ const TuneCard = memo(function TuneCard({
           ♦
         </button>
       </div>
+      {t.altTitle && <div className={s.cardAlt}>{t.altTitle}</div>}
       <div className={s.cardComposer}>{t.composer || '—'}</div>
       <div className={s.cardChips}>
         <span className={s.miniChip}>{STYLE_LABELS[t.style]}</span>

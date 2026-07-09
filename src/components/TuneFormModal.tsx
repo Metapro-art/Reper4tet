@@ -48,6 +48,7 @@ const KEYS = [
 
 interface FormState {
   title: string;
+  altTitle: string;
   composer: string;
   theme: Theme;
   style: Style;
@@ -69,6 +70,7 @@ interface FormState {
 function fromTune(t: Tune): FormState {
   return {
     title: t.title,
+    altTitle: t.altTitle ?? '',
     composer: t.composer,
     theme: t.theme,
     style: t.style,
@@ -90,6 +92,7 @@ function fromTune(t: Tune): FormState {
 
 const EMPTY: FormState = {
   title: '',
+  altTitle: '',
   composer: '',
   theme: 'songbook',
   style: 'swing',
@@ -164,6 +167,7 @@ export function TuneFormModal({ tuneId }: { tuneId: string }) {
     const alt = [...form.altStyles].filter((f) => f !== form.feel);
     const data: Omit<Tune, 'id'> = {
       title,
+      altTitle: form.altTitle.trim() || undefined,
       composer: form.composer.trim(),
       theme: form.theme,
       style: form.style,
@@ -248,6 +252,18 @@ export function TuneFormModal({ tuneId }: { tuneId: string }) {
               className="input"
               value={form.title}
               onChange={(e) => set('title', e.target.value)}
+            />
+          </div>
+          <div className={`${s.field} ${s.full}`}>
+            <label className="lbl" htmlFor="tf-alt">
+              Título alterno (con el que se anuncia)
+            </label>
+            <input
+              id="tf-alt"
+              className="input"
+              placeholder="p. ej. You Belong To My Heart"
+              value={form.altTitle}
+              onChange={(e) => set('altTitle', e.target.value)}
             />
           </div>
           <div className={s.field}>

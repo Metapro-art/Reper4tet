@@ -206,6 +206,12 @@
   font-weight: 500;
   line-height: 1.25;
 }
+.altTitle {
+  color: var(--muted);
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.2;
+}
 .cp {
   color: var(--muted);
   font-size: 13px;
@@ -255,6 +261,13 @@
   line-height: 1.15;
   letter-spacing: 0.01em;
   word-break: break-word;
+}
+.cardAlt {
+  color: var(--muted);
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.2;
+  margin-top: 2px;
 }
 .cardComposer {
   color: var(--muted);

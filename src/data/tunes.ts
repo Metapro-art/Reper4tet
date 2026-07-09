@@ -1,5 +1,5 @@
 /**
- * CAPA BASE DEL REPERTORIO — 410 temas.
+ * CAPA BASE DEL REPERTORIO — 435 temas.
  * Bootstrap: scripts/migrate-seed.mjs desde seed/repertorio.html (363 temas).
  * Este archivo es la fuente de verdad y YA DIVERGE del seed: las altas curadas
  * posteriores (p. ej. la ampliación Beatles) viven aquí. NO re-ejecutar `migrate`:
@@ -257,15 +257,15 @@ export const TUNES: Tune[] = [
   { id: "o-grande-amor", title: "O Grande Amor", composer: "Jobim", theme: "brasil", style: "bossa", feel: "bossa", bpm: 140, key: "Gm", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
   { id: "blue-bossa", title: "Blue Bossa", composer: "Dorham", theme: "brasil", style: "bossa", feel: "bossa", bpm: 150, key: "Cm", bars: 32, beatsPerBar: 4, memorized: true, missing: true },
   // ---- LATIN/BOLERO ----
-  { id: "besame-mucho", title: "Bésame Mucho", composer: "Velázquez", theme: "latin", style: "latinjazz", feel: "latin", bpm: 104, key: "Dm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
-  { id: "perfidia", title: "Perfidia", composer: "Domínguez", theme: "latin", style: "latinjazz", feel: "latin", bpm: 106, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
-  { id: "quizas-quizas-quizas", title: "Quizás Quizás Quizás", composer: "Farrés", theme: "latin", style: "latinjazz", feel: "latin", bpm: 102, key: "Dm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
-  { id: "historia-de-un-amor", title: "Historia de un Amor", composer: "Almarán", theme: "latin", style: "latinjazz", feel: "latin", bpm: 100, key: "Dm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
-  { id: "corazon-loco", title: "Corazón Loco", composer: "Cuéllar", theme: "latin", style: "latinjazz", feel: "latin", bpm: 104, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
-  { id: "la-puerta", title: "La Puerta", composer: "L. Demetrio", theme: "latin", style: "latinjazz", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
-  { id: "la-ultima-noche", title: "La Última Noche", composer: "B. Collazo", theme: "latin", style: "latinjazz", feel: "latin", bpm: 102, key: "Am", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
-  { id: "los-aretes-de-la-luna", title: "Los Aretes de la Luna", composer: "Rigual", theme: "latin", style: "latinjazz", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
-  { id: "lagrimas-negras", title: "Lágrimas Negras", composer: "M. Matamoros", theme: "latin", style: "latinjazz", feel: "latin", bpm: 106, key: "Dm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
+  { id: "besame-mucho", title: "Bésame Mucho", composer: "Velázquez", theme: "bolero", style: "balada", feel: "latin", bpm: 104, key: "Dm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
+  { id: "perfidia", title: "Perfidia", composer: "Domínguez", theme: "bolero", style: "balada", feel: "latin", bpm: 106, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
+  { id: "quizas-quizas-quizas", title: "Quizás Quizás Quizás", altTitle: "Perhaps, Perhaps, Perhaps", composer: "Farrés", theme: "bolero", style: "balada", feel: "latin", bpm: 102, key: "Dm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
+  { id: "historia-de-un-amor", title: "Historia de un Amor", composer: "Almarán", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "Dm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
+  { id: "corazon-loco", title: "Corazón Loco", composer: "Cuéllar", theme: "bolero", style: "balada", feel: "latin", bpm: 104, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
+  { id: "la-puerta", title: "La Puerta", composer: "L. Demetrio", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
+  { id: "la-ultima-noche", title: "La Última Noche", composer: "B. Collazo", theme: "bolero", style: "balada", feel: "latin", bpm: 102, key: "Am", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "los-aretes-de-la-luna", title: "Los Aretes de la Luna", composer: "Rigual", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "lagrimas-negras", title: "Lágrimas Negras", composer: "M. Matamoros", theme: "bolero", style: "balada", feel: "latin", bpm: 106, key: "Dm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
   { id: "sway-quien-sera", title: "Sway (Quién Será)", composer: "Ruiz", theme: "latin", style: "latinjazz", feel: "latin", bpm: 108, key: "Dm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
   { id: "oye-como-va", title: "Oye Como Va", composer: "Puente", theme: "latin", style: "latinjazz", feel: "latin", bpm: 120, key: "Am", dance: "chacha", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
   { id: "el-choclo", title: "El Choclo", composer: "Villoldo", theme: "latin", style: "latinjazz", feel: "latin", bpm: 126, key: "Dm", dance: "tango", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
@@ -281,7 +281,7 @@ export const TUNES: Tune[] = [
   { id: "blue-suede-shoes", title: "Blue Suede Shoes", composer: "Perkins", theme: "latin", style: "latinjazz", feel: "blues", bpm: 172, key: "A", dance: "jive", bars: 12, beatsPerBar: 4, memorized: true, missing: false },
   { id: "fascination", title: "Fascination", composer: "Marchetti", theme: "latin", style: "latinjazz", feel: "vals", bpm: 88, key: "C", dance: "vals", bars: 32, beatsPerBar: 3, memorized: false, missing: true },
   { id: "around-the-world", title: "Around The World", composer: "Young", theme: "latin", style: "latinjazz", feel: "vals", bpm: 86, key: "C", dance: "vals", bars: 32, beatsPerBar: 3, memorized: false, missing: true },
-  { id: "sabor-a-mi", title: "Sabor A Mí", composer: "Carrillo", theme: "latin", style: "latinjazz", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
+  { id: "sabor-a-mi", title: "Sabor A Mí", composer: "Carrillo", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
   // ---- MILES ----
   { id: "so-what", title: "So What", composer: "Davis", theme: "miles", style: "modal", feel: "swing", bpm: 140, key: "Dm", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
   { id: "walkin", title: "Walkin'", composer: "Carpenter", theme: "miles", style: "hardbop", feel: "blues", bpm: 160, key: "F", bars: 12, beatsPerBar: 4, memorized: true, missing: false },
@@ -440,4 +440,30 @@ export const TUNES: Tune[] = [
   { id: "normans-blues", title: "Norman's Blues", composer: "Sonny Stitt", theme: "songbook", style: "blues", feel: "blues", bpm: 150, key: "F", bars: 12, beatsPerBar: 4, memorized: false, missing: true, notes: "Datos por confirmar." },
   { id: "down-home-blues", title: "Down Home Blues", composer: "Sonny Stitt", theme: "songbook", style: "blues", feel: "blues", bpm: 120, key: "Bb", bars: 12, beatsPerBar: 4, memorized: false, missing: true, notes: "Datos por confirmar." },
   { id: "patterns", title: "Patterns", composer: "Ahmad Jamal", theme: "moderno", style: "hardbop", feel: "swing", bpm: 140, key: "C", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Datos por confirmar." },
+  // ---- BOLERO (y 2 latin) ----
+  { id: "frenesi", title: "Frenesí", altTitle: "Frenesi", composer: "Alberto Domínguez", theme: "bolero", style: "balada", feel: "latin", bpm: 104, key: "F", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Nº1 con Artie Shaw, 1940." },
+  { id: "solamente-una-vez", title: "Solamente Una Vez", altTitle: "You Belong To My Heart", composer: "Agustín Lara", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
+  { id: "somos-novios", title: "Somos Novios", altTitle: "It's Impossible", composer: "Armando Manzanero", theme: "bolero", style: "balada", feel: "latin", bpm: 96, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Hit de Perry Como." },
+  { id: "cuando-vuelva-a-tu-lado", title: "Cuando Vuelva a Tu Lado", altTitle: "What A Difference A Day Makes", composer: "María Grever", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "F", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Dinah Washington. Muy reconocido en EE.UU." },
+  { id: "aquellos-ojos-verdes", title: "Aquellos Ojos Verdes", altTitle: "Green Eyes", composer: "Nilo Menéndez", theme: "bolero", style: "balada", feel: "latin", bpm: 104, key: "Eb", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
+  { id: "quiereme-mucho", title: "Quiéreme Mucho", altTitle: "Yours", composer: "Gonzalo Roig", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
+  { id: "te-quiero-dijiste", title: "Te Quiero Dijiste", altTitle: "Magic Is The Moonlight", composer: "María Grever", theme: "bolero", style: "balada", feel: "latin", bpm: 102, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
+  { id: "duerme", title: "Duerme", altTitle: "Time Was", composer: "Miguel Prado", theme: "bolero", style: "balada", feel: "latin", bpm: 96, key: "Eb", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
+  { id: "maria-elena", title: "María Elena", composer: "Lorenzo Barcelata", theme: "bolero", style: "balada", feel: "latin", bpm: 104, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Nº1 con Jimmy Dorsey, 1941." },
+  { id: "amor-amor-amor", title: "Amor", altTitle: "Amor, Amor, Amor", composer: "Gabriel Ruiz", theme: "bolero", style: "balada", feel: "latin", bpm: 106, key: "F", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Sinatra, Nat King Cole." },
+  { id: "cachito", title: "Cachito", composer: "Consuelo Velázquez", theme: "bolero", style: "latinjazz", feel: "latin", bpm: 128, key: "C", dance: "chacha", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Más movido. Nat King Cole." },
+  { id: "esta-tarde-vi-llover", title: "Esta Tarde Vi Llover", altTitle: "Yesterday I Heard The Rain", composer: "Armando Manzanero", theme: "bolero", style: "balada", feel: "latin", bpm: 96, key: "Cm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Tony Bennett." },
+  { id: "contigo-en-la-distancia", title: "Contigo en la Distancia", composer: "César Portillo de la Luz", theme: "bolero", style: "balada", feel: "latin", bpm: 96, key: "F", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Armonía rica. Aguanta solo de guitarra." },
+  { id: "dos-gardenias", title: "Dos Gardenias", composer: "Isolina Carrillo", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Reconocimiento global vía Buena Vista Social Club." },
+  { id: "el-reloj", title: "El Reloj", composer: "Roberto Cantoral", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
+  { id: "la-barca", title: "La Barca", composer: "Roberto Cantoral", theme: "bolero", style: "balada", feel: "latin", bpm: 98, key: "F", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
+  { id: "piel-canela", title: "Piel Canela", composer: "Bobby Capó", theme: "bolero", style: "latinjazz", feel: "latin", bpm: 112, key: "C", dance: "chacha", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Bolero-son. Más movido." },
+  { id: "contigo-aprendi", title: "Contigo Aprendí", composer: "Armando Manzanero", theme: "bolero", style: "balada", feel: "latin", bpm: 92, key: "F", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
+  { id: "noche-de-ronda", title: "Noche de Ronda", composer: "Agustín Lara", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
+  { id: "sombras", title: "Sombras", composer: "Carlos Brito", theme: "bolero", style: "balada", feel: "latin", bpm: 96, key: "Am", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Pasillo, pero se toca como bolero." },
+  { id: "angelitos-negros", title: "Angelitos Negros", composer: "Manuel Álvarez Maciste", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "Dm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
+  { id: "flor-de-azalea", title: "Flor de Azalea", composer: "Manuel Esperón", theme: "bolero", style: "balada", feel: "latin", bpm: 98, key: "Am", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true },
+  { id: "la-luna-en-tu-mirada", title: "La Luna en Tu Mirada", composer: "Los Zafiros", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Filin cubano. Armonías vocales adaptables al cuarteto." },
+  { id: "odiame", title: "Ódiame", composer: "Rafael Otero", theme: "latin", style: "balada", feel: "vals", bpm: 88, key: "Am", dance: "vals", bars: 32, beatsPerBar: 3, memorized: false, missing: true, notes: "Vals criollo peruano. Tapa el hueco de vals de salón." },
+  { id: "nuestro-juramento", title: "Nuestro Juramento", composer: "Benito de Jesús", theme: "latin", style: "balada", feel: "balada", bpm: 88, key: "Am", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Pasillo ecuatoriano." },
 ];

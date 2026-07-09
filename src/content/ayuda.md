@@ -24,6 +24,13 @@ Cada tema lleva dos etiquetas distintas:
 Un mismo tema tiene las dos: "So What" es Temática Miles y Estilo Modal.
 Puedes filtrar por cualquiera de las dos.
 
+## Título alterno
+Varios boleros latinos entraron al cancionero en inglés y se anuncian con
+ese nombre. Ese segundo título va en el campo "título alterno": se ve en
+gris bajo el título, y la búsqueda encuentra el tema por CUALQUIERA de los
+dos. Ejemplo: "Solamente Una Vez" se anuncia como "You Belong To My Heart"
+(Bésame Mucho, en cambio, se quedó en español y no lleva alterno).
+
 ## El reloj 45:00
 Verde hasta 43:30. Ámbar hasta 45:00. Rojo si te pasas.
 Suma 45 segundos de transición entre temas.
