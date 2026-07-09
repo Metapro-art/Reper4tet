@@ -146,8 +146,8 @@ try {
 
   // 5) sin red: crear un set y añadir un tema
   await clickByText(page, '.tabbar button', 'Sets');
-  await textOnPage(page, 'Set libre');
-  await clickByText(page, 'button', 'Set libre');
+  await textOnPage(page, 'Jazz');
+  await clickByText(page, 'button', 'Jazz');
   await textOnPage(page, 'Añadir temas');
   await clickByText(page, 'button', 'Añadir temas');
   await textOnPage(page, 'Añadiendo a');
@@ -167,7 +167,7 @@ try {
   await page.reload({ waitUntil: 'load', timeout: 30000 });
   await textOnPage(page, 'Biblioteca');
   await clickByText(page, '.tabbar button', 'Sets');
-  await textOnPage(page, 'Libre ');
+  await textOnPage(page, 'Jazz ');
   await textOnPage(page, '1 tema');
   check('Sin red + recarga: el set persiste (IndexedDB)', true);
 

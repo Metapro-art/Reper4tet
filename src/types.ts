@@ -3,45 +3,72 @@
  * Fuente de verdad de enums, etiquetas y duraciones por defecto.
  */
 
+/** Temática = artista u ocasión (qué noche llamas al tema), nada más. */
 export const THEMES = [
   'ellington',
   'monk',
-  'bird',
-  'bebop',
-  'hardbop',
-  'souljazz',
-  'basie',
-  'songbook',
-  'brasil',
-  'latin',
   'miles',
   'coltrane',
   'shorter',
-  'moderno',
+  'bird',
   'beatles',
   'navidad',
-  'blues',
+  'moderno',
+  'songbook',
+  'latin',
+  'brasil',
 ] as const;
 export type Theme = (typeof THEMES)[number];
 
 export const THEME_LABELS: Record<Theme, string> = {
   ellington: 'Ellington',
   monk: 'Monk',
-  bird: 'Bird',
-  bebop: 'Bebop',
-  hardbop: 'Hard Bop',
-  souljazz: 'Soul Jazz',
-  basie: 'Basie/Swing',
-  songbook: 'Songbook',
-  brasil: 'Brasil',
-  latin: 'Latin/Bolero',
   miles: 'Miles',
   coltrane: 'Coltrane',
   shorter: 'Shorter',
-  moderno: 'Moderno',
+  bird: 'Bird',
   beatles: 'Beatles',
   navidad: 'Navidad',
+  moderno: 'Moderno',
+  songbook: 'Songbook',
+  latin: 'Latin/Bolero',
+  brasil: 'Brasil',
+};
+
+/** Estilo = de qué escuela es el tema (cómo se toca), independiente de la temática. */
+export const STYLES = [
+  'dixieland',
+  'swing',
+  'bebop',
+  'cool',
+  'hardbop',
+  'souljazz',
+  'modal',
+  'postbop',
+  'fusion',
+  'latinjazz',
+  'bossa',
+  'gypsy',
+  'blues',
+  'balada',
+] as const;
+export type Style = (typeof STYLES)[number];
+
+export const STYLE_LABELS: Record<Style, string> = {
+  dixieland: 'Dixieland',
+  swing: 'Swing',
+  bebop: 'Bebop',
+  cool: 'Cool',
+  hardbop: 'Hard Bop',
+  souljazz: 'Soul Jazz',
+  modal: 'Modal',
+  postbop: 'Post-Bop',
+  fusion: 'Fusión',
+  latinjazz: 'Latin Jazz',
+  bossa: 'Bossa',
+  gypsy: 'Gypsy',
   blues: 'Blues',
+  balada: 'Balada',
 };
 
 export const FEELS = [
@@ -111,7 +138,10 @@ export interface Tune {
   id: string;
   title: string;
   composer: string;
+  /** Temática: artista u ocasión (qué noche). */
   theme: Theme;
+  /** Estilo: de qué escuela es (cómo se toca). */
+  style: Style;
   feel: Feel;
   bpm: number;
   key: string;

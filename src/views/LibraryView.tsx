@@ -1,7 +1,16 @@
-import { memo, useMemo, useState } from 'react';
-import { ArrowDown, ArrowUp, Check, Pencil, Plus, X } from 'lucide-react';
-import type { Dance, Feel, Theme, Tune } from '../types';
-import { DANCE_LABELS, FEEL_LABELS, THEME_LABELS, THEMES, FEELS, DANCES } from '../types';
+import { memo, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { ArrowDown, ArrowUp, Check, Copy, MoreHorizontal, Pencil, Plus, Trash2, X } from 'lucide-react';
+import type { Dance, Feel, Style, Theme, Tune } from '../types';
+import {
+  DANCES,
+  DANCE_LABELS,
+  FEELS,
+  FEEL_LABELS,
+  STYLES,
+  STYLE_LABELS,
+  THEMES,
+  THEME_LABELS,
+} from '../types';
 import { createSearcher } from '../lib/search';
 import { fmtSec } from '../lib/time';
 import { chorusSec, totalSec, resolveEntries, setStatus } from '../lib/setMath';
@@ -10,13 +19,15 @@ import { useMergedTunes, useTuneMap } from '../store/selectors';
 import { useLibraryStore } from '../store/libraryStore';
 import { useSetsStore } from '../store/setsStore';
 import { useUiStore } from '../store/uiStore';
+import { useFilterStore } from '../store/filterStore';
 import s from './LibraryView.module.css';
 
-type SortKey = 'title' | 'composer' | 'theme' | 'feel' | 'bpm' | 'key' | 'dance' | 'chorus';
+type SortKey = 'title' | 'theme' | 'style' | 'feel' | 'bpm' | 'key' | 'dance' | 'chorus';
 
 const SORT_LABELS: [SortKey, string][] = [
   ['title', 'Tema'],
   ['theme', 'Temática'],
+  ['style', 'Estilo'],
   ['feel', 'Feel'],
   ['bpm', 'BPM'],
   ['key', 'Ton.'],
@@ -32,12 +43,12 @@ function sortValue(t: Tune, key: SortKey): string | number {
       return chorusSec(t);
     case 'theme':
       return THEME_LABELS[t.theme];
+    case 'style':
+      return STYLE_LABELS[t.style];
     case 'feel':
       return FEEL_LABELS[t.feel];
     case 'dance':
       return t.dance ? DANCE_LABELS[t.dance] : '￿'; // sin baile al final
-    case 'composer':
-      return t.composer.toLowerCase();
     case 'key':
       return t.key.toLowerCase();
     default:
@@ -45,13 +56,70 @@ function sortValue(t: Tune, key: SortKey): string | number {
   }
 }
 
+function toggleIn<T>(set: ReadonlySet<T>, v: T): Set<T> {
+  const next = new Set(set);
+  if (next.has(v)) next.delete(v);
+  else next.add(v);
+  return next;
+}
+
+/** Media query reactiva: ≥ 768px = escritorio (tabla), si no móvil (tarjetas). */
+function useWide(): boolean {
+  const [wide, setWide] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)').matches : true,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const on = () => setWide(mq.matches);
+    mq.addEventListener('change', on);
+    return () => mq.removeEventListener('change', on);
+  }, []);
+  return wide;
+}
+
+function FilterSection({
+  id,
+  title,
+  count,
+  defaultOpen,
+  children,
+}: {
+  id: string;
+  title: string;
+  count: number;
+  defaultOpen: boolean;
+  children: ReactNode;
+}) {
+  const stored = useFilterStore((st) => st.openGroups[id]);
+  const setGroupOpen = useFilterStore((st) => st.setGroupOpen);
+  const open = stored ?? defaultOpen;
+  return (
+    <details
+      className={s.section}
+      open={open}
+      onToggle={(e) => {
+        const o = e.currentTarget.open;
+        if (o !== open) setGroupOpen(id, o);
+      }}
+    >
+      <summary className={s.summary}>
+        <span className={s.summaryTitle}>{title}</span>
+        {count > 0 && <span className={s.summaryCount}>{count}</span>}
+      </summary>
+      <div className={s.sectionBody}>{children}</div>
+    </details>
+  );
+}
+
 export function LibraryView() {
   const tunes = useMergedTunes();
   const overrides = useLibraryStore((st) => st.overrides);
   const toggleMemorized = useLibraryStore((st) => st.toggleMemorized);
+  const removeTune = useLibraryStore((st) => st.removeTune);
+  const addTune = useLibraryStore((st) => st.addTune);
   const openTuneEditor = useUiStore((st) => st.openTuneEditor);
+  const confirm = useUiStore((st) => st.confirm);
 
-  // --- modo picker: añadiendo temas a un set ---
   const pickingForSetId = useUiStore((st) => st.pickingForSetId);
   const stopPicking = useUiStore((st) => st.stopPicking);
   const pickingSet = useSetsStore((st) =>
@@ -61,8 +129,11 @@ export function LibraryView() {
   const toast = useUiStore((st) => st.toast);
   const tuneMap = useTuneMap();
 
+  const wide = useWide();
+
   const [q, setQ] = useState('');
   const [themes, setThemes] = useState<ReadonlySet<Theme>>(new Set());
+  const [styles, setStyles] = useState<ReadonlySet<Style>>(new Set());
   const [feels, setFeels] = useState<ReadonlySet<Feel>>(new Set());
   const [dances, setDances] = useState<ReadonlySet<Dance>>(new Set());
   const [bpmMin, setBpmMin] = useState('');
@@ -93,11 +164,12 @@ export function LibraryView() {
     () =>
       baseFiltered.filter((t) => {
         if (themes.size > 0 && !themes.has(t.theme)) return false;
+        if (styles.size > 0 && !styles.has(t.style)) return false;
         if (feels.size > 0 && !feels.has(t.feel)) return false;
         if (dances.size > 0 && (!t.dance || !dances.has(t.dance))) return false;
         return true;
       }),
-    [baseFiltered, themes, feels, dances],
+    [baseFiltered, themes, styles, feels, dances],
   );
 
   const sorted = useMemo(() => {
@@ -111,25 +183,28 @@ export function LibraryView() {
     return arr;
   }, [filtered, sort]);
 
-  // conteos por faceta (cada faceta se cuenta sin su propia selección)
   const facetCounts = useMemo(() => {
     const th = new Map<Theme, number>();
+    const st = new Map<Style, number>();
     const fe = new Map<Feel, number>();
     const da = new Map<Dance, number>();
     for (const t of baseFiltered) {
-      const okFe = feels.size === 0 || feels.has(t.feel);
-      const okDa = dances.size === 0 || (t.dance && dances.has(t.dance));
       const okTh = themes.size === 0 || themes.has(t.theme);
-      if (okFe && okDa) th.set(t.theme, (th.get(t.theme) ?? 0) + 1);
-      if (okTh && okDa) fe.set(t.feel, (fe.get(t.feel) ?? 0) + 1);
-      if (okTh && okFe && t.dance) da.set(t.dance, (da.get(t.dance) ?? 0) + 1);
+      const okSt = styles.size === 0 || styles.has(t.style);
+      const okFe = feels.size === 0 || feels.has(t.feel);
+      const okDa = dances.size === 0 || (t.dance != null && dances.has(t.dance));
+      if (okSt && okFe && okDa) th.set(t.theme, (th.get(t.theme) ?? 0) + 1);
+      if (okTh && okFe && okDa) st.set(t.style, (st.get(t.style) ?? 0) + 1);
+      if (okTh && okSt && okDa) fe.set(t.feel, (fe.get(t.feel) ?? 0) + 1);
+      if (okTh && okSt && okFe && t.dance) da.set(t.dance, (da.get(t.dance) ?? 0) + 1);
     }
-    return { th, fe, da };
-  }, [baseFiltered, themes, feels, dances]);
+    return { th, st, fe, da };
+  }, [baseFiltered, themes, styles, feels, dances]);
 
   const anyFilter =
     q !== '' ||
     themes.size > 0 ||
+    styles.size > 0 ||
     feels.size > 0 ||
     dances.size > 0 ||
     bpmMin !== '' ||
@@ -140,6 +215,7 @@ export function LibraryView() {
   const clearAll = () => {
     setQ('');
     setThemes(new Set());
+    setStyles(new Set());
     setFeels(new Set());
     setDances(new Set());
     setBpmMin('');
@@ -148,24 +224,67 @@ export function LibraryView() {
     setHideMissing(false);
   };
 
-  function toggleIn<T>(set: ReadonlySet<T>, v: T): Set<T> {
-    const next = new Set(set);
-    if (next.has(v)) next.delete(v);
-    else next.add(v);
-    return next;
-  }
+  // chips activos (todos los grupos), cada uno removible
+  const activeChips: { key: string; label: string; remove: () => void }[] = [];
+  if (q) activeChips.push({ key: 'q', label: `«${q}»`, remove: () => setQ('') });
+  themes.forEach((t) =>
+    activeChips.push({ key: `t-${t}`, label: THEME_LABELS[t], remove: () => setThemes(toggleIn(themes, t)) }),
+  );
+  styles.forEach((st) =>
+    activeChips.push({ key: `s-${st}`, label: STYLE_LABELS[st], remove: () => setStyles(toggleIn(styles, st)) }),
+  );
+  feels.forEach((f) =>
+    activeChips.push({ key: `f-${f}`, label: FEEL_LABELS[f], remove: () => setFeels(toggleIn(feels, f)) }),
+  );
+  dances.forEach((d) =>
+    activeChips.push({ key: `d-${d}`, label: DANCE_LABELS[d], remove: () => setDances(toggleIn(dances, d)) }),
+  );
+  if (bpmMin) activeChips.push({ key: 'bmin', label: `≥ ${bpmMin} bpm`, remove: () => setBpmMin('') });
+  if (bpmMax) activeChips.push({ key: 'bmax', label: `≤ ${bpmMax} bpm`, remove: () => setBpmMax('') });
+  if (onlyMem) activeChips.push({ key: 'mem', label: 'De memoria', remove: () => setOnlyMem(false) });
+  if (hideMissing)
+    activeChips.push({ key: 'miss', label: 'Sin faltantes', remove: () => setHideMissing(false) });
 
   const clickSort = (key: SortKey) =>
     setSort((prev) => (prev.key === key ? { key, asc: !prev.asc } : { key, asc: true }));
 
-  // total en vivo del set en modo picker
   const pickerTotal = pickingSet ? totalSec(resolveEntries(pickingSet, tuneMap)) : 0;
   const pickerIds = useMemo(
     () => new Set(pickingSet?.entries.map((e) => e.tuneId) ?? []),
     [pickingSet],
   );
-
   const missingTotal = tunes.filter((t) => t.missing).length;
+
+  const handleAdd = (id: string) => {
+    if (!pickingForSetId) return;
+    const t2 = tuneMap.get(id);
+    if (addEntry(pickingForSetId, id)) toast(`Añadido: ${t2?.title ?? id}`);
+    else toast('Ya está en el set', 'warn');
+  };
+
+  const handleDelete = async (t: Tune) => {
+    const isBase = BASE_BY_ID.has(t.id);
+    const ok = await confirm({
+      title: isBase ? 'Ocultar tema base' : 'Borrar tema local',
+      body: isBase
+        ? `«${t.title}» se ocultará de esta tablet. La base versionada no se toca.`
+        : `«${t.title}» es un alta local y se borrará de esta tablet.`,
+      confirmLabel: isBase ? 'Ocultar' : 'Borrar',
+      danger: true,
+    });
+    if (ok) {
+      removeTune(t.id);
+      toast(isBase ? 'Tema oculto' : 'Tema borrado');
+    }
+  };
+
+  const handleDuplicate = (t: Tune) => {
+    const { id: _id, ...rest } = t;
+    void _id;
+    const newId = addTune({ ...rest, title: `${rest.title} (copia)` });
+    toast('Copia local creada');
+    openTuneEditor(newId);
+  };
 
   return (
     <div>
@@ -173,8 +292,7 @@ export function LibraryView() {
         <div className={s.pickerBar}>
           <span className={s.pickerName}>Añadiendo a «{pickingSet.name}»</span>
           <span className={`${s.pickerClock} ${s[setStatus(pickerTotal)]}`}>
-            {fmtSec(pickerTotal)}{' '}
-            <span style={{ color: 'var(--muted)', fontSize: 13 }}>/ 45:00</span>
+            {fmtSec(pickerTotal)} <span style={{ color: 'var(--muted)', fontSize: 13 }}>/ 45:00</span>
           </span>
           <button className="btn primary" onClick={stopPicking}>
             <Check size={17} /> Listo
@@ -201,135 +319,206 @@ export function LibraryView() {
           onChange={(e) => setQ(e.target.value)}
           aria-label="Buscar"
         />
-        <span className="lbl">BPM</span>
-        <input
-          type="number"
-          inputMode="numeric"
-          className={`input mono ${s.bpm}`}
-          placeholder="mín"
-          value={bpmMin}
-          onChange={(e) => setBpmMin(e.target.value)}
-          aria-label="BPM mínimo"
-        />
-        <input
-          type="number"
-          inputMode="numeric"
-          className={`input mono ${s.bpm}`}
-          placeholder="máx"
-          value={bpmMax}
-          onChange={(e) => setBpmMax(e.target.value)}
-          aria-label="BPM máximo"
-        />
-        <label className="check">
-          <input type="checkbox" checked={onlyMem} onChange={(e) => setOnlyMem(e.target.checked)} />
-          Solo de memoria
-        </label>
-        <label className="check">
-          <input
-            type="checkbox"
-            checked={hideMissing}
-            onChange={(e) => setHideMissing(e.target.checked)}
-          />
-          Ocultar faltantes
-        </label>
-        {anyFilter && (
-          <button className="btn ghost" onClick={clearAll}>
-            <X size={16} /> Limpiar
-          </button>
-        )}
-      </div>
-
-      <div className={`lbl ${s.facetLbl}`}>Temática</div>
-      <div className="chips">
-        {THEMES.filter((t) => (facetCounts.th.get(t) ?? 0) > 0 || themes.has(t)).map((t) => (
-          <button
-            key={t}
-            className={`chip ${themes.has(t) ? 'on' : ''}`}
-            onClick={() => setThemes(toggleIn(themes, t))}
+        <label className={`lbl ${s.sortMobile}`}>
+          Orden
+          <select
+            className="select"
+            value={sort.key}
+            onChange={(e) => setSort({ key: e.target.value as SortKey, asc: true })}
           >
-            {THEME_LABELS[t]}
-            <span className="n">{facetCounts.th.get(t) ?? 0}</span>
-          </button>
-        ))}
-      </div>
-
-      <div className={`lbl ${s.facetLbl}`}>Ritmo de baile · ballroom</div>
-      <div className="chips">
-        {DANCES.filter((d) => (facetCounts.da.get(d) ?? 0) > 0 || dances.has(d)).map((d) => (
-          <button
-            key={d}
-            className={`chip dance ${dances.has(d) ? 'on' : ''}`}
-            onClick={() => setDances(toggleIn(dances, d))}
-          >
-            {DANCE_LABELS[d]}
-            <span className="n">{facetCounts.da.get(d) ?? 0}</span>
-          </button>
-        ))}
-      </div>
-
-      <div className={`lbl ${s.facetLbl}`}>Feel</div>
-      <div className="chips">
-        {FEELS.filter((f) => (facetCounts.fe.get(f) ?? 0) > 0 || feels.has(f)).map((f) => (
-          <button
-            key={f}
-            className={`chip ${feels.has(f) ? 'on' : ''}`}
-            onClick={() => setFeels(toggleIn(feels, f))}
-          >
-            {FEEL_LABELS[f]}
-            <span className="n">{facetCounts.fe.get(f) ?? 0}</span>
-          </button>
-        ))}
-      </div>
-
-      <div className={s.tableWrap}>
-        <table className={s.table}>
-          <thead>
-            <tr>
-              {pickingSet && <th style={{ width: 48 }} />}
-              <th style={{ width: 48 }} title="De memoria">
-                ♦
-              </th>
-              {SORT_LABELS.map(([key, label]) => (
-                <th key={key} onClick={() => clickSort(key)}>
-                  {label}
-                  {sort.key === key &&
-                    (sort.asc ? (
-                      <ArrowUp size={13} style={{ verticalAlign: -1 }} />
-                    ) : (
-                      <ArrowDown size={13} style={{ verticalAlign: -1 }} />
-                    ))}
-                </th>
-              ))}
-              <th style={{ width: 48 }} />
-            </tr>
-          </thead>
-          <tbody>
-            {sorted.map((t) => (
-              <TuneRow
-                key={t.id}
-                tune={t}
-                picking={Boolean(pickingSet)}
-                inSet={pickerIds.has(t.id)}
-                isLocal={t.id in overrides || !BASE_BY_ID.has(t.id)}
-                onToggleMem={toggleMemorized}
-                onEdit={openTuneEditor}
-                onAdd={
-                  pickingForSetId
-                    ? (id) => {
-                        const t2 = tuneMap.get(id);
-                        if (addEntry(pickingForSetId, id)) {
-                          toast(`Añadido: ${t2?.title ?? id}`);
-                        } else {
-                          toast('Ya está en el set', 'warn');
-                        }
-                      }
-                    : undefined
-                }
-              />
+            {SORT_LABELS.map(([key, label]) => (
+              <option key={key} value={key}>
+                {label}
+              </option>
             ))}
-          </tbody>
-        </table>
+          </select>
+        </label>
       </div>
+
+      {anyFilter && (
+        <div className={s.activeBar}>
+          {activeChips.map((c) => (
+            <button key={c.key} className={s.activeChip} onClick={c.remove}>
+              {c.label} <X size={13} />
+            </button>
+          ))}
+          <button className={`btn ghost ${s.clearBtn}`} onClick={clearAll}>
+            Limpiar todo
+          </button>
+        </div>
+      )}
+
+      <FilterSection id="theme" title="Temática" count={themes.size} defaultOpen={wide}>
+        <div className="chips">
+          {THEMES.filter((t) => (facetCounts.th.get(t) ?? 0) > 0 || themes.has(t)).map((t) => (
+            <button
+              key={t}
+              className={`chip ${themes.has(t) ? 'on' : ''}`}
+              onClick={() => setThemes(toggleIn(themes, t))}
+            >
+              {THEME_LABELS[t]}
+              <span className="n">{facetCounts.th.get(t) ?? 0}</span>
+            </button>
+          ))}
+        </div>
+      </FilterSection>
+
+      <FilterSection id="style" title="Estilo" count={styles.size} defaultOpen={wide}>
+        <div className="chips">
+          {STYLES.filter((st) => (facetCounts.st.get(st) ?? 0) > 0 || styles.has(st)).map((st) => (
+            <button
+              key={st}
+              className={`chip ${styles.has(st) ? 'on' : ''}`}
+              onClick={() => setStyles(toggleIn(styles, st))}
+            >
+              {STYLE_LABELS[st]}
+              <span className="n">{facetCounts.st.get(st) ?? 0}</span>
+            </button>
+          ))}
+        </div>
+      </FilterSection>
+
+      <FilterSection id="feel" title="Feel" count={feels.size} defaultOpen={wide}>
+        <div className="chips">
+          {FEELS.filter((f) => (facetCounts.fe.get(f) ?? 0) > 0 || feels.has(f)).map((f) => (
+            <button
+              key={f}
+              className={`chip ${feels.has(f) ? 'on' : ''}`}
+              onClick={() => setFeels(toggleIn(feels, f))}
+            >
+              {FEEL_LABELS[f]}
+              <span className="n">{facetCounts.fe.get(f) ?? 0}</span>
+            </button>
+          ))}
+        </div>
+      </FilterSection>
+
+      <FilterSection id="dance" title="Ritmo de baile" count={dances.size} defaultOpen={wide}>
+        <div className="chips">
+          {DANCES.filter((d) => (facetCounts.da.get(d) ?? 0) > 0 || dances.has(d)).map((d) => (
+            <button
+              key={d}
+              className={`chip dance ${dances.has(d) ? 'on' : ''}`}
+              onClick={() => setDances(toggleIn(dances, d))}
+            >
+              {DANCE_LABELS[d]}
+              <span className="n">{facetCounts.da.get(d) ?? 0}</span>
+            </button>
+          ))}
+        </div>
+      </FilterSection>
+
+      <FilterSection
+        id="bpm"
+        title="BPM"
+        count={(bpmMin ? 1 : 0) + (bpmMax ? 1 : 0)}
+        defaultOpen={wide}
+      >
+        <div className={s.bpmRow}>
+          <input
+            type="number"
+            inputMode="numeric"
+            className={`input mono ${s.bpm}`}
+            placeholder="mín"
+            value={bpmMin}
+            onChange={(e) => setBpmMin(e.target.value)}
+            aria-label="BPM mínimo"
+          />
+          <span className="lbl">a</span>
+          <input
+            type="number"
+            inputMode="numeric"
+            className={`input mono ${s.bpm}`}
+            placeholder="máx"
+            value={bpmMax}
+            onChange={(e) => setBpmMax(e.target.value)}
+            aria-label="BPM máximo"
+          />
+        </div>
+      </FilterSection>
+
+      <FilterSection
+        id="opts"
+        title="Opciones"
+        count={(onlyMem ? 1 : 0) + (hideMissing ? 1 : 0)}
+        defaultOpen={wide}
+      >
+        <div className={s.optsRow}>
+          <label className="check">
+            <input type="checkbox" checked={onlyMem} onChange={(e) => setOnlyMem(e.target.checked)} />
+            Solo de memoria
+          </label>
+          <label className="check">
+            <input
+              type="checkbox"
+              checked={hideMissing}
+              onChange={(e) => setHideMissing(e.target.checked)}
+            />
+            Ocultar faltantes
+          </label>
+        </div>
+      </FilterSection>
+
+      {/* Escritorio: tabla */}
+      {wide ? (
+        <div className={s.tableWrap}>
+          <table className={s.table}>
+            <thead>
+              <tr>
+                {pickingSet && <th style={{ width: 48 }} />}
+                <th style={{ width: 48 }} title="De memoria">
+                  ♦
+                </th>
+                {SORT_LABELS.map(([key, label]) => (
+                  <th key={key} onClick={() => clickSort(key)}>
+                    {label}
+                    {sort.key === key &&
+                      (sort.asc ? (
+                        <ArrowUp size={13} style={{ verticalAlign: -1 }} />
+                      ) : (
+                        <ArrowDown size={13} style={{ verticalAlign: -1 }} />
+                      ))}
+                  </th>
+                ))}
+                <th style={{ width: 48 }} />
+              </tr>
+            </thead>
+            <tbody>
+              {sorted.map((t) => (
+                <TuneRow
+                  key={t.id}
+                  tune={t}
+                  picking={Boolean(pickingSet)}
+                  inSet={pickerIds.has(t.id)}
+                  isLocal={t.id in overrides || !BASE_BY_ID.has(t.id)}
+                  onToggleMem={toggleMemorized}
+                  onEdit={openTuneEditor}
+                  onAdd={pickingForSetId ? handleAdd : undefined}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className={s.cards}>
+          {sorted.map((t) => (
+            <TuneCard
+              key={t.id}
+              tune={t}
+              picking={Boolean(pickingSet)}
+              inSet={pickerIds.has(t.id)}
+              isLocal={t.id in overrides || !BASE_BY_ID.has(t.id)}
+              isBase={BASE_BY_ID.has(t.id)}
+              onToggleMem={toggleMemorized}
+              onEdit={openTuneEditor}
+              onAdd={pickingForSetId ? handleAdd : undefined}
+              onDelete={handleDelete}
+              onDuplicate={handleDuplicate}
+            />
+          ))}
+        </div>
+      )}
+
       <div className={`lbl ${s.count}`}>
         {sorted.length} tema{sorted.length === 1 ? '' : 's'} en pantalla · {missingTotal} faltante
         {missingTotal === 1 ? '' : 's'} en total
@@ -392,6 +581,7 @@ const TuneRow = memo(function TuneRow({
       <td>
         <span className="tag">{THEME_LABELS[t.theme]}</span>
       </td>
+      <td>{STYLE_LABELS[t.style]}</td>
       <td>{FEEL_LABELS[t.feel]}</td>
       <td className={s.num}>{t.bpm}</td>
       <td className={s.num}>{t.key}</td>
@@ -405,5 +595,105 @@ const TuneRow = memo(function TuneRow({
         </button>
       </td>
     </tr>
+  );
+});
+
+interface CardProps {
+  tune: Tune;
+  picking: boolean;
+  inSet: boolean;
+  isLocal: boolean;
+  isBase: boolean;
+  onToggleMem: (id: string, current: boolean) => void;
+  onEdit: (id: string) => void;
+  onAdd?: (id: string) => void;
+  onDelete: (t: Tune) => void;
+  onDuplicate: (t: Tune) => void;
+}
+
+const TuneCard = memo(function TuneCard({
+  tune: t,
+  picking,
+  inSet,
+  isLocal,
+  isBase,
+  onToggleMem,
+  onEdit,
+  onAdd,
+  onDelete,
+  onDuplicate,
+}: CardProps) {
+  const [more, setMore] = useState(false);
+  const primary = () => (picking ? onAdd?.(t.id) : onEdit(t.id));
+  return (
+    <div
+      className={`${s.card} ${t.missing ? s.cardMiss : ''}`}
+      role="button"
+      tabIndex={0}
+      onClick={primary}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') primary();
+      }}
+    >
+      <div className={s.cardTop}>
+        <span className={`cond ${s.cardTitle}`}>{t.title}</span>
+        <button
+          className={`mem ${t.memorized ? 'on' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleMem(t.id, t.memorized);
+          }}
+          aria-label={t.memorized ? 'Quitar de memoria' : 'Marcar de memoria'}
+          aria-pressed={t.memorized}
+        >
+          ♦
+        </button>
+      </div>
+      <div className={s.cardComposer}>{t.composer || '—'}</div>
+      <div className={s.cardChips}>
+        <span className={s.miniChip}>{STYLE_LABELS[t.style]}</span>
+        <span className={s.miniChip}>{FEEL_LABELS[t.feel]}</span>
+        <span className={`${s.miniChip} mono`}>{t.bpm} bpm</span>
+        <span className={`${s.miniChip} mono`}>{t.key}</span>
+        {t.dance && <span className="tag dance">{DANCE_LABELS[t.dance]}</span>}
+        {t.missing && <span className="tag missing">falta</span>}
+        {isLocal && <span className="tag local">local</span>}
+      </div>
+      <div className={s.cardActions} onClick={(e) => e.stopPropagation()}>
+        {picking && (
+          <button
+            className={`btn ${inSet ? '' : 'primary'} ${s.cardBtn}`}
+            disabled={inSet}
+            onClick={() => onAdd?.(t.id)}
+          >
+            {inSet ? <Check size={16} /> : <Plus size={16} />} {inSet ? 'En el set' : 'Añadir'}
+          </button>
+        )}
+        <button className={`btn ${s.cardBtn}`} onClick={() => onEdit(t.id)}>
+          <Pencil size={15} /> Editar
+        </button>
+        <button
+          className={`btn ${s.cardBtn}`}
+          aria-label="Más acciones"
+          aria-expanded={more}
+          onClick={() => setMore((v) => !v)}
+        >
+          <MoreHorizontal size={16} />
+        </button>
+      </div>
+      {more && (
+        <div className={s.morePanel} onClick={(e) => e.stopPropagation()}>
+          {t.notes && <div className={s.noteText}>{t.notes}</div>}
+          <div className={s.moreBtns}>
+            <button className={`btn ${s.cardBtn}`} onClick={() => onDuplicate(t)}>
+              <Copy size={15} /> Duplicar
+            </button>
+            <button className={`btn danger ${s.cardBtn}`} onClick={() => onDelete(t)}>
+              <Trash2 size={15} /> {isBase ? 'Ocultar' : 'Borrar'}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 });

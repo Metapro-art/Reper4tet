@@ -1,7 +1,16 @@
 import { useMemo, useState } from 'react';
 import { RotateCcw, Trash2 } from 'lucide-react';
-import type { Dance, Feel, Theme, Tune } from '../types';
-import { DANCES, DANCE_LABELS, FEELS, FEEL_LABELS, THEMES, THEME_LABELS } from '../types';
+import type { Dance, Feel, Style, Theme, Tune } from '../types';
+import {
+  DANCES,
+  DANCE_LABELS,
+  FEELS,
+  FEEL_LABELS,
+  STYLES,
+  STYLE_LABELS,
+  THEMES,
+  THEME_LABELS,
+} from '../types';
 import { BASE_BY_ID } from '../lib/merge';
 import { fmtSec } from '../lib/time';
 import { useTuneMap } from '../store/selectors';
@@ -41,6 +50,7 @@ interface FormState {
   title: string;
   composer: string;
   theme: Theme;
+  style: Style;
   feel: Feel;
   bpm: string;
   key: string;
@@ -61,6 +71,7 @@ function fromTune(t: Tune): FormState {
     title: t.title,
     composer: t.composer,
     theme: t.theme,
+    style: t.style,
     feel: t.feel,
     bpm: String(t.bpm),
     key: t.key,
@@ -81,6 +92,7 @@ const EMPTY: FormState = {
   title: '',
   composer: '',
   theme: 'songbook',
+  style: 'swing',
   feel: 'swing',
   bpm: '120',
   key: 'C',
@@ -154,6 +166,7 @@ export function TuneFormModal({ tuneId }: { tuneId: string }) {
       title,
       composer: form.composer.trim(),
       theme: form.theme,
+      style: form.style,
       feel: form.feel,
       bpm,
       key: form.key.trim() || 'C',
@@ -261,6 +274,23 @@ export function TuneFormModal({ tuneId }: { tuneId: string }) {
               {THEMES.map((t) => (
                 <option key={t} value={t}>
                   {THEME_LABELS[t]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className={s.field}>
+            <label className="lbl" htmlFor="tf-style">
+              Estilo
+            </label>
+            <select
+              id="tf-style"
+              className="select"
+              value={form.style}
+              onChange={(e) => set('style', e.target.value as Style)}
+            >
+              {STYLES.map((st) => (
+                <option key={st} value={st}>
+                  {STYLE_LABELS[st]}
                 </option>
               ))}
             </select>

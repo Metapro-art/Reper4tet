@@ -12,8 +12,17 @@ Por eso hay que hacer respaldos.
 
 ## Las dos capas
 - Base: el repertorio que viene con la app desde GitHub.
-- Local: todo lo que editas aquí (♦, BPM, temas nuevos, duraciones).
+- Local: todo lo que editas aquí (♦, BPM, temas nuevos, formas).
 La app te muestra las dos juntas y marca "local" lo tuyo.
+
+## Temática y Estilo
+Cada tema lleva dos etiquetas distintas:
+- Temática = QUÉ NOCHE lo llamas: el artista o la ocasión (Ellington,
+  Monk, Miles, Beatles, Navidad, Songbook…). Para armar sets con concepto.
+- Estilo = DE QUÉ ESCUELA es, cómo se toca (swing, bebop, hard bop, modal,
+  bossa, balada…). Para el color y la energía del set.
+Un mismo tema tiene las dos: "So What" es Temática Miles y Estilo Modal.
+Puedes filtrar por cualquiera de las dos.
 
 ## El reloj 45:00
 Verde hasta 43:30. Ámbar hasta 45:00. Rojo si te pasas.

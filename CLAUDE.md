@@ -137,7 +137,8 @@ Criterios para decidir qué entra al repertorio desde las capturas:
 - **Bebop rápido (200+ BPM) se conserva SIEMPRE** — el cuarteto lo toca; solo se ajusta
   el tempo al llamarlo en vivo.
 
-Enums válidos (en `src/types.ts`): 17 temáticas (`ellington`…`blues`), 9 feels,
+Enums válidos (en `src/types.ts`): 12 **temáticas** (`ellington`…`brasil`: artista
+u ocasión) + 14 **estilos** (`dixieland`…`balada`: escuela/cómo se toca), 9 feels,
 10 bailes. TypeScript rechaza cualquier valor fuera de enum al compilar.
 
 ## Verificación antes de cada deploy

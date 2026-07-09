@@ -11,6 +11,7 @@ const PATCHABLE: (keyof TuneData)[] = [
   'title',
   'composer',
   'theme',
+  'style',
   'feel',
   'bpm',
   'key',

@@ -1,24 +1,30 @@
+/* ====== Controles superiores ====== */
 .controls {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
   align-items: center;
+  margin-bottom: 8px;
 }
 .search {
   flex: 1;
-  min-width: 210px;
+  min-width: 0;
 }
-.bpm {
-  width: 88px;
+.sortMobile {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+@media (min-width: 768px) {
+  .sortMobile {
+    display: none;
+  }
 }
 
-.facetLbl {
-  margin: 12px 0 5px;
-}
-
+/* ====== Picker (añadiendo a un set) ====== */
 .pickerBar {
   position: sticky;
-  top: 8px;
+  top: 0;
   z-index: 30;
   display: flex;
   align-items: center;
@@ -53,14 +59,119 @@
   color: var(--red);
 }
 
+/* ====== Barra de chips activos (fija) ====== */
+.activeBar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 8px 0;
+  margin-bottom: 6px;
+  background: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+.activeChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--amber);
+  color: var(--ink);
+  border: none;
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  min-height: 40px;
+  cursor: pointer;
+}
+.clearBtn {
+  min-height: 40px;
+  padding: 0 12px;
+}
+
+/* ====== Grupos de filtros plegables ====== */
+.section {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  background: var(--surface);
+}
+.summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  min-height: 44px;
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 13px;
+  color: var(--muted);
+  user-select: none;
+}
+.summary::-webkit-details-marker {
+  display: none;
+}
+.summary::after {
+  content: '▸';
+  margin-left: auto;
+  font-size: 11px;
+  transition: transform 0.15s ease;
+}
+.section[open] > .summary::after {
+  transform: rotate(90deg);
+}
+.summaryTitle {
+  font-weight: 600;
+  color: var(--text);
+}
+.summaryCount {
+  background: var(--amber);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+}
+.sectionBody {
+  padding: 2px 14px 12px;
+}
+.bpmRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bpm {
+  width: 96px;
+}
+.optsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ====== Tabla (escritorio ≥ 768px) ====== */
 .tableWrap {
   overflow-x: auto;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 .table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 780px;
+  min-width: 820px;
 }
 .table th {
   font-family: var(--font-cond);
@@ -108,6 +219,96 @@
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
+
+/* ====== Tarjetas (móvil < 768px) ====== */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.card {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  padding: 10px 12px;
+  cursor: pointer;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 148px;
+}
+.card:active {
+  background: var(--surface2);
+}
+.cardMiss {
+  opacity: 0.62;
+}
+.cardTop {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.cardTitle {
+  flex: 1;
+  min-width: 0;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  word-break: break-word;
+}
+.cardComposer {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 1px;
+}
+.cardChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+.miniChip {
+  font-family: var(--font-cond);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 2px 7px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text);
+  white-space: nowrap;
+}
+.cardActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.cardBtn {
+  min-height: 44px;
+  font-size: 13px;
+  padding: 0 12px;
+}
+.morePanel {
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface2);
+}
+.moreBtns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.noteText {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+/* ====== Pie ====== */
 .count {
   margin-top: 12px;
 }

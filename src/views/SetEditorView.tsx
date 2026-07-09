@@ -16,7 +16,9 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import {
+  ChevronDown,
   ChevronLeft,
+  ChevronUp,
   ClipboardCopy,
   Copy,
   GripVertical,
@@ -172,7 +174,7 @@ export function SetEditorView({ setId }: { setId: string }) {
           <small>/ {fmtSec(TARGET_SEC)}</small>
         </div>
         <span className={`${s.statusTxt} ${s[status]}`}>{hint.text}</span>
-        <span className="lbl" style={{ marginLeft: 'auto' }}>
+        <span className={`lbl ${s.clockMeta}`} style={{ marginLeft: 'auto' }}>
           {set.entries.length} tema{set.entries.length === 1 ? '' : 's'} · transiciones 45 s
         </span>
       </div>
@@ -196,6 +198,8 @@ export function SetEditorView({ setId }: { setId: string }) {
                   index={i}
                   ballroom={ballroom}
                   warnDup={dupIndexes.has(i)}
+                  count={resolved.length}
+                  onMove={(dir) => moveEntry(set.id, i, i + dir)}
                   onSolo={(delta) => setEntrySolo(set.id, i, r.repeats.soloChoruses + delta)}
                   onHeadsOut={(v) => setEntryHeadsOut(set.id, i, v)}
                   onRemove={() => removeEntry(set.id, i)}
@@ -263,16 +267,20 @@ export function SetEditorView({ setId }: { setId: string }) {
 function SortableEntryRow({
   r,
   index,
+  count,
   ballroom,
   warnDup,
+  onMove,
   onSolo,
   onHeadsOut,
   onRemove,
 }: {
   r: ResolvedEntry;
   index: number;
+  count: number;
   ballroom: boolean;
   warnDup: boolean;
+  onMove: (dir: number) => void;
   onSolo: (delta: number) => void;
   onHeadsOut: (value: number | undefined) => void;
   onRemove: () => void;
@@ -298,6 +306,24 @@ function SortableEntryRow({
       >
         <GripVertical size={19} />
       </button>
+      <div className={s.reorder}>
+        <button
+          className={s.reorderBtn}
+          onClick={() => onMove(-1)}
+          disabled={index === 0}
+          aria-label={`Subir ${t?.title ?? 'tema'}`}
+        >
+          <ChevronUp size={20} />
+        </button>
+        <button
+          className={s.reorderBtn}
+          onClick={() => onMove(1)}
+          disabled={index === count - 1}
+          aria-label={`Bajar ${t?.title ?? 'tema'}`}
+        >
+          <ChevronDown size={20} />
+        </button>
+      </div>
       <span className={s.idx}>{index + 1}</span>
       <div className={s.info}>
         <div className={s.title}>{t ? t.title : '(tema eliminado de la biblioteca)'}</div>

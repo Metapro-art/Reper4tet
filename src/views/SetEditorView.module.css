@@ -75,9 +75,40 @@
   cursor: grab;
   touch-action: none;
   color: var(--muted);
+  display: none; /* móvil: se reordena con los botones ↑↓ */
 }
 .grip:active {
   cursor: grabbing;
+}
+.reorder {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.reorderBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 40px;
+  padding: 0;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.reorderBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+@media (min-width: 768px) {
+  .grip {
+    display: inline-flex;
+  }
+  .reorder {
+    display: none;
+  }
 }
 .idx {
   font-family: var(--font-mono);
@@ -215,4 +246,30 @@
   padding: 24px;
   text-align: center;
   margin-top: 14px;
+}
+
+/* ====== Móvil: reloj pegado arriba, compacto ====== */
+@media (max-width: 767px) {
+  .clockRow {
+    position: sticky;
+    top: 0;
+    z-index: 15;
+    background: var(--ink);
+    padding: 6px 0 5px;
+    margin: 0 0 6px;
+    border-bottom: 1px solid var(--line);
+    gap: 4px 10px;
+    align-items: center;
+  }
+  .clock {
+    font-size: 26px;
+  }
+  .clockMeta {
+    display: none;
+  }
+  .statusTxt {
+    flex-basis: 100%;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+  }
 }
