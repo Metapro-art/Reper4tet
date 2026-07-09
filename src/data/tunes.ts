@@ -1,5 +1,5 @@
 /**
- * CAPA BASE DEL REPERTORIO — 435 temas.
+ * CAPA BASE DEL REPERTORIO — 436 temas.
  * Bootstrap: scripts/migrate-seed.mjs desde seed/repertorio.html (363 temas).
  * Este archivo es la fuente de verdad y YA DIVERGE del seed: las altas curadas
  * posteriores (p. ej. la ampliación Beatles) viven aquí. NO re-ejecutar `migrate`:
@@ -466,4 +466,5 @@ export const TUNES: Tune[] = [
   { id: "la-luna-en-tu-mirada", title: "La Luna en Tu Mirada", composer: "Los Zafiros", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "C", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Filin cubano. Armonías vocales adaptables al cuarteto." },
   { id: "odiame", title: "Ódiame", composer: "Rafael Otero", theme: "latin", style: "balada", feel: "vals", bpm: 88, key: "Am", dance: "vals", bars: 32, beatsPerBar: 3, memorized: false, missing: true, notes: "Vals criollo peruano. Tapa el hueco de vals de salón." },
   { id: "nuestro-juramento", title: "Nuestro Juramento", composer: "Benito de Jesús", theme: "latin", style: "balada", feel: "balada", bpm: 88, key: "Am", bars: 32, beatsPerBar: 4, memorized: false, missing: true, notes: "Pasillo ecuatoriano." },
+  { id: "triunfamos", title: "Triunfamos", composer: "por confirmar", theme: "bolero", style: "balada", feel: "latin", bpm: 100, key: "Dm", dance: "rumba", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "partitura propia", notes: "Trío Martino. Compositor, tonalidad y forma por confirmar contra la partitura." },
 ];
