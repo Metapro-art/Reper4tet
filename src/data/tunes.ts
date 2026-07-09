@@ -1,8 +1,10 @@
 /**
- * CAPA BASE DEL REPERTORIO — 363 temas.
- * Generado por scripts/migrate-seed.mjs desde seed/repertorio.html.
- * Formato: UN tema por línea (facilita diffs al agregar altas curadas).
- * Las altas nuevas se agregan aquí tras la curaduría (ver CLAUDE.md).
+ * CAPA BASE DEL REPERTORIO — 382 temas.
+ * Bootstrap: scripts/migrate-seed.mjs desde seed/repertorio.html (363 temas).
+ * Este archivo es la fuente de verdad y YA DIVERGE del seed: las altas curadas
+ * posteriores (p. ej. la ampliación Beatles) viven aquí. NO re-ejecutar `migrate`:
+ * sobrescribiría estas altas.
+ * Formato: UN tema por línea (facilita diffs al agregar altas curadas; ver CLAUDE.md).
  */
 import type { Tune } from '../types';
 
@@ -331,22 +333,42 @@ export const TUNES: Tune[] = [
   { id: "road-song", title: "Road Song", composer: "Montgomery", theme: "moderno", feel: "swing", bpm: 130, key: "F", durationMin: 5.75, memorized: false, missing: false },
   { id: "west-coast-blues", title: "West Coast Blues", composer: "Montgomery", theme: "moderno", feel: "vals", bpm: 170, key: "Bb", durationMin: 5.5, memorized: true, missing: false },
   // ---- BEATLES ----
-  { id: "michelle", title: "Michelle", composer: "Lennon/McCartney", theme: "beatles", feel: "bossa", bpm: 120, key: "Fm", durationMin: 5.5, memorized: true, missing: false },
-  { id: "here-there-and-everywhere", title: "Here There And Everywhere", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 70, key: "G", durationMin: 6, memorized: true, missing: false },
-  { id: "blackbird", title: "Blackbird", composer: "Lennon/McCartney", theme: "beatles", feel: "vals", bpm: 96, key: "G", dance: "vals", durationMin: 5.5, memorized: false, missing: false },
-  { id: "come-together", title: "Come Together", composer: "Lennon/McCartney", theme: "beatles", feel: "funk", bpm: 84, key: "Dm", durationMin: 6.5, memorized: true, missing: false },
-  { id: "eleanor-rigby", title: "Eleanor Rigby", composer: "Lennon/McCartney", theme: "beatles", feel: "latin", bpm: 100, key: "Em", dance: "rumba", durationMin: 5.5, memorized: false, missing: false },
-  { id: "norwegian-wood", title: "Norwegian Wood", composer: "Lennon/McCartney", theme: "beatles", feel: "vals", bpm: 86, key: "E", dance: "vals", durationMin: 5.5, memorized: false, missing: false },
-  { id: "day-tripper", title: "Day Tripper", composer: "Lennon/McCartney", theme: "beatles", feel: "funk", bpm: 120, key: "E", durationMin: 6.5, memorized: true, missing: false },
-  { id: "yesterday", title: "Yesterday", composer: "Lennon/McCartney", theme: "beatles", feel: "samba", bpm: 120, key: "F", durationMin: 5.25, memorized: true, missing: false },
-  { id: "and-i-love-her", title: "And I Love Her", composer: "Lennon/McCartney", theme: "beatles", feel: "latin", bpm: 120, key: "F#m", dance: "chacha", durationMin: 5.5, memorized: true, missing: false },
-  { id: "can-t-buy-me-love", title: "Can't Buy Me Love", composer: "Lennon/McCartney", theme: "beatles", feel: "blues", bpm: 176, key: "C", dance: "jive", durationMin: 6, memorized: true, missing: false },
-  { id: "something", title: "Something", composer: "Harrison", theme: "beatles", feel: "balada", bpm: 68, key: "C", durationMin: 6, memorized: true, missing: false },
-  { id: "ob-la-di-ob-la-da", title: "Ob-La-Di, Ob-La-Da", composer: "Lennon/McCartney", theme: "beatles", feel: "latin", bpm: 130, key: "Bb", durationMin: 5.5, memorized: false, missing: false },
-  { id: "in-my-life", title: "In My Life", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 76, key: "A", durationMin: 6, memorized: false, missing: false },
-  { id: "fool-on-the-hill", title: "Fool On The Hill", composer: "Lennon/McCartney", theme: "beatles", feel: "bossa", bpm: 110, key: "D", durationMin: 5.5, memorized: false, missing: false },
-  { id: "golden-slumbers", title: "Golden Slumbers", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 64, key: "C", durationMin: 6, memorized: false, missing: false },
-  { id: "hey-jude", title: "Hey Jude", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 76, key: "F", durationMin: 6, memorized: true, missing: false },
+  // versiones para cuarteto (gtr/pno/bajo/bat). Charts base: Beatles Complete Fakebook.
+  { id: "michelle", title: "Michelle", composer: "Lennon/McCartney", theme: "beatles", feel: "bossa", bpm: 120, key: "Fm", durationMin: 5.5, memorized: true, missing: false, source: "Beatles Complete Fakebook / Real Book", altStyles: ["balada"], notes: "Ya está en menor. La versión obvia y correcta." },
+  { id: "here-there-and-everywhere", title: "Here There And Everywhere", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 70, key: "G", durationMin: 6, memorized: true, missing: false, altStyles: ["bossa"], notes: "Armonía de Songbook puro. Rubato en la cabeza." },
+  { id: "blackbird", title: "Blackbird", composer: "Lennon/McCartney", theme: "beatles", feel: "vals", bpm: 96, key: "G", dance: "vals", durationMin: 5.5, memorized: false, missing: false, notes: "En 3/4 vuela. Guitarra sola en la cabeza, entra el trío." },
+  { id: "come-together", title: "Come Together", composer: "Lennon/McCartney", theme: "beatles", feel: "funk", bpm: 84, key: "Dm", durationMin: 6.5, memorized: true, missing: false, altStyles: ["blues"], notes: "El riff ya es un blues. Casi no hay que arreglar." },
+  { id: "eleanor-rigby", title: "Eleanor Rigby", composer: "Lennon/McCartney", theme: "beatles", feel: "latin", bpm: 100, key: "Em", dance: "rumba", durationMin: 5.5, memorized: false, missing: false, altStyles: ["swing"], notes: "Dorio en Em. Rumba o minor swing." },
+  { id: "norwegian-wood", title: "Norwegian Wood", composer: "Lennon/McCartney", theme: "beatles", feel: "vals", bpm: 86, key: "E", dance: "vals", durationMin: 5.5, memorized: false, missing: false, notes: "Ya está en 6/8. Vals de salón directo." },
+  { id: "day-tripper", title: "Day Tripper", composer: "Lennon/McCartney", theme: "beatles", feel: "funk", bpm: 120, key: "E", durationMin: 6.5, memorized: true, missing: false, notes: "Riff sobre E7. Sidewinder disfrazado." },
+  { id: "yesterday", title: "Yesterday", composer: "Lennon/McCartney", theme: "beatles", feel: "samba", bpm: 120, key: "F", durationMin: 5.25, memorized: true, missing: false, altStyles: ["balada"], notes: "En samba es el momento inesperado del set." },
+  { id: "and-i-love-her", title: "And I Love Her", composer: "Lennon/McCartney", theme: "beatles", feel: "latin", bpm: 120, key: "F#m", dance: "chacha", durationMin: 5.5, memorized: true, missing: false, notes: "Ya es latino de nacimiento." },
+  { id: "can-t-buy-me-love", title: "Can't Buy Me Love", composer: "Lennon/McCartney", theme: "beatles", feel: "blues", bpm: 176, key: "C", dance: "jive", durationMin: 6, memorized: true, missing: false, notes: "Blues de 12 compases. Regalo para el jive." },
+  { id: "something", title: "Something", composer: "Harrison", theme: "beatles", feel: "balada", bpm: 68, key: "C", durationMin: 6, memorized: true, missing: false, altStyles: ["swing"], notes: "Balada; sube a medium swing en el segundo coro." },
+  { id: "ob-la-di-ob-la-da", title: "Ob-La-Di, Ob-La-Da", composer: "Lennon/McCartney", theme: "beatles", feel: "latin", bpm: 130, key: "Bb", durationMin: 5.5, memorized: false, missing: false, notes: "Ska/calypso. Para levantar la sala." },
+  { id: "in-my-life", title: "In My Life", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 76, key: "A", durationMin: 6, memorized: false, missing: false, altStyles: ["bossa"] },
+  { id: "fool-on-the-hill", title: "The Fool On The Hill", composer: "Lennon/McCartney", theme: "beatles", feel: "bossa", bpm: 110, key: "D", durationMin: 5.5, memorized: false, missing: false, notes: "Flauta original a guitarra. Bossa natural." },
+  { id: "golden-slumbers", title: "Golden Slumbers", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 64, key: "C", durationMin: 6, memorized: false, missing: false, notes: "Encadenar con Carry That Weight como cierre." },
+  { id: "lady-madonna", title: "Lady Madonna", composer: "Lennon/McCartney", theme: "beatles", feel: "blues", bpm: 116, key: "A", dance: "swing", durationMin: 6, memorized: false, missing: false, notes: "Boogie. Lucimiento del piano — el único tema que le pertenece." },
+  { id: "oh-darling", title: "Oh! Darling", composer: "Lennon/McCartney", theme: "beatles", feel: "blues", bpm: 84, key: "A", durationMin: 6, memorized: false, missing: false, notes: "Blues lento en 12/8. Guitarra con distorsión limpia." },
+  { id: "while-my-guitar", title: "While My Guitar Gently Weeps", composer: "Harrison", theme: "beatles", feel: "balada", bpm: 116, key: "Am", durationMin: 6, memorized: true, missing: false, notes: "La guitarra tiene que justificar el título. Solo largo." },
+  { id: "got-to-get-you", title: "Got To Get You Into My Life", composer: "Lennon/McCartney", theme: "beatles", feel: "funk", bpm: 108, key: "G", durationMin: 6.5, memorized: false, missing: false, notes: "Soul jazz. Sección de vientos a unísono gtr+pno." },
+  { id: "taxman", title: "Taxman", composer: "Harrison", theme: "beatles", feel: "funk", bpm: 96, key: "D", durationMin: 6.5, memorized: false, missing: false, notes: "Vamp en D7. Modal, aguanta solos largos." },
+  { id: "drive-my-car", title: "Drive My Car", composer: "Lennon/McCartney", theme: "beatles", feel: "funk", bpm: 116, key: "D", durationMin: 6.5, memorized: false, missing: false },
+  { id: "ticket-to-ride", title: "Ticket To Ride", composer: "Lennon/McCartney", theme: "beatles", feel: "funk", bpm: 124, key: "A", durationMin: 6.5, memorized: false, missing: false, notes: "El groove de batería es la gracia. Respétalo." },
+  { id: "i-saw-her-standing-there", title: "I Saw Her Standing There", composer: "Lennon/McCartney", theme: "beatles", feel: "blues", bpm: 168, key: "E", dance: "jive", durationMin: 6, memorized: false, missing: false, notes: "12 compases. Jive de salón." },
+  { id: "birthday", title: "Birthday", composer: "Lennon/McCartney", theme: "beatles", feel: "blues", bpm: 140, key: "A", dance: "swing", durationMin: 6, memorized: false, missing: false, notes: "Blues en A. Úsalo cuando haya cumpleaños a bordo." },
+  { id: "all-my-loving", title: "All My Loving", composer: "Lennon/McCartney", theme: "beatles", feel: "swing", bpm: 156, key: "E", dance: "swing", durationMin: 5.75, memorized: false, missing: false, notes: "El bajo ya camina en el original. Swing inmediato." },
+  { id: "hard-days-night", title: "A Hard Day's Night", composer: "Lennon/McCartney", theme: "beatles", feel: "swing", bpm: 140, key: "G", dance: "swing", durationMin: 5.75, memorized: false, missing: false },
+  { id: "shes-leaving-home", title: "She's Leaving Home", composer: "Lennon/McCartney", theme: "beatles", feel: "vals", bpm: 88, key: "E", dance: "vals", durationMin: 5.5, memorized: false, missing: false, notes: "Es 3/4 de verdad. Tu vals de salón más bonito." },
+  { id: "lucy-in-the-sky", title: "Lucy In The Sky With Diamonds", composer: "Lennon/McCartney", theme: "beatles", feel: "vals", bpm: 180, key: "A", durationMin: 5.5, memorized: false, missing: false, notes: "Jazz waltz en las estrofas. NO es vals de salón." },
+  { id: "penny-lane", title: "Penny Lane", composer: "Lennon/McCartney", theme: "beatles", feel: "bossa", bpm: 114, key: "B", durationMin: 5.5, memorized: false, missing: false, notes: "Transportar a Bb. Modulación del puente = oro." },
+  { id: "julia", title: "Julia", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 66, key: "D", durationMin: 6, memorized: false, missing: false, notes: "Guitarra sola. Interludio, no tema de set." },
+  { id: "because", title: "Because", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 60, key: "Db", durationMin: 6, memorized: false, missing: false, notes: "Armonía de Beethoven. Piano lead." },
+  { id: "strawberry-fields", title: "Strawberry Fields Forever", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 100, key: "Bb", durationMin: 6, memorized: false, missing: false, altStyles: ["funk"], notes: "Modal. Puede irse a vamp abierto." },
+  { id: "dear-prudence", title: "Dear Prudence", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 78, key: "D", durationMin: 6, memorized: false, missing: false, notes: "Pedal en D. Crece hasta funk en el último coro." },
+  { id: "hey-jude", title: "Hey Jude", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 76, key: "F", durationMin: 6, memorized: true, missing: false, notes: "Solo para cerrar noche. El coda es el tema." },
+  { id: "let-it-be", title: "Let It Be", composer: "Lennon/McCartney", theme: "beatles", feel: "balada", bpm: 72, key: "C", durationMin: 6, memorized: true, missing: false, notes: "Gospel lento. Riesgo de karaoke sin voz." },
   // ---- NAVIDAD ----
   { id: "have-yourself-a-merry-little-christmas", title: "Have Yourself A Merry Little Christmas", composer: "Martin/Blane", theme: "navidad", feel: "balada", bpm: 64, key: "Eb", durationMin: 6, memorized: true, missing: false },
   { id: "the-christmas-song", title: "The Christmas Song", composer: "Torme", theme: "navidad", feel: "balada", bpm: 62, key: "C", durationMin: 6, memorized: true, missing: true },
