@@ -1,5 +1,5 @@
 /**
- * CAPA BASE DEL REPERTORIO — 501 temas.
+ * CAPA BASE DEL REPERTORIO — 504 temas.
  * Bootstrap: scripts/migrate-seed.mjs desde seed/repertorio.html (363 temas).
  * Este archivo es la fuente de verdad y YA DIVERGE del seed: las altas curadas
  * posteriores (p. ej. la ampliación Beatles) viven aquí. NO re-ejecutar `migrate`:
@@ -535,4 +535,8 @@ export const TUNES: Tune[] = [
   { id: "aji-pique", title: "Ají Pique", composer: "Carlos Viecco Ortíz", theme: "colombiana", style: "colombiana", feel: "porro", bpm: 108, key: "F", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "Real Book Colombia", notes: "BPM, tonalidad y forma por confirmar contra el chart." },
   { id: "currulao", title: "Currulao", composer: "tradicional", theme: "colombiana", style: "colombiana", feel: "currulao", bpm: 92, key: "Am", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "Real Book Colombia", notes: "BPM, tonalidad y forma por confirmar contra el chart." },
   { id: "aires-de-mi-tierra", title: "Aires de mi Tierra", composer: "Gustavo Gómez Ardila", theme: "colombiana", style: "colombiana", feel: "porro", bpm: 104, key: "F", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "Real Book Colombia", notes: "BPM, tonalidad y forma por confirmar contra el chart." },
+  // ---- ALTAS desde screenshots ----
+  { id: "love", title: "L-O-V-E", composer: "Kaempfert/Gabler", theme: "songbook", style: "swing", feel: "swing", bpm: 140, key: "G", dance: "swing", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "partitura (screenshot)", notes: "Nat King Cole. Tonalidad y forma por confirmar." },
+  { id: "stayin-alive", title: "Stayin' Alive", composer: "Bee Gees", theme: "moderno", style: "souljazz", feel: "funk", bpm: 104, key: "Fm", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "partitura (screenshot)", notes: "Bee Gees. Disco. Tonalidad y forma por confirmar." },
+  { id: "pueblito-viejo", title: "Pueblito Viejo", composer: "José A. Morales", theme: "colombiana", style: "balada", feel: "balada", bpm: 90, key: "Am", bars: 32, beatsPerBar: 4, memorized: false, missing: false, source: "partitura (screenshot)", notes: "Bolero colombiano (bambuco de origen). Feel, tonalidad y forma por confirmar." },
 ];
