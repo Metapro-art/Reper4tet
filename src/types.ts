@@ -65,8 +65,12 @@ export const STYLES = [
   'merengue',
   'cumbia',
   'bambucopasillo',
-  // Transitorios: se recatalogan en fases M posteriores; ningún tema debe
-  // quedar aquí al terminar la migración (salvo el huérfano `currulao`).
+  // Transitorios (se recatalogan en fases M posteriores):
+  //   'blues'    → M2 (blues) : se reparte en 'bluesmayor' / 'bluesmenor'.
+  //   'postbop', 'souljazz' → M3 (jazz).
+  //   'colombiana' → NO es un style real (es un THEME); solo lo usa el
+  //     huérfano `currulao` (feel 'currulao', sin style destino aún). Se
+  //     mantiene transitorio hasta catalogar ese tema aparte.
   'postbop',
   'souljazz',
   'blues',
