@@ -300,6 +300,23 @@ export function LibraryView() {
     />
   );
 
+  const switchesRow = (
+    <div className={s.switchesRow}>
+      <label className="check">
+        <input type="checkbox" checked={onlyMem} onChange={(e) => setOnlyMem(e.target.checked)} />
+        Solo de memoria
+      </label>
+      <label className="check">
+        <input
+          type="checkbox"
+          checked={hideMissing}
+          onChange={(e) => setHideMissing(e.target.checked)}
+        />
+        Ocultar faltantes
+      </label>
+    </div>
+  );
+
   const activeBar = anyFilter ? (
     <div className={s.activeBar}>
       {activeChips.map((c) => (
@@ -360,7 +377,7 @@ export function LibraryView() {
         </div>
       </FilterSection>
 
-      <FilterSection id="dance" title="Ritmo de baile" count={dances.size} defaultOpen={wide}>
+      <FilterSection id="dance" title="Ballroom" count={dances.size} defaultOpen={wide}>
         <div className="chips">
           {DANCES.filter((d) => (facetCounts.da.get(d) ?? 0) > 0 || dances.has(d)).map((d) => (
             <button
@@ -372,28 +389,6 @@ export function LibraryView() {
               <span className="n">{facetCounts.da.get(d) ?? 0}</span>
             </button>
           ))}
-        </div>
-      </FilterSection>
-
-      <FilterSection
-        id="opts"
-        title="Opciones"
-        count={(onlyMem ? 1 : 0) + (hideMissing ? 1 : 0)}
-        defaultOpen={wide}
-      >
-        <div className={s.optsRow}>
-          <label className="check">
-            <input type="checkbox" checked={onlyMem} onChange={(e) => setOnlyMem(e.target.checked)} />
-            Solo de memoria
-          </label>
-          <label className="check">
-            <input
-              type="checkbox"
-              checked={hideMissing}
-              onChange={(e) => setHideMissing(e.target.checked)}
-            />
-            Ocultar faltantes
-          </label>
         </div>
       </FilterSection>
     </>
@@ -419,6 +414,8 @@ export function LibraryView() {
               <Plus size={22} />
             </button>
           </div>
+
+          {switchesRow}
 
           <button
             className={s.filtersBar}
@@ -503,7 +500,10 @@ export function LibraryView() {
         </div>
       </div>
 
-      <div className={s.controls}>{searchInput}</div>
+      <div className={s.controls}>
+        {searchInput}
+        {switchesRow}
+      </div>
 
       {activeBar}
       {filters}
