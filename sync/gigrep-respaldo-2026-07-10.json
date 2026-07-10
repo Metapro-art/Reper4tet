@@ -1,0 +1,159 @@
+{
+  "app": "gig-repertoire",
+  "type": "backup",
+  "schema": 1,
+  "exportedAt": "2026-07-10T20:49:41.942Z",
+  "overrides": {
+    "round-midnight": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "straight-no-chaser": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "yardbird-suite": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "donna-lee": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "nica-s-dream": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "killer-joe": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "song-for-my-father": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "the-chicken": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "stompin-at-the-savoy": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "la-gloria-eres-tu": {
+      "kind": "add",
+      "tune": {
+        "id": "la-gloria-eres-tu",
+        "title": "La Gloria eres Tu",
+        "composer": "Jose A Mendez",
+        "theme": "bolero",
+        "style": "balada",
+        "feel": "balada",
+        "bpm": 85,
+        "key": "A",
+        "bars": 32,
+        "beatsPerBar": 4,
+        "memorized": false,
+        "missing": false
+      }
+    },
+    "man-in-the-mirror": {
+      "kind": "add",
+      "tune": {
+        "id": "man-in-the-mirror",
+        "title": "Man in the mirror",
+        "composer": "Glen Ballard/Siedah Garret",
+        "theme": "moderno",
+        "style": "fusion",
+        "feel": "funk",
+        "bpm": 120,
+        "key": "G",
+        "bars": 32,
+        "beatsPerBar": 4,
+        "memorized": false,
+        "missing": false
+      }
+    },
+    "quiereme-mucho": {
+      "kind": "edit",
+      "patch": {
+        "key": "G",
+        "missing": false
+      }
+    },
+    "dos-gardenias": {
+      "kind": "edit",
+      "patch": {
+        "key": "Cm",
+        "missing": false
+      }
+    },
+    "chan-chan": {
+      "kind": "add",
+      "tune": {
+        "id": "chan-chan",
+        "title": "Chan chan",
+        "composer": "Francisco Repilado",
+        "theme": "latin",
+        "style": "latinjazz",
+        "feel": "balada",
+        "bpm": 120,
+        "key": "Dm",
+        "dance": "rumba",
+        "bars": 32,
+        "beatsPerBar": 4,
+        "memorized": false,
+        "missing": false,
+        "notes": "Tocado por Buena vista social club"
+      }
+    },
+    "favela": {
+      "kind": "add",
+      "tune": {
+        "id": "favela",
+        "title": "Favela",
+        "composer": "Antonio Carlos Jobim",
+        "theme": "brasil",
+        "style": "bossa",
+        "feel": "bossa",
+        "bpm": 120,
+        "key": "Gm",
+        "bars": 32,
+        "beatsPerBar": 4,
+        "memorized": false,
+        "missing": false
+      }
+    },
+    "mujer-divina": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "corazon-loco": {
+      "kind": "edit",
+      "patch": {
+        "dance": "tango"
+      }
+    }
+  },
+  "sets": []
+}
