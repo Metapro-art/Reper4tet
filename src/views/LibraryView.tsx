@@ -143,6 +143,7 @@ export function LibraryView() {
   const [onlyMem, setOnlyMem] = useState(false);
   const [hideMissing, setHideMissing] = useState(false);
   const [rockOnly, setRockOnly] = useState(false);
+  const [conocidasOnly, setConocidasOnly] = useState(false);
   const [sort, setSort] = useState<{ key: SortKey; asc: boolean }>({ key: 'title', asc: true });
 
   const searcher = useMemo(() => createSearcher(tunes), [tunes]);
@@ -154,9 +155,10 @@ export function LibraryView() {
         if (hideMissing && t.missing) return false;
         if (onlyMem && !t.memorized) return false;
         if (rockOnly && !t.rock) return false;
+        if (conocidasOnly && !t.conocidas) return false;
         return true;
       }),
-    [searched, hideMissing, onlyMem, rockOnly],
+    [searched, hideMissing, onlyMem, rockOnly, conocidasOnly],
   );
 
   const filtered = useMemo(
@@ -208,7 +210,8 @@ export function LibraryView() {
     dances.size > 0 ||
     onlyMem ||
     hideMissing ||
-    rockOnly;
+    rockOnly ||
+    conocidasOnly;
 
   const clearAll = () => {
     setQ('');
@@ -219,6 +222,7 @@ export function LibraryView() {
     setOnlyMem(false);
     setHideMissing(false);
     setRockOnly(false);
+    setConocidasOnly(false);
   };
 
   const activeChips: { key: string; label: string; remove: () => void }[] = [];
@@ -239,6 +243,8 @@ export function LibraryView() {
   if (hideMissing)
     activeChips.push({ key: 'miss', label: 'Sin faltantes', remove: () => setHideMissing(false) });
   if (rockOnly) activeChips.push({ key: 'rock', label: 'Rock', remove: () => setRockOnly(false) });
+  if (conocidasOnly)
+    activeChips.push({ key: 'con', label: 'Conocidas', remove: () => setConocidasOnly(false) });
 
   const clickSort = (key: SortKey) =>
     setSort((prev) => (prev.key === key ? { key, asc: !prev.asc } : { key, asc: true }));
@@ -322,6 +328,14 @@ export function LibraryView() {
       <label className="check">
         <input type="checkbox" checked={rockOnly} onChange={(e) => setRockOnly(e.target.checked)} />
         Rock
+      </label>
+      <label className="check">
+        <input
+          type="checkbox"
+          checked={conocidasOnly}
+          onChange={(e) => setConocidasOnly(e.target.checked)}
+        />
+        Conocidas
       </label>
     </div>
   );
@@ -407,7 +421,7 @@ export function LibraryView() {
   if (!wide) {
     const filterChips = activeChips.filter((c) => c.key !== 'q');
     const activeFilterCount =
-      themes.size + styles.size + feels.size + dances.size + (onlyMem ? 1 : 0) + (hideMissing ? 1 : 0) + (rockOnly ? 1 : 0);
+      themes.size + styles.size + feels.size + dances.size + (onlyMem ? 1 : 0) + (hideMissing ? 1 : 0) + (rockOnly ? 1 : 0) + (conocidasOnly ? 1 : 0);
     return (
       <div className={s.mobileRoot}>
         <div className={s.mobileChrome}>
