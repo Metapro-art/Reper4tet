@@ -65,16 +65,11 @@ export const STYLES = [
   'merengue',
   'cumbia',
   'bambucopasillo',
-  // Transitorios (se recatalogan en fases M posteriores):
-  //   'blues'    → M2 (blues) : se reparte en 'bluesmayor' / 'bluesmenor'.
-  //   'postbop', 'souljazz' → M3 (jazz).
-  //   'colombiana' → NO es un style real (es un THEME); solo lo usa el
-  //     huérfano `currulao` (feel 'currulao', sin style destino aún). Se
-  //     mantiene transitorio hasta catalogar ese tema aparte.
+  // Transitorios ya migrados y retirados del enum: 'blues' (M2 → bluesmayor/
+  // bluesmenor), 'souljazz' (M3 → soul) y 'colombiana' (era un THEME;
+  // currulao → bambucopasillo). 'postbop' deja de ser transitorio: se queda
+  // como estilo destino permanente.
   'postbop',
-  'souljazz',
-  'blues',
-  'colombiana',
 ] as const;
 export type Style = (typeof STYLES)[number];
 
@@ -102,9 +97,6 @@ export const STYLE_LABELS: Record<Style, string> = {
   cumbia: 'Cumbia',
   bambucopasillo: 'Bambuco/Pasillo',
   postbop: 'Post-Bop',
-  souljazz: 'Soul Jazz',
-  blues: 'Blues',
-  colombiana: 'Colombiana',
 };
 
 export const FEELS = [
