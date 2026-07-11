@@ -183,6 +183,8 @@ export interface Tune {
   bpm: number;
   key: string;
   dance?: Dance;
+  /** Etiqueta transversal: repertorio rock, sea cual sea su style. */
+  rock?: boolean;
   /** Compases de la forma: 12 blues, 32 AABA/ABAC, 16, 64 Cherokee… */
   bars: number;
   /** 3 solo en vals y jazz waltz; 4 por defecto. */
