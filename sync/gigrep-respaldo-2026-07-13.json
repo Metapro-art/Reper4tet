@@ -1,0 +1,39 @@
+{
+  "app": "gig-repertoire",
+  "type": "backup",
+  "schema": 1,
+  "exportedAt": "2026-07-13T23:19:14.737Z",
+  "overrides": {
+    "piel-canela": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "contigo-en-la-distancia": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "flor-de-azalea": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "esta-tarde-vi-llover": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "te-busco": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    }
+  },
+  "sets": []
+}
