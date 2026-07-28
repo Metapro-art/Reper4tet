@@ -1,0 +1,436 @@
+{
+  "app": "gig-repertoire",
+  "type": "backup",
+  "schema": 1,
+  "exportedAt": "2026-07-28T20:57:31.660Z",
+  "overrides": {
+    "round-midnight": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "straight-no-chaser": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "yardbird-suite": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "donna-lee": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "nica-s-dream": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "killer-joe": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "song-for-my-father": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "the-chicken": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "stompin-at-the-savoy": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "la-gloria-eres-tu": {
+      "kind": "add",
+      "tune": {
+        "id": "la-gloria-eres-tu",
+        "title": "La Gloria eres Tu",
+        "composer": "Jose A Mendez",
+        "theme": "bolero",
+        "style": "balada",
+        "feel": "balada",
+        "bpm": 85,
+        "key": "A",
+        "bars": 32,
+        "beatsPerBar": 4,
+        "memorized": false,
+        "missing": false
+      }
+    },
+    "man-in-the-mirror": {
+      "kind": "add",
+      "tune": {
+        "id": "man-in-the-mirror",
+        "title": "Man in the mirror",
+        "composer": "Glen Ballard/Siedah Garret",
+        "theme": "moderno",
+        "style": "fusion",
+        "feel": "funk",
+        "bpm": 120,
+        "key": "G",
+        "bars": 32,
+        "beatsPerBar": 4,
+        "memorized": false,
+        "missing": false
+      }
+    },
+    "quiereme-mucho": {
+      "kind": "edit",
+      "patch": {
+        "key": "G",
+        "missing": false
+      }
+    },
+    "dos-gardenias": {
+      "kind": "edit",
+      "patch": {
+        "key": "Cm",
+        "missing": false
+      }
+    },
+    "chan-chan": {
+      "kind": "add",
+      "tune": {
+        "id": "chan-chan",
+        "title": "Chan chan",
+        "composer": "Francisco Repilado",
+        "theme": "latin",
+        "style": "latinjazz",
+        "feel": "balada",
+        "bpm": 120,
+        "key": "Dm",
+        "dance": "rumba",
+        "bars": 32,
+        "beatsPerBar": 4,
+        "memorized": false,
+        "missing": false,
+        "notes": "Tocado por Buena vista social club"
+      }
+    },
+    "favela": {
+      "kind": "add",
+      "tune": {
+        "id": "favela",
+        "title": "Favela",
+        "composer": "Antonio Carlos Jobim",
+        "theme": "brasil",
+        "style": "bossa",
+        "feel": "bossa",
+        "bpm": 120,
+        "key": "Gm",
+        "bars": 32,
+        "beatsPerBar": 4,
+        "memorized": false,
+        "missing": false
+      }
+    },
+    "mujer-divina": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "corazon-loco": {
+      "kind": "edit",
+      "patch": {
+        "dance": "tango"
+      }
+    },
+    "piel-canela": {
+      "kind": "edit",
+      "patch": {
+        "missing": false
+      }
+    },
+    "just-you-just-me": {
+      "kind": "add",
+      "tune": {
+        "id": "just-you-just-me",
+        "title": "Just you just me",
+        "composer": "Raymond Klages",
+        "theme": "songbook",
+        "style": "swing",
+        "feel": "swing",
+        "bpm": 120,
+        "key": "C",
+        "bars": 32,
+        "beatsPerBar": 4,
+        "memorized": false,
+        "missing": false
+      }
+    },
+    "youd-be-so-nice-to-come-home-to": {
+      "kind": "add",
+      "tune": {
+        "id": "youd-be-so-nice-to-come-home-to",
+        "title": "Youd be so nice to come home to",
+        "composer": "Cole porter",
+        "theme": "songbook",
+        "style": "swing",
+        "feel": "swing",
+        "bpm": 120,
+        "key": "Gm",
+        "bars": 32,
+        "beatsPerBar": 4,
+        "memorized": false,
+        "missing": false
+      }
+    },
+    "all-blues": {
+      "kind": "edit",
+      "patch": {
+        "style": "bluesmayor"
+      }
+    },
+    "wayne-s-thang": {
+      "kind": "add",
+      "tune": {
+        "id": "wayne-s-thang",
+        "title": "Wayne's Thang",
+        "composer": "Kenny Garret",
+        "theme": "songbook",
+        "style": "latinjazz",
+        "feel": "latin",
+        "bpm": 120,
+        "key": "C",
+        "bars": 32,
+        "beatsPerBar": 4,
+        "memorized": false,
+        "missing": false
+      }
+    },
+    "laura": {
+      "kind": "add",
+      "tune": {
+        "id": "laura",
+        "title": "Laura",
+        "composer": "Jhonny mercer",
+        "theme": "songbook",
+        "style": "swing",
+        "feel": "balada",
+        "bpm": 120,
+        "key": "C",
+        "bars": 32,
+        "beatsPerBar": 4,
+        "memorized": false,
+        "missing": false
+      }
+    }
+  },
+  "sets": [
+    {
+      "id": "59358627-19e9-46b2-b5a5-1b893eb1e7d2",
+      "name": "Jazz 4",
+      "profile": "jazz",
+      "entries": [
+        {
+          "tuneId": "st-thomas",
+          "feel": "latin",
+          "bpm": 180
+        },
+        {
+          "tuneId": "chan-chan",
+          "feel": "balada",
+          "bpm": 104
+        },
+        {
+          "tuneId": "oye-como-va",
+          "feel": "latin",
+          "bpm": 120
+        },
+        {
+          "tuneId": "sway-quien-sera",
+          "feel": "latin",
+          "bpm": 108
+        },
+        {
+          "tuneId": "hernando-s-hideaway",
+          "feel": "latin",
+          "bpm": 124
+        },
+        {
+          "tuneId": "nica-s-dream",
+          "feel": "latin",
+          "bpm": 130
+        }
+      ],
+      "createdAt": "2026-07-28T05:53:12.107Z",
+      "updatedAt": "2026-07-28T06:26:12.048Z"
+    },
+    {
+      "id": "635398a2-2de6-4504-a54a-5af371eec675",
+      "name": "Jazz  3",
+      "profile": "jazz",
+      "entries": [
+        {
+          "tuneId": "girl-from-ipanema",
+          "feel": "bossa",
+          "bpm": 130
+        },
+        {
+          "tuneId": "take-five",
+          "feel": "latin",
+          "bpm": 170
+        },
+        {
+          "tuneId": "te-busco",
+          "feel": "latin",
+          "bpm": 190
+        },
+        {
+          "tuneId": "all-or-nothing-at-all",
+          "feel": "latin",
+          "bpm": 150
+        },
+        {
+          "tuneId": "besame-mucho",
+          "feel": "latin",
+          "bpm": 104
+        },
+        {
+          "tuneId": "perfidia",
+          "feel": "latin",
+          "bpm": 106
+        },
+        {
+          "tuneId": "boplicity",
+          "feel": "swing",
+          "bpm": 130
+        },
+        {
+          "tuneId": "up-jumped-spring",
+          "feel": "vals",
+          "bpm": 170
+        },
+        {
+          "tuneId": "wayne-s-thang",
+          "feel": "latin",
+          "bpm": 120
+        },
+        {
+          "tuneId": "after-you-ve-gone",
+          "feel": "up",
+          "bpm": 200
+        }
+      ],
+      "createdAt": "2026-07-26T00:56:56.191Z",
+      "updatedAt": "2026-07-27T04:22:56.403Z"
+    },
+    {
+      "id": "b7afe60e-fb84-46a1-add2-884bebfc73c8",
+      "name": "Jazz  2",
+      "profile": "jazz",
+      "entries": [
+        {
+          "tuneId": "moanin",
+          "feel": "blues",
+          "bpm": 130
+        },
+        {
+          "tuneId": "it-could-happen-to-you",
+          "feel": "swing",
+          "bpm": 130
+        },
+        {
+          "tuneId": "birks-works",
+          "feel": "blues",
+          "bpm": 130
+        },
+        {
+          "tuneId": "a-night-in-tunisia",
+          "feel": "latin",
+          "bpm": 180
+        },
+        {
+          "tuneId": "segment",
+          "feel": "up",
+          "bpm": 200
+        },
+        {
+          "tuneId": "laura",
+          "feel": "balada",
+          "bpm": 120
+        },
+        {
+          "tuneId": "my-little-suede-shoes",
+          "feel": "latin",
+          "bpm": 160
+        }
+      ],
+      "createdAt": "2026-07-26T00:13:43.844Z",
+      "updatedAt": "2026-07-27T02:36:18.435Z"
+    },
+    {
+      "id": "aec43cb0-cace-4045-897e-885678e5a405",
+      "name": "Jazz 1",
+      "profile": "jazz",
+      "entries": [
+        {
+          "tuneId": "moanin",
+          "feel": "blues",
+          "bpm": 130
+        },
+        {
+          "tuneId": "youd-be-so-nice-to-come-home-to",
+          "feel": "swing",
+          "bpm": 120
+        },
+        {
+          "tuneId": "i-can-t-give-you-anything-but-love",
+          "feel": "swing",
+          "bpm": 132
+        },
+        {
+          "tuneId": "can-t-we-be-friends",
+          "feel": "swing",
+          "bpm": 132
+        },
+        {
+          "tuneId": "almost-like-being-in-love",
+          "feel": "up",
+          "bpm": 200
+        },
+        {
+          "tuneId": "just-you-just-me",
+          "feel": "swing",
+          "bpm": 120
+        },
+        {
+          "tuneId": "things-ain-t-what-they-used-to-be",
+          "feel": "blues",
+          "bpm": 108
+        },
+        {
+          "tuneId": "in-a-mellow-tone",
+          "feel": "swing",
+          "bpm": 132
+        },
+        {
+          "tuneId": "nardis",
+          "feel": "swing",
+          "bpm": 150
+        }
+      ],
+      "createdAt": "2026-07-25T20:04:15.331Z",
+      "updatedAt": "2026-07-27T01:13:26.276Z"
+    }
+  ]
+}

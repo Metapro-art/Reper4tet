@@ -292,7 +292,7 @@ export const TUNES: Tune[] = [
   { id: "bags-groove", title: "Bags' Groove", composer: "Jackson", theme: "miles", style: "bluesmayor", feel: "blues", bpm: 130, key: "F", bars: 12, beatsPerBar: 4, memorized: true, missing: false },
   { id: "blues-by-five", title: "Blues By Five", composer: "Garland", theme: "miles", style: "bluesmayor", feel: "blues", bpm: 150, key: "C", bars: 12, beatsPerBar: 4, memorized: false, missing: false },
   { id: "solar", title: "Solar", composer: "Davis", theme: "miles", style: "hardbop", feel: "swing", bpm: 160, key: "Cm", bars: 32, beatsPerBar: 4, memorized: true, missing: false },
-  { id: "all-blues", title: "All Blues", composer: "Davis", theme: "miles", style: "bluesmenor", feel: "blues", bpm: 140, key: "G", bars: 12, beatsPerBar: 4, memorized: true, missing: false },
+  { id: "all-blues", title: "All Blues", composer: "Davis", theme: "miles", style: "bluesmayor", feel: "blues", bpm: 140, key: "G", bars: 12, beatsPerBar: 4, memorized: true, missing: false },
   { id: "milestones", title: "Milestones", composer: "Davis", theme: "miles", style: "modal", feel: "swing", bpm: 180, key: "Gm", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
   { id: "blue-in-green", title: "Blue In Green", composer: "Evans/Davis", theme: "miles", style: "balada", feel: "balada", bpm: 56, key: "Gm", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
   // ---- COLTRANE ----
@@ -787,4 +787,8 @@ export const TUNES: Tune[] = [
   { id: "un-gospel-para-chiche", title: "Un Gospel Para Chiche", composer: "por confirmar", theme: "songbook", style: "soul", feel: "funk", bpm: 100, key: "F", bars: 32, beatsPerBar: 4, memorized: false, missing: false, notes: "Alta curada (fakebooks); BPM, tonalidad y forma por confirmar contra el chart." },
   { id: "cielito-lindo", title: "Cielito Lindo", composer: "Quirino Mendoza", theme: "latin", style: "balada", feel: "vals", bpm: 100, key: "C", bars: 32, beatsPerBar: 3, memorized: false, missing: false, conocidas: true, notes: "Alta curada (fakebooks); BPM, tonalidad y forma por confirmar contra el chart." },
   { id: "sweet-caroline", title: "Sweet Caroline", composer: "Neil Diamond", theme: "moderno", style: "balada", feel: "swing", bpm: 120, key: "C", bars: 32, beatsPerBar: 4, memorized: false, missing: false, conocidas: true, notes: "Alta curada (fakebooks); BPM, tonalidad y forma por confirmar contra el chart." },
+  { id: "just-you-just-me", title: "Just You Just Me", composer: "Raymond Klages", theme: "songbook", style: "swing", feel: "swing", bpm: 120, key: "C", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "youd-be-so-nice-to-come-home-to", title: "You'd Be So Nice To Come Home To", composer: "Cole Porter", theme: "songbook", style: "swing", feel: "swing", bpm: 120, key: "Gm", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "wayne-s-thang", title: "Wayne's Thang", composer: "Kenny Garrett", theme: "songbook", style: "latinjazz", feel: "latin", bpm: 120, key: "C", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
+  { id: "laura", title: "Laura", composer: "Johnny Mercer", theme: "songbook", style: "swing", feel: "balada", bpm: 120, key: "C", bars: 32, beatsPerBar: 4, memorized: false, missing: false },
 ];
