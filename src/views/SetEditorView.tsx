@@ -22,6 +22,7 @@ import {
   ClipboardCopy,
   Copy,
   GripVertical,
+  Layers,
   ListPlus,
   Play,
   Printer,
@@ -65,11 +66,26 @@ export function SetEditorView({ setId }: { setId: string }) {
   const confirm = useUiStore((st) => st.confirm);
   const toast = useUiStore((st) => st.toast);
 
+  const allSets = useSetsStore((st) => st.sets);
   const tuneMap = useTuneMap();
   const resolved: ResolvedEntry[] = useMemo(
     () => (set ? resolveEntries(set, tuneMap) : []),
     [set, tuneMap],
   );
+
+  /** tuneId → nombres de los OTROS setlists que también lo contienen. */
+  const otherSetsByTune = useMemo(() => {
+    const m = new Map<string, string[]>();
+    for (const other of allSets) {
+      if (other.id === setId) continue;
+      for (const e of other.entries) {
+        const arr = m.get(e.tuneId);
+        if (arr) arr.push(other.name.trim());
+        else m.set(e.tuneId, [other.name.trim()]);
+      }
+    }
+    return m;
+  }, [allSets, setId]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -187,6 +203,7 @@ export function SetEditorView({ setId }: { setId: string }) {
                   index={i}
                   ballroom={ballroom}
                   warnDup={dupIndexes.has(i)}
+                  otherSets={otherSetsByTune.get(r.entry.tuneId)}
                   count={resolved.length}
                   onMove={(dir) => moveEntry(set.id, i, i + dir)}
                   onFeel={(feel) => setEntryFeel(set.id, i, feel)}
@@ -259,6 +276,7 @@ function SortableEntryRow({
   count,
   ballroom,
   warnDup,
+  otherSets,
   onMove,
   onFeel,
   onBpm,
@@ -269,6 +287,7 @@ function SortableEntryRow({
   count: number;
   ballroom: boolean;
   warnDup: boolean;
+  otherSets?: string[];
   onMove: (dir: number) => void;
   onFeel: (feel: Feel) => void;
   onBpm: (bpm: number) => void;
@@ -328,6 +347,17 @@ function SortableEntryRow({
       <div className={s.info}>
         <div className={s.titleRow}>
           <span className={s.title}>{t ? t.title : '(tema eliminado de la biblioteca)'}</span>
+          {otherSets && otherSets.length > 0 && (
+            <span
+              className={s.inOther}
+              title={`También en: ${otherSets.join(', ')}`}
+              aria-label={`También en ${otherSets.length} setlist${
+                otherSets.length > 1 ? 's' : ''
+              }: ${otherSets.join(', ')}`}
+            >
+              <Layers size={13} /> {otherSets.length}
+            </span>
+          )}
           <span className={`${s.dur} ${edited ? s.durEdited : ''}`}>{fmtSec(r.durationSec)}</span>
         </div>
         {t && (

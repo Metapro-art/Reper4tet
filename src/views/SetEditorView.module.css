@@ -153,6 +153,18 @@
 .durEdited {
   color: var(--amber);
 }
+.inOther {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  font-family: var(--font-cond);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--amber);
+  white-space: nowrap;
+  cursor: help;
+}
 .controls {
   display: flex;
   align-items: center;
