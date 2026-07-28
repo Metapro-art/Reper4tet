@@ -2,9 +2,34 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import type { Feel, SetEntry, SetList, SetProfile } from '../types';
 import { BASE_BY_ID } from '../lib/merge';
+import { BASE_SETS } from '../data/sets';
 import { idbStorage } from './idbStorage';
 
 const now = () => new Date().toISOString();
+
+const ms = (iso: string) => {
+  const t = Date.parse(iso);
+  return Number.isFinite(t) ? t : 0;
+};
+
+/**
+ * Fusiona la capa base versionada (`BASE_SETS`, llega con el deploy) sobre los
+ * sets locales del dispositivo. Reconciliación por `updatedAt`:
+ * - set base ausente localmente → se siembra (así aparece en cualquier
+ *   dispositivo);
+ * - presente en ambos → gana el `updatedAt` más nuevo (una edición republicada
+ *   se propaga; un cambio local más reciente NO se pisa);
+ * - set solo local (aún no publicado) → se conserva.
+ * Preserva el orden local y agrega al final los sets base recién sembrados.
+ */
+export function mergeBaseSets(local: SetList[]): SetList[] {
+  const byId = new Map(local.map((s) => [s.id, s]));
+  for (const base of BASE_SETS) {
+    const cur = byId.get(base.id);
+    if (!cur || ms(base.updatedAt) > ms(cur.updatedAt)) byId.set(base.id, normalizeSet(base));
+  }
+  return [...byId.values()];
+}
 
 function touch(s: SetList, patch: Partial<SetList>): SetList {
   return { ...s, ...patch, updatedAt: now() };
@@ -171,6 +196,11 @@ export const useSetsStore = create<SetsState>()(
         const state = (persisted ?? {}) as { sets?: unknown[] };
         const sets = Array.isArray(state.sets) ? state.sets.map(normalizeSet) : [];
         return { sets };
+      },
+      // Al terminar de leer IndexedDB (incluso sin nada guardado: dispositivo
+      // nuevo), fusiona la capa base versionada. Corre en cada arranque.
+      onRehydrateStorage: () => (state) => {
+        useSetsStore.setState({ sets: mergeBaseSets(state?.sets ?? []) });
       },
     },
   ),

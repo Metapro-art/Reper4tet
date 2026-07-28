@@ -58,6 +58,15 @@ En el laptop, pedir a Claude: _"fusiona este JSON de overrides a tunes.ts"_:
 Los respaldos completos (overrides + sets) se importan/exportan en Ajustes; el esquema
 está en `src/lib/backup.ts` (`schema: 1`).
 
+**Setlists en dos capas (igual que los temas)**: `src/data/sets.ts` (`BASE_SETS`) es la
+capa base versionada que llega con cada deploy; los sets locales viven en IndexedDB.
+Al hidratar, `mergeBaseSets` (`src/store/setsStore.ts`) los fusiona por `id` (UUID)
+reconciliando por `updatedAt`: un set base ausente se **siembra** (así aparece en
+cualquier dispositivo), y si coincide el id gana el `updatedAt` más nuevo (una edición
+republicada se propaga; un cambio local más reciente NO se pisa). Para retirar un set de
+todos los dispositivos se borra de `BASE_SETS` (los que ya lo tengan local lo conservan
+hasta borrarlo a mano).
+
 ## Material fuente (no tocar a la ligera)
 
 - `screenshots/` — capturas de MobileSheets del músico. **Se versionan en git** (son la
@@ -98,6 +107,9 @@ Cuando el usuario diga «Aplica el respaldo de sync/ al repertorio y súbelo»:
    curaduría de este archivo. El respaldo es un JSON `{ overrides, sets }` (esquema en
    `src/lib/backup.ts`): `add` → alta nueva conservando su id; `edit` → parche sobre la
    línea del tema (`null` = borrar campo opcional); `remove` → eliminar la línea.
+   Los `sets` del respaldo se fusionan sobre `src/data/sets.ts` (`BASE_SETS`) por `id`:
+   set nuevo → agregar; id existente → reemplazar por la versión del respaldo (así se
+   publica la edición). Así los setlists llegan a cualquier dispositivo con el deploy.
 4. Verifica que el proyecto compile (`npm run build`).
 5. Commit con mensaje «Respaldo tablet: N altas, M ediciones, K bajas» y push a
    `origin main`.
