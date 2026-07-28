@@ -128,6 +128,7 @@ export function LibraryView() {
     pickingForSetId ? st.sets.find((x) => x.id === pickingForSetId) : undefined,
   );
   const addEntry = useSetsStore((st) => st.addEntry);
+  const allSets = useSetsStore((st) => st.sets);
   const toast = useUiStore((st) => st.toast);
   const tuneMap = useTuneMap();
 
@@ -256,10 +257,23 @@ export function LibraryView() {
   );
   const missingTotal = tunes.filter((t) => t.missing).length;
 
-  const handleAdd = (id: string) => {
+  const handleAdd = async (id: string) => {
     if (!pickingForSetId) return;
     const t2 = tuneMap.get(id);
     if (!t2) return;
+    // Aviso si el track ya está en otro(s) setlist(s): puede agregarlo igual.
+    const others = allSets.filter(
+      (s) => s.id !== pickingForSetId && s.entries.some((e) => e.tuneId === id),
+    );
+    if (others.length > 0) {
+      const names = others.map((s) => `«${s.name.trim()}»`).join(', ');
+      const ok = await confirm({
+        title: 'Ya está en otro setlist',
+        body: `«${t2.title}» ya está en ${names}. ¿Agregarlo también a este set?`,
+        confirmLabel: 'Agregar igual',
+      });
+      if (!ok) return;
+    }
     if (addEntry(pickingForSetId, id, t2.feel, t2.bpm)) toast(`Añadido: ${t2.title}`);
     else toast('Ya está en el set', 'warn');
   };
