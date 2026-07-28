@@ -1,26 +1,11 @@
-import type { SetList } from '../types';
-import { DANCE_LABELS, FEEL_LABELS, TARGET_SEC } from '../types';
 import type { ResolvedEntry } from './setMath';
-import { totalSec } from './setMath';
-import { fmtSec } from './time';
 
-/** Texto plano para WhatsApp / portapapeles. */
-export function buildSetText(set: SetList, resolved: ResolvedEntry[]): string {
-  const total = totalSec(resolved);
-  const lines: string[] = [];
-  lines.push(`SET: ${set.name} — ${fmtSec(total)} / ${fmtSec(TARGET_SEC)}`);
-  resolved.forEach((r, i) => {
-    if (!r.tune) {
-      lines.push(`${i + 1}. (tema eliminado) (${fmtSec(r.durationSec)})`);
-      return;
-    }
-    const t = r.tune;
-    const dance = set.profile === 'ballroom' && t.dance ? ` · ${DANCE_LABELS[t.dance]}` : '';
-    lines.push(
-      `${i + 1}. ${t.title} — ${t.key} · ${r.bpm} bpm · ${FEEL_LABELS[r.feel]}${dance} (${fmtSec(r.durationSec)})`,
-    );
-  });
-  lines.push('');
-  lines.push(`${resolved.length} temas · transiciones de 45 s incluidas`);
-  return lines.join('\n');
+/**
+ * Texto plano para portapapeles / WhatsApp: solo numeración y título de cada
+ * track, nada más (sin tonalidad, bpm, feel, duración ni totales).
+ */
+export function buildSetText(resolved: ResolvedEntry[]): string {
+  return resolved
+    .map((r, i) => `${i + 1}. ${r.tune ? r.tune.title : '(tema eliminado)'}`)
+    .join('\n');
 }

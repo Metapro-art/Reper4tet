@@ -129,7 +129,7 @@ export function SetsView() {
                   title="Copiar como texto (WhatsApp)"
                   aria-label="Copiar como texto"
                   onClick={() => {
-                    void copyText(buildSetText(set, resolveEntries(set, tuneMap))).then((ok) =>
+                    void copyText(buildSetText(resolveEntries(set, tuneMap))).then((ok) =>
                       toast(
                         ok ? 'Set copiado como texto' : 'No se pudo copiar',
                         ok ? 'ok' : 'warn',

@@ -110,11 +110,11 @@ export function SetEditorView({ setId }: { setId: string }) {
   }
 
   const exportCopy = async () => {
-    const ok = await copyText(buildSetText(set, resolved));
+    const ok = await copyText(buildSetText(resolved));
     toast(ok ? 'Set copiado como texto' : 'No se pudo copiar', ok ? 'ok' : 'warn');
   };
   const exportShare = async () => {
-    const ok = await shareText(set.name, buildSetText(set, resolved));
+    const ok = await shareText(set.name, buildSetText(resolved));
     if (!ok) await exportCopy();
   };
 
